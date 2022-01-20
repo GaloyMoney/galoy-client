@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "lib": ["dom", "es2021", "scripthost"],
+    "outDir": "dist",
+    "baseUrl": "src",
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "useUnknownInCatchVariables": false,
+    "alwaysStrict": true,
+    "allowJs": false,
+    "sourceMap": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "preserveSymlinks": true,
+    "resolveJsonModule": true,
+    "declaration": true,
+  },
+  "include": ["src"]
+}

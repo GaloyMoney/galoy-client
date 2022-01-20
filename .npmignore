@@ -1,0 +1,11 @@
+node_modules/
+src/
+coverage/
+yarn-error.log
+.vscode/
+.DS_Store
+codegen.yml
+jest.config.json
+prettier.config.js
+tsconfig.json
+**/*.spec.js
