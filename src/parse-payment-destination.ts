@@ -89,7 +89,7 @@ export const parsePaymentDestination = ({
     let payReq: bolt11.PaymentRequestObject | undefined = undefined
     try {
       payReq = bolt11.decode(destinationText)
-    } catch (err: any) {
+    } catch (err) {
       console.error(err)
       return {
         valid: false,

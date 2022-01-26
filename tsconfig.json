@@ -15,7 +15,7 @@
     "esModuleInterop": true,
     "preserveSymlinks": true,
     "resolveJsonModule": true,
-    "declaration": true,
+    "declaration": true
   },
   "include": ["src"]
 }
