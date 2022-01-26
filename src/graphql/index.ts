@@ -16,6 +16,19 @@ import ON_CHAIN_TX_FEE from "./queries/on-chain-tx-fee"
 import USER_DEFAULT_WALLET_ID from "./queries/user-default-wallet-id"
 
 import MY_UPDATES from "./supscriptions/my-updates"
+import ADD_DEVICE_TOKEN from "./mutations/device-notification-token-create"
+import UPDATE_LANGUAGE from "./mutations/update-language"
+import UPDATE_NAME from "./mutations/update-name"
+import USER_QUIZ_QUESTION_UPDATE_COMPLETED from "./mutations/user-quiz-question-completed"
+import BTC_PRICE_LIST from "./queries/btc-price-list"
+import QUERY_BUSINESSES from "./queries/business-map-markers"
+import COMPLETED_QUIZ_QUESTIONS from "./queries/completed-quiz-questions"
+import CONTACTS from "./queries/contacts"
+import GET_WALLET_CSV_TRANSACTIONS from "./queries/get-wallet-csv-transactions"
+import QUIZ_QUESTIONS from "./queries/quiz-questions"
+import TRANSACTIONS_LIST_FOR_CONTACT from "./queries/transaction-list-for-contact"
+import TRANSACTIONS_LIST from "./queries/transaction-list"
+import USERNAME_AVAILABLE from "./queries/username-available"
 
 export { GaloyGQL } from "./types"
 
@@ -23,6 +36,15 @@ export const queries = {
   main: MAIN,
   onChainTxFee: ON_CHAIN_TX_FEE,
   userDefaultWalletId: USER_DEFAULT_WALLET_ID,
+  btcPriceList: BTC_PRICE_LIST,
+  businessMapMarkers: QUERY_BUSINESSES,
+  completedQuizQuestions: COMPLETED_QUIZ_QUESTIONS,
+  contacts: CONTACTS,
+  getWalletCsvTransactions: GET_WALLET_CSV_TRANSACTIONS,
+  quizQuestions: QUIZ_QUESTIONS,
+  transactionListForContact: TRANSACTIONS_LIST_FOR_CONTACT,
+  transactionList: TRANSACTIONS_LIST,
+  usernameAvailable: USERNAME_AVAILABLE,
 }
 
 export const mutations = {
@@ -38,6 +60,10 @@ export const mutations = {
   onChainAddressCurrent: ON_CHAIN_ADDRESS_CURRENT,
   onChainPaymentSend: ON_CHAIN_PAYMENT_SEND,
   userLogin: USER_LOGIN,
+  deviceNotificationTokenCreate: ADD_DEVICE_TOKEN,
+  updateLanugage: UPDATE_LANGUAGE,
+  updateName: UPDATE_NAME,
+  userQuizQuestionCompleted: USER_QUIZ_QUESTION_UPDATE_COMPLETED,
 }
 
 export const subscriptions = {
