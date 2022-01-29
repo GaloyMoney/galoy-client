@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client"
 
-const BTC_PRICE_LIST = gql`
+const btcPriceList = gql`
   query btcPriceList($range: PriceGraphRange!) {
     btcPriceList(range: $range) {
       timestamp
@@ -13,4 +13,4 @@ const BTC_PRICE_LIST = gql`
     }
   }
 `
-export default BTC_PRICE_LIST
+export default btcPriceList

@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client"
 
-const QUIZ_QUESTIONS = gql`
+const quizQuestions = gql`
   query quizQuestions {
     quizQuestions {
       id
@@ -9,4 +9,4 @@ const QUIZ_QUESTIONS = gql`
   }
 `
 
-export default QUIZ_QUESTIONS
+export default quizQuestions

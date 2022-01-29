@@ -4,7 +4,6 @@
     "module": "commonjs",
     "lib": ["dom", "es2021", "scripthost"],
     "outDir": "dist",
-    "baseUrl": "src",
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "useUnknownInCatchVariables": false,

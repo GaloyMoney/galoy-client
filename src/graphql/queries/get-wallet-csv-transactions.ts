@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client"
 
-const GET_WALLET_CSV_TRANSACTIONS = gql`
-  query getWalletCSVTransactions($defaultWalletId: WalletId!) {
+const getWalletCsvTransactions = gql`
+  query getWalletCsvTransactions($defaultWalletId: WalletId!) {
     me {
       id
       defaultAccount {
@@ -12,4 +12,4 @@ const GET_WALLET_CSV_TRANSACTIONS = gql`
   }
 `
 
-export default GET_WALLET_CSV_TRANSACTIONS
+export default getWalletCsvTransactions

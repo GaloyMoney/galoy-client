@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client"
 
-const MY_UPDATES = gql`
+const myUpdates = gql`
   subscription myUpdates {
     myUpdates {
       errors {
@@ -26,16 +26,19 @@ const MY_UPDATES = gql`
           formattedAmount
         }
         ... on LnUpdate {
+          walletId
           paymentHash
           status
         }
         ... on OnChainUpdate {
+          walletId
           txNotificationType
           txHash
           amount
           usdPerSat
         }
         ... on IntraLedgerUpdate {
+          walletId
           txNotificationType
           amount
           usdPerSat
@@ -45,4 +48,4 @@ const MY_UPDATES = gql`
   }
 `
 
-export default MY_UPDATES
+export default myUpdates

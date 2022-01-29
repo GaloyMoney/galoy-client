@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client"
 
-const INTRA_LEDGER_PAYMENT_SEND = gql`
+const intraLedgerPaymentSend = gql`
   mutation intraLedgerPaymentSend($input: IntraLedgerPaymentSendInput!) {
     intraLedgerPaymentSend(input: $input) {
       errors {
@@ -10,4 +10,4 @@ const INTRA_LEDGER_PAYMENT_SEND = gql`
     }
   }
 `
-export default INTRA_LEDGER_PAYMENT_SEND
+export default intraLedgerPaymentSend

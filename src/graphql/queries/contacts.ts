@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client"
 
-const CONTACTS = gql`
+const contacts = gql`
   query contacts {
     me {
       id
@@ -13,4 +13,4 @@ const CONTACTS = gql`
   }
 `
 
-export default CONTACTS
+export default contacts

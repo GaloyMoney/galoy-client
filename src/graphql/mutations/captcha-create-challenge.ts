@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client"
 
-const CAPTCHA_CREATE_CHALLENGE = gql`
+const captchaCreateChallenge = gql`
   mutation captchaCreateChallenge {
     captchaCreateChallenge {
       errors {
@@ -15,4 +15,4 @@ const CAPTCHA_CREATE_CHALLENGE = gql`
     }
   }
 `
-export default CAPTCHA_CREATE_CHALLENGE
+export default captchaCreateChallenge

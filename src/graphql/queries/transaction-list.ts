@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client"
-import TRANSACTION_LIST_FRAGMENT from "graphql/fragments/transaction-list-fragment"
+import transactionListFragment from "../fragments/transaction-list-fragment"
 
-const TRANSACTIONS_LIST = gql`
-  query transactionsList($first: Int, $after: String) {
+const transactionList = gql`
+  query transactionList($first: Int, $after: String) {
     me {
       id
       defaultAccount {
@@ -16,7 +16,7 @@ const TRANSACTIONS_LIST = gql`
       }
     }
   }
-  ${TRANSACTION_LIST_FRAGMENT}
+  ${transactionListFragment}
 `
 
-export default TRANSACTIONS_LIST
+export default transactionList

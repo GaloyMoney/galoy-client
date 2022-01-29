@@ -1,3 +1,4 @@
+// prettier-ignore
 const ES = {
   "Address has been copied to the clipboard": "",
   "Click QR code to copy": "",
@@ -13,6 +14,7 @@ const ES = {
   "Invalid QR Code": "",
   "Invoice Expired...": "",
   "Invoice has been copied to the clipboard": "",
+  "Invoice is already paid": "",
   "Invoice value is now %{value}": "",
   "Lightning": "",
   "Login to send": "",
@@ -21,6 +23,7 @@ const ES = {
   "Not able to generate invoice.": "",
   "OnChain": "",
   "Payment amount exceeds balance of %{balance} sats": "",
+  "Payment failed": "",
   "Please try again later.": "",
   "Powered By": "",
   "Receive another payment": "",
@@ -34,8 +37,7 @@ const ES = {
   "Set a note for the sender here (optional)": "",
   "Set invoice value in %{currency}": "",
   "Set value to send in %{currency}": "",
-  "Sorry, we appear to be having issues loading the application data. If the problem persists, please contact support.":
-    "",
+  "Sorry, we appear to be having issues loading the application data. If the problem persists, please contact support.": "",
   "To confirm your phone number, enter the code we just sent you on %{phoneNumber}": "",
   "username or invoice": "",
   "Verify you are human": "",

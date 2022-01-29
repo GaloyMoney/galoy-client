@@ -2,10 +2,6 @@ export const VERSION = "0.0.11"
 
 import * as lightningPayReq from "bolt11"
 
-export * from "./parse-payment-destination"
-export * from "./graphql/index"
-export * from "./translate/index"
-
 export const getDescription = (decoded: lightningPayReq.PaymentRequestObject) => {
   const data = decoded.tags.find((value) => value.tagName === "description")?.data
   if (data) {
@@ -24,3 +20,9 @@ export const getHashFromInvoice = (invoice: string): string | undefined => {
     return data as string
   }
 }
+
+export * from "./client/index"
+export * from "./graphql/index"
+export * from "./translate/index"
+
+export * from "./parse-payment-destination"

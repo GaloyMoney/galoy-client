@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client"
 
-const CAPTCHA_REQUEST_AUTH_CODE = gql`
+const captchaRequestAuthCode = gql`
   mutation captchaRequestAuthCode($input: CaptchaRequestAuthCodeInput!) {
     captchaRequestAuthCode(input: $input) {
       errors {
@@ -10,4 +10,4 @@ const CAPTCHA_REQUEST_AUTH_CODE = gql`
     }
   }
 `
-export default CAPTCHA_REQUEST_AUTH_CODE
+export default captchaRequestAuthCode

@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client"
 
-const ON_CHAIN_PAYMENT_SEND = gql`
+const onChainPaymentSend = gql`
   mutation onChainPaymentSend($input: OnChainPaymentSendInput!) {
     onChainPaymentSend(input: $input) {
       errors {
@@ -11,4 +11,4 @@ const ON_CHAIN_PAYMENT_SEND = gql`
   }
 `
 
-export default ON_CHAIN_PAYMENT_SEND
+export default onChainPaymentSend
