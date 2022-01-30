@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client"
 
-const ON_CHAIN_ADDRESS_CURRENT = gql`
+const onChainAddressCurrent = gql`
   mutation onChainAddressCurrent($input: OnChainAddressCurrentInput!) {
     onChainAddressCurrent(input: $input) {
       errors {
@@ -11,4 +11,4 @@ const ON_CHAIN_ADDRESS_CURRENT = gql`
   }
 `
 
-export default ON_CHAIN_ADDRESS_CURRENT
+export default onChainAddressCurrent

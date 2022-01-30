@@ -82,6 +82,7 @@ export const parsePaymentDestination = ({
       return {
         valid: false,
         paymentType: "lightning",
+        paymentRequest: destinationText,
         errorMessage: `Invalid lightning invoice for ${network} network`,
       }
     }
@@ -90,13 +91,15 @@ export const parsePaymentDestination = ({
     try {
       payReq = bolt11.decode(destinationText)
     } catch (err) {
-      console.error(err)
+      console.debug("[Parse error: decode]:", err)
       return {
         valid: false,
         paymentType: "lightning",
-        errorMessage: err?.message ?? "Invalid lightning invoice",
+        paymentRequest: destinationText,
+        errorMessage: err instanceof Error ? err.message : "Invalid lightning invoice",
       }
     }
+
     const sameNode = pubKey === getDestination(payReq)
 
     const amount =
@@ -107,8 +110,11 @@ export const parsePaymentDestination = ({
     if (lightningInvoiceHasExpired(payReq)) {
       return {
         valid: false,
-        errorMessage: "invoice has expired",
         paymentType: "lightning",
+        sameNode,
+        amount,
+        paymentRequest: destinationText,
+        errorMessage: "invoice has expired",
       }
     }
 
@@ -116,10 +122,10 @@ export const parsePaymentDestination = ({
     return {
       valid: true,
       paymentRequest: destinationText,
+      sameNode,
       amount,
       memo,
       paymentType: "lightning",
-      sameNode,
     }
   }
 
@@ -139,10 +145,11 @@ export const parsePaymentDestination = ({
           ? parseAmount(decodedData.query.amount as string)
           : undefined
       } catch (err) {
-        console.error(`can't decode amount ${err}`)
+        console.debug("[Parse error: amount]:", err)
         return {
           valid: false,
-          errorMessage: "Invalid amount in destination",
+          address: path,
+          errorMessage: "Invalid amount in payment destination",
         }
       }
 
@@ -155,7 +162,7 @@ export const parsePaymentDestination = ({
         amount,
       }
     } catch (err) {
-      console.error(`issue with payment destination: ${err}`)
+      console.debug("[Parse error: onchain]:", err)
       return {
         valid: false,
         errorMessage: "Invalid bitcoin address",
@@ -166,9 +173,17 @@ export const parsePaymentDestination = ({
   // No payment type detected, assume intraledger
 
   const handle = protocol.match(/^(http|\/\/)/iu) ? data.split("/").at(-1) : protocol
+
+  if (handle?.match(/(?!^(1|3|bc1|lnbc1))^[0-9a-z_]{3,50}$/iu)) {
+    return {
+      valid: true,
+      paymentType: "intraledger",
+      handle,
+    }
+  }
+
   return {
-    valid: true,
-    paymentType: "intraledger",
-    handle,
+    valid: false,
+    errorMessage: "Invaild payment destination",
   }
 }

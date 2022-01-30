@@ -1,6 +1,4 @@
-src/graphql/types.ts
 node_modules/
 dist/
 coverage/
 .vscode
-.gvars.json

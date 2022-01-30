@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client"
 
-const UPDATE_USERNAME = gql`
+const userUpdateUsername = gql`
   mutation updateUsername($username: Username!) {
     userUpdateUsername(input: { username: $username }) {
       errors {
@@ -14,4 +14,4 @@ const UPDATE_USERNAME = gql`
   }
 `
 
-export default UPDATE_USERNAME
+export default userUpdateUsername

@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client"
 
-const QUERY_BUSINESSES = gql`
+const businessMapMarkers = gql`
   query businessMapMarkers {
     businessMapMarkers {
       username
@@ -15,4 +15,4 @@ const QUERY_BUSINESSES = gql`
   }
 `
 
-export default QUERY_BUSINESSES
+export default businessMapMarkers

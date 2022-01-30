@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client"
 
-const ON_CHAIN_TX_FEE = gql`
+const onChainTxFee = gql`
   query onChainTxFee(
     $walletId: WalletId!
     $address: OnChainAddress!
@@ -18,4 +18,4 @@ const ON_CHAIN_TX_FEE = gql`
     }
   }
 `
-export default ON_CHAIN_TX_FEE
+export default onChainTxFee

@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client"
 
-const UPDATE_NAME = gql`
+const userContactUpdateAlias = gql`
   mutation userContactUpdateAlias($input: UserContactUpdateAliasInput!) {
     userContactUpdateAlias(input: $input) {
       errors {
@@ -9,4 +9,4 @@ const UPDATE_NAME = gql`
     }
   }
 `
-export default UPDATE_NAME
+export default userContactUpdateAlias

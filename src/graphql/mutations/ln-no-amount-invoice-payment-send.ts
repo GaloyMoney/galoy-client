@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client"
 
-const LN_NO_AMOUNT_INVOICE_PAYMENT_SEND = gql`
+const lnNoAmountInvoicePaymentSend = gql`
   mutation lnNoAmountInvoicePaymentSend($input: LnNoAmountInvoicePaymentInput!) {
     lnNoAmountInvoicePaymentSend(input: $input) {
       errors {
@@ -11,4 +11,4 @@ const LN_NO_AMOUNT_INVOICE_PAYMENT_SEND = gql`
   }
 `
 
-export default LN_NO_AMOUNT_INVOICE_PAYMENT_SEND
+export default lnNoAmountInvoicePaymentSend

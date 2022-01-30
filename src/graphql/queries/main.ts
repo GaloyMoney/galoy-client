@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client"
 
-const MAIN = gql`
-  query me($hasToken: Boolean!) {
+const main = gql`
+  query main($hasToken: Boolean!) {
     globals {
       nodesIds
     }
@@ -26,4 +26,4 @@ const MAIN = gql`
   }
 `
 
-export default MAIN
+export default main

@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client"
 
-const TRANSACTION_LIST_FRAGMENT = gql`
+const transactionListFragment = gql`
   fragment TransactionList on TransactionConnection {
     pageInfo {
       hasNextPage
@@ -53,4 +53,4 @@ const TRANSACTION_LIST_FRAGMENT = gql`
   }
 `
 
-export default TRANSACTION_LIST_FRAGMENT
+export default transactionListFragment

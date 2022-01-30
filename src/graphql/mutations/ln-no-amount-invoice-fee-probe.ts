@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client"
 
-const LN_NO_AMOUNT_INVOICE_FEE_PROPE = gql`
+const lnNoAmountInvoiceFeeProbe = gql`
   mutation lnNoAmountInvoiceFeeProbe($input: LnNoAmountInvoiceFeeProbeInput!) {
     lnNoAmountInvoiceFeeProbe(input: $input) {
       errors {
@@ -10,4 +10,4 @@ const LN_NO_AMOUNT_INVOICE_FEE_PROPE = gql`
     }
   }
 `
-export default LN_NO_AMOUNT_INVOICE_FEE_PROPE
+export default lnNoAmountInvoiceFeeProbe

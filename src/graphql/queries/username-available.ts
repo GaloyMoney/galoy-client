@@ -1,9 +1,9 @@
 import { gql } from "@apollo/client"
 
-const USERNAME_AVAILABLE = gql`
+const usernameAvailable = gql`
   query usernameAvailable($username: Username!) {
     usernameAvailable(username: $username)
   }
 `
 
-export default USERNAME_AVAILABLE
+export default usernameAvailable

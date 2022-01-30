@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client"
 
-const USER_QUIZ_QUESTION_UPDATE_COMPLETED = gql`
+const userQuizQuestionUpdateCompleted = gql`
   mutation userQuizQuestionUpdateCompleted(
     $input: UserQuizQuestionUpdateCompletedInput!
   ) {
@@ -21,4 +21,4 @@ const USER_QUIZ_QUESTION_UPDATE_COMPLETED = gql`
   }
 `
 
-export default USER_QUIZ_QUESTION_UPDATE_COMPLETED
+export default userQuizQuestionUpdateCompleted
