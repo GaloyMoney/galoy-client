@@ -929,6 +929,8 @@ export namespace GaloyGQL {
                       __typename?: "Price"
                       base: number
                       offset: number
+                      currencyUnit: ExchangeCurrencyUnit
+                      formattedAmount: string
                     }
                     initiationVia:
                       | {
@@ -1351,6 +1353,7 @@ export namespace GaloyGQL {
 
   export type MainQueryVariables = Exact<{
     hasToken: Scalars["Boolean"]
+    recentTransactions?: InputMaybe<Scalars["Int"]>
   }>
 
   export type MainQuery = {
@@ -1370,12 +1373,85 @@ export namespace GaloyGQL {
       | {
           __typename?: "User"
           id: string
-          username?: string | null | undefined
           language: string
+          username?: string | null | undefined
+          phone: string
           defaultAccount: {
             __typename?: "ConsumerAccount"
             id: string
-            wallets: Array<{ __typename?: "BTCWallet"; id: string; balance: number }>
+            defaultWalletId: string
+            wallets: Array<{
+              __typename?: "BTCWallet"
+              id: string
+              balance: number
+              walletCurrency: WalletCurrency
+              transactions?:
+                | {
+                    __typename?: "TransactionConnection"
+                    pageInfo: { __typename?: "PageInfo"; hasNextPage: boolean }
+                    edges?:
+                      | Array<
+                          | {
+                              __typename?: "TransactionEdge"
+                              cursor: string
+                              node?:
+                                | {
+                                    __typename: "Transaction"
+                                    id: string
+                                    status: TxStatus
+                                    direction: TxDirection
+                                    memo?: string | null | undefined
+                                    createdAt: number
+                                    settlementAmount: number
+                                    settlementFee: number
+                                    settlementPrice: {
+                                      __typename?: "Price"
+                                      base: number
+                                      offset: number
+                                      currencyUnit: ExchangeCurrencyUnit
+                                      formattedAmount: string
+                                    }
+                                    initiationVia:
+                                      | {
+                                          __typename: "InitiationViaIntraLedger"
+                                          counterPartyWalletId?: string | null | undefined
+                                          counterPartyUsername?: string | null | undefined
+                                        }
+                                      | {
+                                          __typename: "InitiationViaLn"
+                                          paymentHash: string
+                                        }
+                                      | {
+                                          __typename: "InitiationViaOnChain"
+                                          address: string
+                                        }
+                                    settlementVia:
+                                      | {
+                                          __typename: "SettlementViaIntraLedger"
+                                          counterPartyWalletId?: string | null | undefined
+                                          counterPartyUsername?: string | null | undefined
+                                        }
+                                      | {
+                                          __typename: "SettlementViaLn"
+                                          paymentSecret?: string | null | undefined
+                                        }
+                                      | {
+                                          __typename: "SettlementViaOnChain"
+                                          transactionHash: string
+                                        }
+                                  }
+                                | null
+                                | undefined
+                            }
+                          | null
+                          | undefined
+                        >
+                      | null
+                      | undefined
+                  }
+                | null
+                | undefined
+            }>
           }
         }
       | null
@@ -1449,6 +1525,8 @@ export namespace GaloyGQL {
                                     __typename?: "Price"
                                     base: number
                                     offset: number
+                                    currencyUnit: ExchangeCurrencyUnit
+                                    formattedAmount: string
                                   }
                                   initiationVia:
                                     | {
@@ -1536,6 +1614,8 @@ export namespace GaloyGQL {
                                       __typename?: "Price"
                                       base: number
                                       offset: number
+                                      currencyUnit: ExchangeCurrencyUnit
+                                      formattedAmount: string
                                     }
                                     initiationVia:
                                       | {

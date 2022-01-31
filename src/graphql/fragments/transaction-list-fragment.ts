@@ -20,6 +20,8 @@ const transactionListFragment = gql`
         settlementPrice {
           base
           offset
+          currencyUnit
+          formattedAmount
         }
 
         initiationVia {

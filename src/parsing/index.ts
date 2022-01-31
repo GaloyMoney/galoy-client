@@ -2,7 +2,7 @@ import bolt11 from "bolt11"
 import url from "url"
 import { networks, address } from "bitcoinjs-lib"
 
-import { getDescription, getDestination } from "./index"
+import { getDescription, getDestination } from "../index"
 
 export type Network = "mainnet" | "testnet" | "regtest"
 export type PaymentType = "lightning" | "onchain" | "intraledger" | "lnurl"
