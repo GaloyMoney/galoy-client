@@ -24,5 +24,5 @@ export const getHashFromInvoice = (invoice: string): string | undefined => {
 export * from "./client/index"
 export * from "./graphql/index"
 export * from "./translate/index"
-
-export * from "./parse-payment-destination"
+export * from "./utils/index"
+export * from "./parsing/index"
