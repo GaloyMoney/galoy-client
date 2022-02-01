@@ -5,6 +5,6 @@ module.exports = {
   },
   modulePaths: ["<rootDir>/src"],
   setupFilesAfterEnv: ["<rootDir>/src/setupTests.ts"],
-  testEnvironment: "jsdom",
   testPathIgnorePatterns: ["/node_modules/"],
+  timers: "fake",
 }
