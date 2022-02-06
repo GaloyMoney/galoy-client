@@ -59,13 +59,11 @@ export const parsePaymentDestination = ({
   }
 
   // input might start with 'lightning:', 'bitcoin:'
-  const [protocol, data] = destination
-    .split(":")
-    .map((value) => value.toLocaleLowerCase())
+  const split = destination.split(":")
+  const protocol = split[0].toLocaleLowerCase()
+  const destinationText = split[1] ?? split[0]
 
-  const destinationText = data ?? protocol
-
-  if (destinationText.startsWith("lnurl")) {
+  if (destinationText.match(/^lnurl/iu)) {
     return {
       valid: true,
       paymentType: "lnurl",
@@ -73,11 +71,11 @@ export const parsePaymentDestination = ({
     }
   }
 
-  if (protocol === "lightning" || destinationText.match(/^ln(bc|tb)/iu)) {
+  if (protocol === "lightning" || destinationText.match(/^ln(bc|tb).{50,}/iu)) {
     if (
-      (network === "mainnet" && !protocol.startsWith("lnbc")) ||
-      (network === "testnet" && !protocol.startsWith("lntb")) ||
-      (network === "regtest" && !protocol.startsWith("lnbcrt"))
+      (network === "mainnet" && !destinationText.match(/^lnbc/iu)) ||
+      (network === "testnet" && !destinationText.match(/^lntb/iu)) ||
+      (network === "regtest" && !destinationText.match(/^lnbcrt/iu))
     ) {
       return {
         valid: false,
@@ -134,7 +132,7 @@ export const parsePaymentDestination = ({
       const decodedData = url.parse(destinationText, true)
 
       // some apps encode addresses in UPPERCASE
-      const path = decodedData?.pathname?.toLocaleLowerCase()
+      const path = decodedData?.pathname
       if (!path) {
         throw new Error("No address detected in decoded destination")
       }
@@ -172,7 +170,9 @@ export const parsePaymentDestination = ({
 
   // No payment type detected, assume intraledger
 
-  const handle = protocol.match(/^(http|\/\/)/iu) ? data.split("/").at(-1) : protocol
+  const handle = protocol.match(/^(http|\/\/)/iu)
+    ? destinationText.split("/").at(-1)
+    : destinationText
 
   if (handle?.match(/(?!^(1|3|bc1|lnbc1))^[0-9a-z_]{3,50}$/iu)) {
     return {

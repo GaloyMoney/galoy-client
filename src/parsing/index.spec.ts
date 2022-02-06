@@ -1,5 +1,9 @@
 import { Network, parsePaymentDestination } from "./index"
 
+beforeAll(() => {
+  jest.setSystemTime(1598110996000) // Aug 22 2020 10:43
+})
+
 const p2pkh = "1KP2uzAZYoNF6U8BkMBRdivLNujwSjtAQV"
 const p2sh = "3J98t1WpEZ73CNmQviecrnyiWrnqRhWNLy"
 const bech32 = "bc1qdx09anw82zhujxzzsn56mruv8qvd33czzy9apt"
@@ -71,7 +75,7 @@ describe("parsePaymentDestination", () => {
   })
 
   describe("OnChain", () => {
-    it.skip("validates bitcoin address mainnet", () => {
+    it("validates bitcoin address mainnet", () => {
       checkOnChain(p2pkh, "mainnet")
       checkOnChain(p2sh, "mainnet")
       checkOnChain(bech32, "mainnet")
@@ -140,7 +144,7 @@ describe("parsePaymentDestination", () => {
     })
   })
 
-  describe.skip("Lightning", () => {
+  describe("Lightning", () => {
     it("validates an opennode invoice", () => {
       const address =
         "LNBC6864270N1P05ZVJJPP5FPEHVLV3DD2R76065R9V0L3N8QV9MFWU9RYHVPJ5XSZ3P4HY734QDZHXYSV89EQYVMZQSNFW3PXCMMRDDPX7MMDYPP8YATWVD5ZQMMWYPQH2EM4WD6ZQVESYQ5YYUN4DE3KSGZ0DEK8J2GCQZPGXQRRSS6LQA5JLLVUGLW5TPSUG4S2TMT5C8FNERR95FUH8HTCSYX52CP3WZSWJ32XJ5GEWYFN7MG293V6JLA9CZ8ZNDHWDHCNNKUL2QKF6PJLSPJ2NL3J"
@@ -178,9 +182,34 @@ describe("parsePaymentDestination", () => {
         network: "mainnet",
         pubKey: "",
       })
+
       expect(valid).toBeTruthy()
       expect(paymentType).toBe("lightning")
       expect(errorMessage).not.toBe("invoice has expired")
+    })
+  })
+
+  describe("IntraLedger handles", () => {
+    it("validates a regular handle", () => {
+      const { valid, paymentType, handle } = parsePaymentDestination({
+        destination: "Nakamoto",
+        network: "mainnet",
+        pubKey: "",
+      })
+      expect(valid).toBeTruthy()
+      expect(paymentType).toBe("intraledger")
+      expect(handle).toBe("Nakamoto")
+    })
+
+    it("validates an http handle", () => {
+      const { valid, paymentType, handle } = parsePaymentDestination({
+        destination: "https://some.where/userName",
+        network: "mainnet",
+        pubKey: "",
+      })
+      expect(valid).toBeTruthy()
+      expect(paymentType).toBe("intraledger")
+      expect(handle).toBe("userName")
     })
   })
 })
