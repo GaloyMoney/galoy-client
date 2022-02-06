@@ -4,6 +4,9 @@ const transactionListFragment = gql`
   fragment TransactionList on TransactionConnection {
     pageInfo {
       hasNextPage
+      hasPreviousPage
+      startCursor
+      endCursor
     }
     edges {
       cursor

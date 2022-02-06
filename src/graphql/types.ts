@@ -55,57 +55,57 @@ export namespace GaloyGQL {
   }
 
   export type Account = {
-    csvTransactions: Scalars["String"]
-    defaultWalletId: Scalars["WalletId"]
-    id: Scalars["ID"]
-    wallets: Array<Wallet>
+    readonly csvTransactions: Scalars["String"]
+    readonly defaultWalletId: Scalars["WalletId"]
+    readonly id: Scalars["ID"]
+    readonly wallets: ReadonlyArray<Wallet>
   }
 
   export type AccountCsvTransactionsArgs = {
-    walletIds: Array<Scalars["WalletId"]>
+    walletIds: ReadonlyArray<Scalars["WalletId"]>
   }
 
   export type AccountApiKey = {
-    __typename?: "AccountApiKey"
-    expireAt: Scalars["Timestamp"]
-    key: Scalars["String"]
-    label: Scalars["AccountApiKeyLabel"]
-    secret: Scalars["String"]
+    readonly __typename?: "AccountApiKey"
+    readonly expireAt: Scalars["Timestamp"]
+    readonly key: Scalars["String"]
+    readonly label: Scalars["AccountApiKeyLabel"]
+    readonly secret: Scalars["String"]
   }
 
   export type AccountApiKeyCreateInput = {
-    expireAt: Scalars["Timestamp"]
-    label?: InputMaybe<Scalars["AccountApiKeyLabel"]>
+    readonly expireAt: Scalars["Timestamp"]
+    readonly label?: InputMaybe<Scalars["AccountApiKeyLabel"]>
   }
 
   export type AccountApiKeyDisableInput = {
-    label: Scalars["AccountApiKeyLabel"]
+    readonly label: Scalars["AccountApiKeyLabel"]
   }
 
   export type AccountApiKeyHashed = {
-    __typename?: "AccountApiKeyHashed"
-    expireAt: Scalars["Timestamp"]
-    label: Scalars["AccountApiKeyLabel"]
+    readonly __typename?: "AccountApiKeyHashed"
+    readonly expireAt: Scalars["Timestamp"]
+    readonly label: Scalars["AccountApiKeyLabel"]
   }
 
   export type AccountApiKeyPayload = {
-    __typename?: "AccountApiKeyPayload"
-    accountApiKey?: Maybe<AccountApiKey>
-    errors: Array<Error>
+    readonly __typename?: "AccountApiKeyPayload"
+    readonly accountApiKey?: Maybe<AccountApiKey>
+    readonly errors: ReadonlyArray<Error>
   }
 
   export type AuthTokenPayload = {
-    __typename?: "AuthTokenPayload"
-    authToken?: Maybe<Scalars["AuthToken"]>
-    errors: Array<Error>
+    readonly __typename?: "AuthTokenPayload"
+    readonly authToken?: Maybe<Scalars["AuthToken"]>
+    readonly errors: ReadonlyArray<Error>
   }
 
   export type BtcWallet = Wallet & {
-    __typename?: "BTCWallet"
-    balance: Scalars["SignedAmount"]
-    id: Scalars["ID"]
-    transactions?: Maybe<TransactionConnection>
-    walletCurrency: WalletCurrency
+    readonly __typename?: "BTCWallet"
+    readonly balance: Scalars["SignedAmount"]
+    readonly id: Scalars["ID"]
+    readonly transactions?: Maybe<TransactionConnection>
+    readonly walletCurrency: WalletCurrency
   }
 
   export type BtcWalletTransactionsArgs = {
@@ -116,72 +116,72 @@ export namespace GaloyGQL {
   }
 
   export type BuildInformation = {
-    __typename?: "BuildInformation"
-    buildTime?: Maybe<Scalars["Timestamp"]>
-    commitHash?: Maybe<Scalars["String"]>
-    helmRevision?: Maybe<Scalars["Int"]>
+    readonly __typename?: "BuildInformation"
+    readonly buildTime?: Maybe<Scalars["Timestamp"]>
+    readonly commitHash?: Maybe<Scalars["String"]>
+    readonly helmRevision?: Maybe<Scalars["Int"]>
   }
 
   export type CaptchaCreateChallengePayload = {
-    __typename?: "CaptchaCreateChallengePayload"
-    errors: Array<Error>
-    result?: Maybe<CaptchaCreateChallengeResult>
+    readonly __typename?: "CaptchaCreateChallengePayload"
+    readonly errors: ReadonlyArray<Error>
+    readonly result?: Maybe<CaptchaCreateChallengeResult>
   }
 
   export type CaptchaCreateChallengeResult = {
-    __typename?: "CaptchaCreateChallengeResult"
-    challengeCode: Scalars["String"]
-    failbackMode: Scalars["Boolean"]
-    id: Scalars["String"]
-    newCaptcha: Scalars["Boolean"]
+    readonly __typename?: "CaptchaCreateChallengeResult"
+    readonly challengeCode: Scalars["String"]
+    readonly failbackMode: Scalars["Boolean"]
+    readonly id: Scalars["String"]
+    readonly newCaptcha: Scalars["Boolean"]
   }
 
   export type CaptchaRequestAuthCodeInput = {
-    challengeCode: Scalars["String"]
-    phone: Scalars["Phone"]
-    secCode: Scalars["String"]
-    validationCode: Scalars["String"]
+    readonly challengeCode: Scalars["String"]
+    readonly phone: Scalars["Phone"]
+    readonly secCode: Scalars["String"]
+    readonly validationCode: Scalars["String"]
   }
 
   export type ConsumerAccount = Account & {
-    __typename?: "ConsumerAccount"
+    readonly __typename?: "ConsumerAccount"
     /** return CSV stream, base64 encoded, of the list of transactions in the wallet */
-    csvTransactions: Scalars["String"]
-    defaultWalletId: Scalars["WalletId"]
-    id: Scalars["ID"]
-    wallets: Array<Wallet>
+    readonly csvTransactions: Scalars["String"]
+    readonly defaultWalletId: Scalars["WalletId"]
+    readonly id: Scalars["ID"]
+    readonly wallets: ReadonlyArray<Wallet>
   }
 
   export type ConsumerAccountCsvTransactionsArgs = {
-    walletIds: Array<Scalars["WalletId"]>
+    walletIds: ReadonlyArray<Scalars["WalletId"]>
   }
 
   export type Coordinates = {
-    __typename?: "Coordinates"
-    latitude: Scalars["Float"]
-    longitude: Scalars["Float"]
+    readonly __typename?: "Coordinates"
+    readonly latitude: Scalars["Float"]
+    readonly longitude: Scalars["Float"]
   }
 
   export type DeviceNotificationTokenCreateInput = {
-    deviceToken: Scalars["String"]
+    readonly deviceToken: Scalars["String"]
   }
 
   export type Error = {
-    message: Scalars["String"]
-    path?: Maybe<Array<Maybe<Scalars["String"]>>>
+    readonly message: Scalars["String"]
+    readonly path?: Maybe<ReadonlyArray<Maybe<Scalars["String"]>>>
   }
 
   export type ExchangeCurrencyUnit = "BTCSAT" | "USDCENT"
 
   /** Provides global settings for the application which might have an impact for the user. */
   export type Globals = {
-    __typename?: "Globals"
-    buildInformation: BuildInformation
+    readonly __typename?: "Globals"
+    readonly buildInformation: BuildInformation
     /**
      * A list of public keys for the running lightning nodes.
      * This can be used to know if an invoice belongs to one of our nodes.
      */
-    nodesIds: Array<Scalars["String"]>
+    readonly nodesIds: ReadonlyArray<Scalars["String"]>
   }
 
   export type InitiationVia =
@@ -190,26 +190,26 @@ export namespace GaloyGQL {
     | InitiationViaOnChain
 
   export type InitiationViaIntraLedger = {
-    __typename?: "InitiationViaIntraLedger"
-    counterPartyUsername?: Maybe<Scalars["Username"]>
-    counterPartyWalletId?: Maybe<Scalars["WalletId"]>
+    readonly __typename?: "InitiationViaIntraLedger"
+    readonly counterPartyUsername?: Maybe<Scalars["Username"]>
+    readonly counterPartyWalletId?: Maybe<Scalars["WalletId"]>
   }
 
   export type InitiationViaLn = {
-    __typename?: "InitiationViaLn"
-    paymentHash: Scalars["PaymentHash"]
+    readonly __typename?: "InitiationViaLn"
+    readonly paymentHash: Scalars["PaymentHash"]
   }
 
   export type InitiationViaOnChain = {
-    __typename?: "InitiationViaOnChain"
-    address: Scalars["OnChainAddress"]
+    readonly __typename?: "InitiationViaOnChain"
+    readonly address: Scalars["OnChainAddress"]
   }
 
   export type InputError = Error & {
-    __typename?: "InputError"
-    code: InputErrorCode
-    message: Scalars["String"]
-    path?: Maybe<Array<Maybe<Scalars["String"]>>>
+    readonly __typename?: "InputError"
+    readonly code: InputErrorCode
+    readonly message: Scalars["String"]
+    readonly path?: Maybe<ReadonlyArray<Maybe<Scalars["String"]>>>
   }
 
   export type InputErrorCode =
@@ -219,163 +219,163 @@ export namespace GaloyGQL {
     | "VALUE_TOO_SHORT"
 
   export type IntraLedgerPaymentSendInput = {
-    amount: Scalars["SatAmount"]
-    memo?: InputMaybe<Scalars["Memo"]>
-    recipientWalletId: Scalars["WalletId"]
-    walletId: Scalars["WalletId"]
+    readonly amount: Scalars["SatAmount"]
+    readonly memo?: InputMaybe<Scalars["Memo"]>
+    readonly recipientWalletId: Scalars["WalletId"]
+    readonly walletId: Scalars["WalletId"]
   }
 
   export type IntraLedgerUpdate = {
-    __typename?: "IntraLedgerUpdate"
-    amount: Scalars["SatAmount"]
-    txNotificationType: TxNotificationType
-    usdPerSat: Scalars["Float"]
-    walletId: Scalars["WalletId"]
+    readonly __typename?: "IntraLedgerUpdate"
+    readonly amount: Scalars["SatAmount"]
+    readonly txNotificationType: TxNotificationType
+    readonly usdPerSat: Scalars["Float"]
+    readonly walletId: Scalars["WalletId"]
   }
 
   export type InvoicePaymentStatus = "PAID" | "PENDING"
 
   export type LnInvoice = {
-    __typename?: "LnInvoice"
-    paymentHash: Scalars["PaymentHash"]
-    paymentRequest: Scalars["LnPaymentRequest"]
-    paymentSecret: Scalars["LnPaymentSecret"]
-    satoshis?: Maybe<Scalars["SatAmount"]>
+    readonly __typename?: "LnInvoice"
+    readonly paymentHash: Scalars["PaymentHash"]
+    readonly paymentRequest: Scalars["LnPaymentRequest"]
+    readonly paymentSecret: Scalars["LnPaymentSecret"]
+    readonly satoshis?: Maybe<Scalars["SatAmount"]>
   }
 
   export type LnInvoiceCreateInput = {
-    amount: Scalars["SatAmount"]
-    memo?: InputMaybe<Scalars["Memo"]>
-    walletId: Scalars["WalletId"]
+    readonly amount: Scalars["SatAmount"]
+    readonly memo?: InputMaybe<Scalars["Memo"]>
+    readonly walletId: Scalars["WalletId"]
   }
 
   export type LnInvoiceCreateOnBehalfOfRecipientInput = {
-    amount: Scalars["SatAmount"]
-    descriptionHash?: InputMaybe<Scalars["Hex32Bytes"]>
-    memo?: InputMaybe<Scalars["Memo"]>
-    recipientWalletId: Scalars["WalletId"]
+    readonly amount: Scalars["SatAmount"]
+    readonly descriptionHash?: InputMaybe<Scalars["Hex32Bytes"]>
+    readonly memo?: InputMaybe<Scalars["Memo"]>
+    readonly recipientWalletId: Scalars["WalletId"]
   }
 
   export type LnInvoiceFeeProbeInput = {
-    paymentRequest: Scalars["LnPaymentRequest"]
-    walletId: Scalars["WalletId"]
+    readonly paymentRequest: Scalars["LnPaymentRequest"]
+    readonly walletId: Scalars["WalletId"]
   }
 
   export type LnInvoicePayload = {
-    __typename?: "LnInvoicePayload"
-    errors: Array<Error>
-    invoice?: Maybe<LnInvoice>
+    readonly __typename?: "LnInvoicePayload"
+    readonly errors: ReadonlyArray<Error>
+    readonly invoice?: Maybe<LnInvoice>
   }
 
   export type LnInvoicePaymentInput = {
-    memo?: InputMaybe<Scalars["Memo"]>
-    paymentRequest: Scalars["LnPaymentRequest"]
-    walletId: Scalars["WalletId"]
+    readonly memo?: InputMaybe<Scalars["Memo"]>
+    readonly paymentRequest: Scalars["LnPaymentRequest"]
+    readonly walletId: Scalars["WalletId"]
   }
 
   export type LnInvoicePaymentStatusInput = {
-    paymentRequest: Scalars["LnPaymentRequest"]
+    readonly paymentRequest: Scalars["LnPaymentRequest"]
   }
 
   export type LnInvoicePaymentStatusPayload = {
-    __typename?: "LnInvoicePaymentStatusPayload"
-    errors: Array<Error>
-    status?: Maybe<InvoicePaymentStatus>
+    readonly __typename?: "LnInvoicePaymentStatusPayload"
+    readonly errors: ReadonlyArray<Error>
+    readonly status?: Maybe<InvoicePaymentStatus>
   }
 
   export type LnNoAmountInvoice = {
-    __typename?: "LnNoAmountInvoice"
-    paymentHash: Scalars["PaymentHash"]
-    paymentRequest: Scalars["LnPaymentRequest"]
-    paymentSecret: Scalars["LnPaymentSecret"]
+    readonly __typename?: "LnNoAmountInvoice"
+    readonly paymentHash: Scalars["PaymentHash"]
+    readonly paymentRequest: Scalars["LnPaymentRequest"]
+    readonly paymentSecret: Scalars["LnPaymentSecret"]
   }
 
   export type LnNoAmountInvoiceCreateInput = {
-    memo?: InputMaybe<Scalars["Memo"]>
-    walletId: Scalars["WalletId"]
+    readonly memo?: InputMaybe<Scalars["Memo"]>
+    readonly walletId: Scalars["WalletId"]
   }
 
   export type LnNoAmountInvoiceCreateOnBehalfOfRecipientInput = {
-    memo?: InputMaybe<Scalars["Memo"]>
-    recipientWalletId: Scalars["WalletId"]
+    readonly memo?: InputMaybe<Scalars["Memo"]>
+    readonly recipientWalletId: Scalars["WalletId"]
   }
 
   export type LnNoAmountInvoiceFeeProbeInput = {
-    amount: Scalars["SatAmount"]
-    paymentRequest: Scalars["LnPaymentRequest"]
-    walletId: Scalars["WalletId"]
+    readonly amount: Scalars["SatAmount"]
+    readonly paymentRequest: Scalars["LnPaymentRequest"]
+    readonly walletId: Scalars["WalletId"]
   }
 
   export type LnNoAmountInvoicePayload = {
-    __typename?: "LnNoAmountInvoicePayload"
-    errors: Array<Error>
-    invoice?: Maybe<LnNoAmountInvoice>
+    readonly __typename?: "LnNoAmountInvoicePayload"
+    readonly errors: ReadonlyArray<Error>
+    readonly invoice?: Maybe<LnNoAmountInvoice>
   }
 
   export type LnNoAmountInvoicePaymentInput = {
-    amount: Scalars["SatAmount"]
-    memo?: InputMaybe<Scalars["Memo"]>
-    paymentRequest: Scalars["LnPaymentRequest"]
-    walletId: Scalars["WalletId"]
+    readonly amount: Scalars["SatAmount"]
+    readonly memo?: InputMaybe<Scalars["Memo"]>
+    readonly paymentRequest: Scalars["LnPaymentRequest"]
+    readonly walletId: Scalars["WalletId"]
   }
 
   export type LnUpdate = {
-    __typename?: "LnUpdate"
-    paymentHash: Scalars["PaymentHash"]
-    status: InvoicePaymentStatus
-    walletId: Scalars["WalletId"]
+    readonly __typename?: "LnUpdate"
+    readonly paymentHash: Scalars["PaymentHash"]
+    readonly status: InvoicePaymentStatus
+    readonly walletId: Scalars["WalletId"]
   }
 
   export type MapInfo = {
-    __typename?: "MapInfo"
-    coordinates: Coordinates
-    title: Scalars["String"]
+    readonly __typename?: "MapInfo"
+    readonly coordinates: Coordinates
+    readonly title: Scalars["String"]
   }
 
   export type MapMarker = {
-    __typename?: "MapMarker"
-    mapInfo: MapInfo
-    username?: Maybe<Scalars["Username"]>
+    readonly __typename?: "MapMarker"
+    readonly mapInfo: MapInfo
+    readonly username?: Maybe<Scalars["Username"]>
   }
 
   export type MobileVersions = {
-    __typename?: "MobileVersions"
-    currentSupported: Scalars["Int"]
-    minSupported: Scalars["Int"]
-    platform: Scalars["String"]
+    readonly __typename?: "MobileVersions"
+    readonly currentSupported: Scalars["Int"]
+    readonly minSupported: Scalars["Int"]
+    readonly platform: Scalars["String"]
   }
 
   export type Mutation = {
-    __typename?: "Mutation"
-    accountApiKeyCreate: AccountApiKeyPayload
-    accountApiKeyDisable: SuccessPayload
-    captchaCreateChallenge: CaptchaCreateChallengePayload
-    captchaRequestAuthCode: SuccessPayload
-    deviceNotificationTokenCreate: SuccessPayload
-    intraLedgerPaymentSend: PaymentSendPayload
-    lnInvoiceCreate: LnInvoicePayload
-    lnInvoiceCreateOnBehalfOfRecipient: LnInvoicePayload
-    lnInvoiceFeeProbe: SatAmountPayload
-    lnInvoicePaymentSend: PaymentSendPayload
-    lnNoAmountInvoiceCreate: LnNoAmountInvoicePayload
-    lnNoAmountInvoiceCreateOnBehalfOfRecipient: LnNoAmountInvoicePayload
-    lnNoAmountInvoiceFeeProbe: SatAmountPayload
-    lnNoAmountInvoicePaymentSend: PaymentSendPayload
-    onChainAddressCreate: OnChainAddressPayload
-    onChainAddressCurrent: OnChainAddressPayload
-    onChainPaymentSend: PaymentSendPayload
-    onChainPaymentSendAll: PaymentSendPayload
-    twoFADelete: SuccessPayload
-    twoFAGenerate: TwoFaGeneratePayload
-    twoFASave: SuccessPayload
+    readonly __typename?: "Mutation"
+    readonly accountApiKeyCreate: AccountApiKeyPayload
+    readonly accountApiKeyDisable: SuccessPayload
+    readonly captchaCreateChallenge: CaptchaCreateChallengePayload
+    readonly captchaRequestAuthCode: SuccessPayload
+    readonly deviceNotificationTokenCreate: SuccessPayload
+    readonly intraLedgerPaymentSend: PaymentSendPayload
+    readonly lnInvoiceCreate: LnInvoicePayload
+    readonly lnInvoiceCreateOnBehalfOfRecipient: LnInvoicePayload
+    readonly lnInvoiceFeeProbe: SatAmountPayload
+    readonly lnInvoicePaymentSend: PaymentSendPayload
+    readonly lnNoAmountInvoiceCreate: LnNoAmountInvoicePayload
+    readonly lnNoAmountInvoiceCreateOnBehalfOfRecipient: LnNoAmountInvoicePayload
+    readonly lnNoAmountInvoiceFeeProbe: SatAmountPayload
+    readonly lnNoAmountInvoicePaymentSend: PaymentSendPayload
+    readonly onChainAddressCreate: OnChainAddressPayload
+    readonly onChainAddressCurrent: OnChainAddressPayload
+    readonly onChainPaymentSend: PaymentSendPayload
+    readonly onChainPaymentSendAll: PaymentSendPayload
+    readonly twoFADelete: SuccessPayload
+    readonly twoFAGenerate: TwoFaGeneratePayload
+    readonly twoFASave: SuccessPayload
     /** @deprecated will be moved to AccountContact */
-    userContactUpdateAlias: UserContactUpdateAliasPayload
-    userLogin: AuthTokenPayload
-    userQuizQuestionUpdateCompleted: UserQuizQuestionUpdateCompletedPayload
-    userRequestAuthCode: SuccessPayload
-    userUpdateLanguage: UserUpdateLanguagePayload
+    readonly userContactUpdateAlias: UserContactUpdateAliasPayload
+    readonly userLogin: AuthTokenPayload
+    readonly userQuizQuestionUpdateCompleted: UserQuizQuestionUpdateCompletedPayload
+    readonly userRequestAuthCode: SuccessPayload
+    readonly userUpdateLanguage: UserUpdateLanguagePayload
     /** @deprecated Username will be moved to @Handle in Accounts. Also SetUsername should be used instead of UpdateUsername to reflect the idempotency of Handles */
-    userUpdateUsername: UserUpdateUsernamePayload
+    readonly userUpdateUsername: UserUpdateUsernamePayload
   }
 
   export type MutationAccountApiKeyCreateArgs = {
@@ -479,74 +479,74 @@ export namespace GaloyGQL {
   }
 
   export type MyUpdatesPayload = {
-    __typename?: "MyUpdatesPayload"
-    errors: Array<Error>
-    me?: Maybe<User>
-    update?: Maybe<UserUpdate>
+    readonly __typename?: "MyUpdatesPayload"
+    readonly errors: ReadonlyArray<Error>
+    readonly me?: Maybe<User>
+    readonly update?: Maybe<UserUpdate>
   }
 
   export type OnChainAddressCreateInput = {
-    walletId: Scalars["WalletId"]
+    readonly walletId: Scalars["WalletId"]
   }
 
   export type OnChainAddressCurrentInput = {
-    walletId: Scalars["WalletId"]
+    readonly walletId: Scalars["WalletId"]
   }
 
   export type OnChainAddressPayload = {
-    __typename?: "OnChainAddressPayload"
-    address?: Maybe<Scalars["OnChainAddress"]>
-    errors: Array<Error>
+    readonly __typename?: "OnChainAddressPayload"
+    readonly address?: Maybe<Scalars["OnChainAddress"]>
+    readonly errors: ReadonlyArray<Error>
   }
 
   export type OnChainPaymentSendAllInput = {
-    address: Scalars["OnChainAddress"]
-    memo?: InputMaybe<Scalars["Memo"]>
-    targetConfirmations?: InputMaybe<Scalars["TargetConfirmations"]>
-    walletId: Scalars["WalletId"]
+    readonly address: Scalars["OnChainAddress"]
+    readonly memo?: InputMaybe<Scalars["Memo"]>
+    readonly targetConfirmations?: InputMaybe<Scalars["TargetConfirmations"]>
+    readonly walletId: Scalars["WalletId"]
   }
 
   export type OnChainPaymentSendInput = {
-    address: Scalars["OnChainAddress"]
-    amount: Scalars["SatAmount"]
-    memo?: InputMaybe<Scalars["Memo"]>
-    targetConfirmations?: InputMaybe<Scalars["TargetConfirmations"]>
-    walletId: Scalars["WalletId"]
+    readonly address: Scalars["OnChainAddress"]
+    readonly amount: Scalars["SatAmount"]
+    readonly memo?: InputMaybe<Scalars["Memo"]>
+    readonly targetConfirmations?: InputMaybe<Scalars["TargetConfirmations"]>
+    readonly walletId: Scalars["WalletId"]
   }
 
   export type OnChainTxFee = {
-    __typename?: "OnChainTxFee"
-    amount: Scalars["SatAmount"]
-    targetConfirmations: Scalars["TargetConfirmations"]
+    readonly __typename?: "OnChainTxFee"
+    readonly amount: Scalars["SatAmount"]
+    readonly targetConfirmations: Scalars["TargetConfirmations"]
   }
 
   export type OnChainUpdate = {
-    __typename?: "OnChainUpdate"
-    amount: Scalars["SatAmount"]
-    txHash: Scalars["OnChainTxHash"]
-    txNotificationType: TxNotificationType
-    usdPerSat: Scalars["Float"]
-    walletId: Scalars["WalletId"]
+    readonly __typename?: "OnChainUpdate"
+    readonly amount: Scalars["SatAmount"]
+    readonly txHash: Scalars["OnChainTxHash"]
+    readonly txNotificationType: TxNotificationType
+    readonly usdPerSat: Scalars["Float"]
+    readonly walletId: Scalars["WalletId"]
   }
 
   /** Information about pagination in a connection. */
   export type PageInfo = {
-    __typename?: "PageInfo"
+    readonly __typename?: "PageInfo"
     /** When paginating forwards, the cursor to continue. */
-    endCursor?: Maybe<Scalars["String"]>
+    readonly endCursor?: Maybe<Scalars["String"]>
     /** When paginating forwards, are there more items? */
-    hasNextPage: Scalars["Boolean"]
+    readonly hasNextPage: Scalars["Boolean"]
     /** When paginating backwards, are there more items? */
-    hasPreviousPage: Scalars["Boolean"]
+    readonly hasPreviousPage: Scalars["Boolean"]
     /** When paginating backwards, the cursor to continue. */
-    startCursor?: Maybe<Scalars["String"]>
+    readonly startCursor?: Maybe<Scalars["String"]>
   }
 
   export type PaymentError = Error & {
-    __typename?: "PaymentError"
-    code: PaymentErrorCode
-    message: Scalars["String"]
-    path?: Maybe<Array<Maybe<Scalars["String"]>>>
+    readonly __typename?: "PaymentError"
+    readonly code: PaymentErrorCode
+    readonly message: Scalars["String"]
+    readonly path?: Maybe<ReadonlyArray<Maybe<Scalars["String"]>>>
   }
 
   export type PaymentErrorCode =
@@ -558,20 +558,20 @@ export namespace GaloyGQL {
     | "NO_ROUTE"
 
   export type PaymentSendPayload = {
-    __typename?: "PaymentSendPayload"
-    errors: Array<Error>
-    status?: Maybe<PaymentSendResult>
+    readonly __typename?: "PaymentSendPayload"
+    readonly errors: ReadonlyArray<Error>
+    readonly status?: Maybe<PaymentSendResult>
   }
 
   export type PaymentSendResult = "ALREADY_PAID" | "FAILURE" | "PENDING" | "SUCCESS"
 
   /** Price amount expressed in base/offset. To calculate, use: `base / 10^offset` */
   export type Price = {
-    __typename?: "Price"
-    base: Scalars["SafeInt"]
-    currencyUnit: ExchangeCurrencyUnit
-    formattedAmount: Scalars["String"]
-    offset: Scalars["Int"]
+    readonly __typename?: "Price"
+    readonly base: Scalars["SafeInt"]
+    readonly currencyUnit: ExchangeCurrencyUnit
+    readonly formattedAmount: Scalars["String"]
+    readonly offset: Scalars["Int"]
   }
 
   /** The range for the X axis in the BTC price graph */
@@ -583,38 +583,38 @@ export namespace GaloyGQL {
     | "ONE_YEAR"
 
   export type PriceInput = {
-    amount: Scalars["SatAmount"]
-    amountCurrencyUnit: ExchangeCurrencyUnit
-    priceCurrencyUnit: ExchangeCurrencyUnit
+    readonly amount: Scalars["SatAmount"]
+    readonly amountCurrencyUnit: ExchangeCurrencyUnit
+    readonly priceCurrencyUnit: ExchangeCurrencyUnit
   }
 
   export type PricePayload = {
-    __typename?: "PricePayload"
-    errors: Array<Error>
-    price?: Maybe<Price>
+    readonly __typename?: "PricePayload"
+    readonly errors: ReadonlyArray<Error>
+    readonly price?: Maybe<Price>
   }
 
   export type PricePoint = {
-    __typename?: "PricePoint"
-    price: Price
+    readonly __typename?: "PricePoint"
+    readonly price: Price
     /** Unix timesamp (number of seconds elapsed since January 1, 1970 00:00:00 UTC) */
-    timestamp: Scalars["Timestamp"]
+    readonly timestamp: Scalars["Timestamp"]
   }
 
   export type Query = {
-    __typename?: "Query"
-    accountApiKeys?: Maybe<Array<Maybe<AccountApiKeyHashed>>>
-    btcPrice?: Maybe<Price>
-    btcPriceList?: Maybe<Array<Maybe<PricePoint>>>
-    businessMapMarkers?: Maybe<Array<Maybe<MapMarker>>>
-    globals?: Maybe<Globals>
-    me?: Maybe<User>
-    mobileVersions?: Maybe<Array<Maybe<MobileVersions>>>
-    onChainTxFee: OnChainTxFee
-    quizQuestions?: Maybe<Array<Maybe<QuizQuestion>>>
+    readonly __typename?: "Query"
+    readonly accountApiKeys?: Maybe<ReadonlyArray<Maybe<AccountApiKeyHashed>>>
+    readonly btcPrice?: Maybe<Price>
+    readonly btcPriceList?: Maybe<ReadonlyArray<Maybe<PricePoint>>>
+    readonly businessMapMarkers?: Maybe<ReadonlyArray<Maybe<MapMarker>>>
+    readonly globals?: Maybe<Globals>
+    readonly me?: Maybe<User>
+    readonly mobileVersions?: Maybe<ReadonlyArray<Maybe<MobileVersions>>>
+    readonly onChainTxFee: OnChainTxFee
+    readonly quizQuestions?: Maybe<ReadonlyArray<Maybe<QuizQuestion>>>
     /** @deprecated will be migrated to AccountDefaultWalletId */
-    userDefaultWalletId: Scalars["WalletId"]
-    usernameAvailable?: Maybe<Scalars["Boolean"]>
+    readonly userDefaultWalletId: Scalars["WalletId"]
+    readonly usernameAvailable?: Maybe<Scalars["Boolean"]>
   }
 
   export type QueryBtcPriceListArgs = {
@@ -637,16 +637,16 @@ export namespace GaloyGQL {
   }
 
   export type QuizQuestion = {
-    __typename?: "QuizQuestion"
+    readonly __typename?: "QuizQuestion"
     /** The earn reward in Satoshis for the quiz question */
-    earnAmount: Scalars["SatAmount"]
-    id: Scalars["ID"]
+    readonly earnAmount: Scalars["SatAmount"]
+    readonly id: Scalars["ID"]
   }
 
   export type SatAmountPayload = {
-    __typename?: "SatAmountPayload"
-    amount?: Maybe<Scalars["SatAmount"]>
-    errors: Array<Error>
+    readonly __typename?: "SatAmountPayload"
+    readonly amount?: Maybe<Scalars["SatAmount"]>
+    readonly errors: ReadonlyArray<Error>
   }
 
   export type SettlementVia =
@@ -655,29 +655,29 @@ export namespace GaloyGQL {
     | SettlementViaOnChain
 
   export type SettlementViaIntraLedger = {
-    __typename?: "SettlementViaIntraLedger"
+    readonly __typename?: "SettlementViaIntraLedger"
     /** Settlement destination: Could be null if the payee does not have a username */
-    counterPartyUsername?: Maybe<Scalars["Username"]>
-    counterPartyWalletId?: Maybe<Scalars["WalletId"]>
+    readonly counterPartyUsername?: Maybe<Scalars["Username"]>
+    readonly counterPartyWalletId?: Maybe<Scalars["WalletId"]>
   }
 
   export type SettlementViaLn = {
-    __typename?: "SettlementViaLn"
+    readonly __typename?: "SettlementViaLn"
     /** @deprecated Shifting property to 'preImage' to improve granularity of the LnPaymentSecret type */
-    paymentSecret?: Maybe<Scalars["LnPaymentSecret"]>
-    preImage?: Maybe<Scalars["LnPaymentPreImage"]>
+    readonly paymentSecret?: Maybe<Scalars["LnPaymentSecret"]>
+    readonly preImage?: Maybe<Scalars["LnPaymentPreImage"]>
   }
 
   export type SettlementViaOnChain = {
-    __typename?: "SettlementViaOnChain"
-    transactionHash: Scalars["OnChainTxHash"]
+    readonly __typename?: "SettlementViaOnChain"
+    readonly transactionHash: Scalars["OnChainTxHash"]
   }
 
   export type Subscription = {
-    __typename?: "Subscription"
-    lnInvoicePaymentStatus: LnInvoicePaymentStatusPayload
-    myUpdates: MyUpdatesPayload
-    price: PricePayload
+    readonly __typename?: "Subscription"
+    readonly lnInvoicePaymentStatus: LnInvoicePaymentStatusPayload
+    readonly myUpdates: MyUpdatesPayload
+    readonly price: PricePayload
   }
 
   export type SubscriptionLnInvoicePaymentStatusArgs = {
@@ -689,9 +689,9 @@ export namespace GaloyGQL {
   }
 
   export type SuccessPayload = {
-    __typename?: "SuccessPayload"
-    errors: Array<Error>
-    success?: Maybe<Scalars["Boolean"]>
+    readonly __typename?: "SuccessPayload"
+    readonly errors: ReadonlyArray<Error>
+    readonly success?: Maybe<Scalars["Boolean"]>
   }
 
   /**
@@ -702,60 +702,60 @@ export namespace GaloyGQL {
    * or with lightning but settled intraledger.
    */
   export type Transaction = {
-    __typename?: "Transaction"
-    createdAt: Scalars["Timestamp"]
-    direction: TxDirection
-    id: Scalars["ID"]
+    readonly __typename?: "Transaction"
+    readonly createdAt: Scalars["Timestamp"]
+    readonly direction: TxDirection
+    readonly id: Scalars["ID"]
     /** From which protocol the payment has been initiated. */
-    initiationVia: InitiationVia
-    memo?: Maybe<Scalars["Memo"]>
+    readonly initiationVia: InitiationVia
+    readonly memo?: Maybe<Scalars["Memo"]>
     /** Amount of sats sent or received. */
-    settlementAmount: Scalars["SatAmount"]
-    settlementFee: Scalars["SatAmount"]
+    readonly settlementAmount: Scalars["SatAmount"]
+    readonly settlementFee: Scalars["SatAmount"]
     /** Price in USDCENT/SATS at time of settlement. */
-    settlementPrice: Price
+    readonly settlementPrice: Price
     /** To which protocol the payment has settled on. */
-    settlementVia: SettlementVia
-    status: TxStatus
+    readonly settlementVia: SettlementVia
+    readonly status: TxStatus
   }
 
   /** A connection to a list of items. */
   export type TransactionConnection = {
-    __typename?: "TransactionConnection"
+    readonly __typename?: "TransactionConnection"
     /** A list of edges. */
-    edges?: Maybe<Array<Maybe<TransactionEdge>>>
+    readonly edges?: Maybe<ReadonlyArray<TransactionEdge>>
     /** Information to aid in pagination. */
-    pageInfo: PageInfo
+    readonly pageInfo: PageInfo
   }
 
   /** An edge in a connection. */
   export type TransactionEdge = {
-    __typename?: "TransactionEdge"
+    readonly __typename?: "TransactionEdge"
     /** A cursor for use in pagination */
-    cursor: Scalars["String"]
+    readonly cursor: Scalars["String"]
     /** The item at the end of the edge */
-    node?: Maybe<Transaction>
+    readonly node: Transaction
   }
 
   export type TwoFaDeleteInput = {
-    token: Scalars["String"]
+    readonly token: Scalars["String"]
   }
 
   export type TwoFaGeneratePayload = {
-    __typename?: "TwoFAGeneratePayload"
-    errors: Array<Error>
-    twoFASecret?: Maybe<TwoFaSecret>
+    readonly __typename?: "TwoFAGeneratePayload"
+    readonly errors: ReadonlyArray<Error>
+    readonly twoFASecret?: Maybe<TwoFaSecret>
   }
 
   export type TwoFaSaveInput = {
-    secret: Scalars["String"]
-    token: Scalars["String"]
+    readonly secret: Scalars["String"]
+    readonly token: Scalars["String"]
   }
 
   export type TwoFaSecret = {
-    __typename?: "TwoFASecret"
-    secret: Scalars["String"]
-    uri: Scalars["String"]
+    readonly __typename?: "TwoFASecret"
+    readonly secret: Scalars["String"]
+    readonly uri: Scalars["String"]
   }
 
   export type TxDirection = "RECEIVE" | "SEND"
@@ -771,36 +771,36 @@ export namespace GaloyGQL {
   export type TxStatus = "FAILURE" | "PENDING" | "SUCCESS"
 
   export type User = {
-    __typename?: "User"
+    readonly __typename?: "User"
     /**
      * Get single contact details.
      * Can include the transactions associated with the contact.
      */
-    contactByUsername: UserContact
+    readonly contactByUsername: UserContact
     /**
      * Get full list of contacts.
      * Can include the transactions associated with each contact.
      * @deprecated will be moved to account
      */
-    contacts: Array<UserContact>
-    createdAt: Scalars["Timestamp"]
-    defaultAccount: Account
-    id: Scalars["ID"]
+    readonly contacts: ReadonlyArray<UserContact>
+    readonly createdAt: Scalars["Timestamp"]
+    readonly defaultAccount: Account
+    readonly id: Scalars["ID"]
     /**
      * Preferred language for user.
      * When value is 'default' the intent is to use preferred language from OS settings.
      */
-    language: Scalars["Language"]
+    readonly language: Scalars["Language"]
     /** Phone number with international calling code. */
-    phone: Scalars["Phone"]
+    readonly phone: Scalars["Phone"]
     /** List the quiz questions the user may have completed. */
-    quizQuestions: Array<UserQuizQuestion>
-    twoFAEnabled?: Maybe<Scalars["Boolean"]>
+    readonly quizQuestions: ReadonlyArray<UserQuizQuestion>
+    readonly twoFAEnabled?: Maybe<Scalars["Boolean"]>
     /**
      * Optional immutable user friendly identifier.
      * @deprecated will be moved to @Handle in Account and Wallet
      */
-    username?: Maybe<Scalars["Username"]>
+    readonly username?: Maybe<Scalars["Username"]>
   }
 
   export type UserContactByUsernameArgs = {
@@ -808,18 +808,18 @@ export namespace GaloyGQL {
   }
 
   export type UserContact = {
-    __typename?: "UserContact"
+    readonly __typename?: "UserContact"
     /**
      * Alias the user can set for this contact.
      * Only the user can see the alias attached to their contact.
      */
-    alias?: Maybe<Scalars["ContactAlias"]>
-    id: Scalars["Username"]
+    readonly alias?: Maybe<Scalars["ContactAlias"]>
+    readonly id: Scalars["Username"]
     /** Paginated list of transactions sent to/from this contact. */
-    transactions?: Maybe<TransactionConnection>
-    transactionsCount: Scalars["Int"]
+    readonly transactions?: Maybe<TransactionConnection>
+    readonly transactionsCount: Scalars["Int"]
     /** Actual identifier of the contact. */
-    username: Scalars["Username"]
+    readonly username: Scalars["Username"]
   }
 
   export type UserContactTransactionsArgs = {
@@ -830,72 +830,72 @@ export namespace GaloyGQL {
   }
 
   export type UserContactUpdateAliasInput = {
-    alias: Scalars["ContactAlias"]
-    username: Scalars["Username"]
+    readonly alias: Scalars["ContactAlias"]
+    readonly username: Scalars["Username"]
   }
 
   export type UserContactUpdateAliasPayload = {
-    __typename?: "UserContactUpdateAliasPayload"
-    contact?: Maybe<UserContact>
-    errors: Array<Error>
+    readonly __typename?: "UserContactUpdateAliasPayload"
+    readonly contact?: Maybe<UserContact>
+    readonly errors: ReadonlyArray<Error>
   }
 
   export type UserLoginInput = {
-    code: Scalars["OneTimeAuthCode"]
-    phone: Scalars["Phone"]
+    readonly code: Scalars["OneTimeAuthCode"]
+    readonly phone: Scalars["Phone"]
   }
 
   export type UserQuizQuestion = {
-    __typename?: "UserQuizQuestion"
-    completed: Scalars["Boolean"]
-    question: QuizQuestion
+    readonly __typename?: "UserQuizQuestion"
+    readonly completed: Scalars["Boolean"]
+    readonly question: QuizQuestion
   }
 
   export type UserQuizQuestionUpdateCompletedInput = {
-    id: Scalars["ID"]
+    readonly id: Scalars["ID"]
   }
 
   export type UserQuizQuestionUpdateCompletedPayload = {
-    __typename?: "UserQuizQuestionUpdateCompletedPayload"
-    errors: Array<Error>
-    userQuizQuestion?: Maybe<UserQuizQuestion>
+    readonly __typename?: "UserQuizQuestionUpdateCompletedPayload"
+    readonly errors: ReadonlyArray<Error>
+    readonly userQuizQuestion?: Maybe<UserQuizQuestion>
   }
 
   export type UserRequestAuthCodeInput = {
-    phone: Scalars["Phone"]
+    readonly phone: Scalars["Phone"]
   }
 
   export type UserUpdate = IntraLedgerUpdate | LnUpdate | OnChainUpdate | Price
 
   export type UserUpdateLanguageInput = {
-    language: Scalars["Language"]
+    readonly language: Scalars["Language"]
   }
 
   export type UserUpdateLanguagePayload = {
-    __typename?: "UserUpdateLanguagePayload"
-    errors: Array<Error>
-    user?: Maybe<User>
+    readonly __typename?: "UserUpdateLanguagePayload"
+    readonly errors: ReadonlyArray<Error>
+    readonly user?: Maybe<User>
   }
 
   export type UserUpdateUsernameInput = {
-    username: Scalars["Username"]
+    readonly username: Scalars["Username"]
   }
 
   export type UserUpdateUsernamePayload = {
-    __typename?: "UserUpdateUsernamePayload"
-    errors: Array<Error>
-    user?: Maybe<User>
+    readonly __typename?: "UserUpdateUsernamePayload"
+    readonly errors: ReadonlyArray<Error>
+    readonly user?: Maybe<User>
   }
 
   export type Wallet = {
-    balance: Scalars["SignedAmount"]
-    id: Scalars["ID"]
+    readonly balance: Scalars["SignedAmount"]
+    readonly id: Scalars["ID"]
     /**
      * Transactions are ordered anti-chronogically,
      * ie: the newest transaction will be first
      */
-    transactions?: Maybe<TransactionConnection>
-    walletCurrency: WalletCurrency
+    readonly transactions?: Maybe<TransactionConnection>
+    readonly walletCurrency: WalletCurrency
   }
 
   export type WalletTransactionsArgs = {
@@ -907,81 +907,152 @@ export namespace GaloyGQL {
 
   export type WalletCurrency = "BTC"
 
-  export type TransactionListFragment = {
-    __typename?: "TransactionConnection"
-    pageInfo: { __typename?: "PageInfo"; hasNextPage: boolean }
-    edges?:
-      | Array<
-          | {
-              __typename?: "TransactionEdge"
-              cursor: string
-              node?:
+  export type MeFragment = {
+    readonly __typename?: "User"
+    readonly id: string
+    readonly language: string
+    readonly username?: string | null
+    readonly phone: string
+    readonly defaultAccount: {
+      readonly __typename?: "ConsumerAccount"
+      readonly id: string
+      readonly defaultWalletId: string
+      readonly wallets: ReadonlyArray<{
+        readonly __typename?: "BTCWallet"
+        readonly id: string
+        readonly balance: number
+        readonly walletCurrency: WalletCurrency
+        readonly transactions?: {
+          readonly __typename?: "TransactionConnection"
+          readonly pageInfo: {
+            readonly __typename?: "PageInfo"
+            readonly hasNextPage: boolean
+            readonly hasPreviousPage: boolean
+            readonly startCursor?: string | null
+            readonly endCursor?: string | null
+          }
+          readonly edges?: ReadonlyArray<{
+            readonly __typename?: "TransactionEdge"
+            readonly cursor: string
+            readonly node: {
+              readonly __typename: "Transaction"
+              readonly id: string
+              readonly status: TxStatus
+              readonly direction: TxDirection
+              readonly memo?: string | null
+              readonly createdAt: number
+              readonly settlementAmount: number
+              readonly settlementFee: number
+              readonly settlementPrice: {
+                readonly __typename?: "Price"
+                readonly base: number
+                readonly offset: number
+                readonly currencyUnit: ExchangeCurrencyUnit
+                readonly formattedAmount: string
+              }
+              readonly initiationVia:
                 | {
-                    __typename: "Transaction"
-                    id: string
-                    status: TxStatus
-                    direction: TxDirection
-                    memo?: string | null | undefined
-                    createdAt: number
-                    settlementAmount: number
-                    settlementFee: number
-                    settlementPrice: {
-                      __typename?: "Price"
-                      base: number
-                      offset: number
-                      currencyUnit: ExchangeCurrencyUnit
-                      formattedAmount: string
-                    }
-                    initiationVia:
-                      | {
-                          __typename: "InitiationViaIntraLedger"
-                          counterPartyWalletId?: string | null | undefined
-                          counterPartyUsername?: string | null | undefined
-                        }
-                      | { __typename: "InitiationViaLn"; paymentHash: string }
-                      | { __typename: "InitiationViaOnChain"; address: string }
-                    settlementVia:
-                      | {
-                          __typename: "SettlementViaIntraLedger"
-                          counterPartyWalletId?: string | null | undefined
-                          counterPartyUsername?: string | null | undefined
-                        }
-                      | {
-                          __typename: "SettlementViaLn"
-                          paymentSecret?: string | null | undefined
-                        }
-                      | { __typename: "SettlementViaOnChain"; transactionHash: string }
+                    readonly __typename: "InitiationViaIntraLedger"
+                    readonly counterPartyWalletId?: string | null
+                    readonly counterPartyUsername?: string | null
                   }
-                | null
-                | undefined
+                | { readonly __typename: "InitiationViaLn"; readonly paymentHash: string }
+                | {
+                    readonly __typename: "InitiationViaOnChain"
+                    readonly address: string
+                  }
+              readonly settlementVia:
+                | {
+                    readonly __typename: "SettlementViaIntraLedger"
+                    readonly counterPartyWalletId?: string | null
+                    readonly counterPartyUsername?: string | null
+                  }
+                | {
+                    readonly __typename: "SettlementViaLn"
+                    readonly paymentSecret?: string | null
+                  }
+                | {
+                    readonly __typename: "SettlementViaOnChain"
+                    readonly transactionHash: string
+                  }
             }
-          | null
-          | undefined
-        >
-      | null
-      | undefined
+          }> | null
+        } | null
+      }>
+    }
+  }
+
+  export type TransactionListFragment = {
+    readonly __typename?: "TransactionConnection"
+    readonly pageInfo: {
+      readonly __typename?: "PageInfo"
+      readonly hasNextPage: boolean
+      readonly hasPreviousPage: boolean
+      readonly startCursor?: string | null
+      readonly endCursor?: string | null
+    }
+    readonly edges?: ReadonlyArray<{
+      readonly __typename?: "TransactionEdge"
+      readonly cursor: string
+      readonly node: {
+        readonly __typename: "Transaction"
+        readonly id: string
+        readonly status: TxStatus
+        readonly direction: TxDirection
+        readonly memo?: string | null
+        readonly createdAt: number
+        readonly settlementAmount: number
+        readonly settlementFee: number
+        readonly settlementPrice: {
+          readonly __typename?: "Price"
+          readonly base: number
+          readonly offset: number
+          readonly currencyUnit: ExchangeCurrencyUnit
+          readonly formattedAmount: string
+        }
+        readonly initiationVia:
+          | {
+              readonly __typename: "InitiationViaIntraLedger"
+              readonly counterPartyWalletId?: string | null
+              readonly counterPartyUsername?: string | null
+            }
+          | { readonly __typename: "InitiationViaLn"; readonly paymentHash: string }
+          | { readonly __typename: "InitiationViaOnChain"; readonly address: string }
+        readonly settlementVia:
+          | {
+              readonly __typename: "SettlementViaIntraLedger"
+              readonly counterPartyWalletId?: string | null
+              readonly counterPartyUsername?: string | null
+            }
+          | {
+              readonly __typename: "SettlementViaLn"
+              readonly paymentSecret?: string | null
+            }
+          | {
+              readonly __typename: "SettlementViaOnChain"
+              readonly transactionHash: string
+            }
+      }
+    }> | null
   }
 
   export type CaptchaCreateChallengeMutationVariables = Exact<{ [key: string]: never }>
 
   export type CaptchaCreateChallengeMutation = {
-    __typename?: "Mutation"
-    captchaCreateChallenge: {
-      __typename?: "CaptchaCreateChallengePayload"
-      errors: Array<
-        | { __typename?: "InputError"; message: string }
-        | { __typename?: "PaymentError"; message: string }
+    readonly __typename?: "Mutation"
+    readonly captchaCreateChallenge: {
+      readonly __typename?: "CaptchaCreateChallengePayload"
+      readonly errors: ReadonlyArray<
+        | { readonly __typename?: "InputError"; readonly message: string }
+        | { readonly __typename?: "PaymentError"; readonly message: string }
       >
-      result?:
-        | {
-            __typename?: "CaptchaCreateChallengeResult"
-            id: string
-            challengeCode: string
-            newCaptcha: boolean
-            failbackMode: boolean
-          }
-        | null
-        | undefined
+      readonly result?: {
+        readonly __typename?: "CaptchaCreateChallengeResult"
+        readonly id: string
+        readonly challengeCode: string
+        readonly newCaptcha: boolean
+        readonly failbackMode: boolean
+      } | null
     }
   }
 
@@ -990,13 +1061,13 @@ export namespace GaloyGQL {
   }>
 
   export type CaptchaRequestAuthCodeMutation = {
-    __typename?: "Mutation"
-    captchaRequestAuthCode: {
-      __typename?: "SuccessPayload"
-      success?: boolean | null | undefined
-      errors: Array<
-        | { __typename?: "InputError"; message: string }
-        | { __typename?: "PaymentError"; message: string }
+    readonly __typename?: "Mutation"
+    readonly captchaRequestAuthCode: {
+      readonly __typename?: "SuccessPayload"
+      readonly success?: boolean | null
+      readonly errors: ReadonlyArray<
+        | { readonly __typename?: "InputError"; readonly message: string }
+        | { readonly __typename?: "PaymentError"; readonly message: string }
       >
     }
   }
@@ -1006,13 +1077,13 @@ export namespace GaloyGQL {
   }>
 
   export type DeviceNotificationTokenCreateMutation = {
-    __typename?: "Mutation"
-    deviceNotificationTokenCreate: {
-      __typename?: "SuccessPayload"
-      success?: boolean | null | undefined
-      errors: Array<
-        | { __typename?: "InputError"; message: string }
-        | { __typename?: "PaymentError"; message: string }
+    readonly __typename?: "Mutation"
+    readonly deviceNotificationTokenCreate: {
+      readonly __typename?: "SuccessPayload"
+      readonly success?: boolean | null
+      readonly errors: ReadonlyArray<
+        | { readonly __typename?: "InputError"; readonly message: string }
+        | { readonly __typename?: "PaymentError"; readonly message: string }
       >
     }
   }
@@ -1022,13 +1093,13 @@ export namespace GaloyGQL {
   }>
 
   export type IntraLedgerPaymentSendMutation = {
-    __typename?: "Mutation"
-    intraLedgerPaymentSend: {
-      __typename?: "PaymentSendPayload"
-      status?: PaymentSendResult | null | undefined
-      errors: Array<
-        | { __typename?: "InputError"; message: string }
-        | { __typename?: "PaymentError"; message: string }
+    readonly __typename?: "Mutation"
+    readonly intraLedgerPaymentSend: {
+      readonly __typename?: "PaymentSendPayload"
+      readonly status?: PaymentSendResult | null
+      readonly errors: ReadonlyArray<
+        | { readonly __typename?: "InputError"; readonly message: string }
+        | { readonly __typename?: "PaymentError"; readonly message: string }
       >
     }
   }
@@ -1038,17 +1109,18 @@ export namespace GaloyGQL {
   }>
 
   export type LnInvoiceCreateMutation = {
-    __typename?: "Mutation"
-    lnInvoiceCreate: {
-      __typename?: "LnInvoicePayload"
-      errors: Array<
-        | { __typename?: "InputError"; message: string }
-        | { __typename?: "PaymentError"; message: string }
+    readonly __typename?: "Mutation"
+    readonly lnInvoiceCreate: {
+      readonly __typename?: "LnInvoicePayload"
+      readonly errors: ReadonlyArray<
+        | { readonly __typename?: "InputError"; readonly message: string }
+        | { readonly __typename?: "PaymentError"; readonly message: string }
       >
-      invoice?:
-        | { __typename?: "LnInvoice"; paymentRequest: string; paymentHash: string }
-        | null
-        | undefined
+      readonly invoice?: {
+        readonly __typename?: "LnInvoice"
+        readonly paymentRequest: string
+        readonly paymentHash: string
+      } | null
     }
   }
 
@@ -1057,13 +1129,13 @@ export namespace GaloyGQL {
   }>
 
   export type LnInvoiceFeeProbeMutation = {
-    __typename?: "Mutation"
-    lnInvoiceFeeProbe: {
-      __typename?: "SatAmountPayload"
-      amount?: number | null | undefined
-      errors: Array<
-        | { __typename?: "InputError"; message: string }
-        | { __typename?: "PaymentError"; message: string }
+    readonly __typename?: "Mutation"
+    readonly lnInvoiceFeeProbe: {
+      readonly __typename?: "SatAmountPayload"
+      readonly amount?: number | null
+      readonly errors: ReadonlyArray<
+        | { readonly __typename?: "InputError"; readonly message: string }
+        | { readonly __typename?: "PaymentError"; readonly message: string }
       >
     }
   }
@@ -1073,13 +1145,13 @@ export namespace GaloyGQL {
   }>
 
   export type LnInvoicePaymentSendMutation = {
-    __typename?: "Mutation"
-    lnInvoicePaymentSend: {
-      __typename?: "PaymentSendPayload"
-      status?: PaymentSendResult | null | undefined
-      errors: Array<
-        | { __typename?: "InputError"; message: string }
-        | { __typename?: "PaymentError"; message: string }
+    readonly __typename?: "Mutation"
+    readonly lnInvoicePaymentSend: {
+      readonly __typename?: "PaymentSendPayload"
+      readonly status?: PaymentSendResult | null
+      readonly errors: ReadonlyArray<
+        | { readonly __typename?: "InputError"; readonly message: string }
+        | { readonly __typename?: "PaymentError"; readonly message: string }
       >
     }
   }
@@ -1089,21 +1161,18 @@ export namespace GaloyGQL {
   }>
 
   export type LnNoAmountInvoiceCreateMutation = {
-    __typename?: "Mutation"
-    lnNoAmountInvoiceCreate: {
-      __typename?: "LnNoAmountInvoicePayload"
-      errors: Array<
-        | { __typename?: "InputError"; message: string }
-        | { __typename?: "PaymentError"; message: string }
+    readonly __typename?: "Mutation"
+    readonly lnNoAmountInvoiceCreate: {
+      readonly __typename?: "LnNoAmountInvoicePayload"
+      readonly errors: ReadonlyArray<
+        | { readonly __typename?: "InputError"; readonly message: string }
+        | { readonly __typename?: "PaymentError"; readonly message: string }
       >
-      invoice?:
-        | {
-            __typename?: "LnNoAmountInvoice"
-            paymentRequest: string
-            paymentHash: string
-          }
-        | null
-        | undefined
+      readonly invoice?: {
+        readonly __typename?: "LnNoAmountInvoice"
+        readonly paymentRequest: string
+        readonly paymentHash: string
+      } | null
     }
   }
 
@@ -1112,13 +1181,13 @@ export namespace GaloyGQL {
   }>
 
   export type LnNoAmountInvoiceFeeProbeMutation = {
-    __typename?: "Mutation"
-    lnNoAmountInvoiceFeeProbe: {
-      __typename?: "SatAmountPayload"
-      amount?: number | null | undefined
-      errors: Array<
-        | { __typename?: "InputError"; message: string }
-        | { __typename?: "PaymentError"; message: string }
+    readonly __typename?: "Mutation"
+    readonly lnNoAmountInvoiceFeeProbe: {
+      readonly __typename?: "SatAmountPayload"
+      readonly amount?: number | null
+      readonly errors: ReadonlyArray<
+        | { readonly __typename?: "InputError"; readonly message: string }
+        | { readonly __typename?: "PaymentError"; readonly message: string }
       >
     }
   }
@@ -1128,13 +1197,13 @@ export namespace GaloyGQL {
   }>
 
   export type LnNoAmountInvoicePaymentSendMutation = {
-    __typename?: "Mutation"
-    lnNoAmountInvoicePaymentSend: {
-      __typename?: "PaymentSendPayload"
-      status?: PaymentSendResult | null | undefined
-      errors: Array<
-        | { __typename?: "InputError"; message: string }
-        | { __typename?: "PaymentError"; message: string }
+    readonly __typename?: "Mutation"
+    readonly lnNoAmountInvoicePaymentSend: {
+      readonly __typename?: "PaymentSendPayload"
+      readonly status?: PaymentSendResult | null
+      readonly errors: ReadonlyArray<
+        | { readonly __typename?: "InputError"; readonly message: string }
+        | { readonly __typename?: "PaymentError"; readonly message: string }
       >
     }
   }
@@ -1144,13 +1213,13 @@ export namespace GaloyGQL {
   }>
 
   export type OnChainAddressCurrentMutation = {
-    __typename?: "Mutation"
-    onChainAddressCurrent: {
-      __typename?: "OnChainAddressPayload"
-      address?: string | null | undefined
-      errors: Array<
-        | { __typename?: "InputError"; message: string }
-        | { __typename?: "PaymentError"; message: string }
+    readonly __typename?: "Mutation"
+    readonly onChainAddressCurrent: {
+      readonly __typename?: "OnChainAddressPayload"
+      readonly address?: string | null
+      readonly errors: ReadonlyArray<
+        | { readonly __typename?: "InputError"; readonly message: string }
+        | { readonly __typename?: "PaymentError"; readonly message: string }
       >
     }
   }
@@ -1160,13 +1229,13 @@ export namespace GaloyGQL {
   }>
 
   export type OnChainPaymentSendMutation = {
-    __typename?: "Mutation"
-    onChainPaymentSend: {
-      __typename?: "PaymentSendPayload"
-      status?: PaymentSendResult | null | undefined
-      errors: Array<
-        | { __typename?: "InputError"; message: string }
-        | { __typename?: "PaymentError"; message: string }
+    readonly __typename?: "Mutation"
+    readonly onChainPaymentSend: {
+      readonly __typename?: "PaymentSendPayload"
+      readonly status?: PaymentSendResult | null
+      readonly errors: ReadonlyArray<
+        | { readonly __typename?: "InputError"; readonly message: string }
+        | { readonly __typename?: "PaymentError"; readonly message: string }
       >
     }
   }
@@ -1176,12 +1245,12 @@ export namespace GaloyGQL {
   }>
 
   export type UserContactUpdateAliasMutation = {
-    __typename?: "Mutation"
-    userContactUpdateAlias: {
-      __typename?: "UserContactUpdateAliasPayload"
-      errors: Array<
-        | { __typename?: "InputError"; message: string }
-        | { __typename?: "PaymentError"; message: string }
+    readonly __typename?: "Mutation"
+    readonly userContactUpdateAlias: {
+      readonly __typename?: "UserContactUpdateAliasPayload"
+      readonly errors: ReadonlyArray<
+        | { readonly __typename?: "InputError"; readonly message: string }
+        | { readonly __typename?: "PaymentError"; readonly message: string }
       >
     }
   }
@@ -1191,13 +1260,13 @@ export namespace GaloyGQL {
   }>
 
   export type UserLoginMutation = {
-    __typename?: "Mutation"
-    userLogin: {
-      __typename?: "AuthTokenPayload"
-      authToken?: string | null | undefined
-      errors: Array<
-        | { __typename?: "InputError"; message: string }
-        | { __typename?: "PaymentError"; message: string }
+    readonly __typename?: "Mutation"
+    readonly userLogin: {
+      readonly __typename?: "AuthTokenPayload"
+      readonly authToken?: string | null
+      readonly errors: ReadonlyArray<
+        | { readonly __typename?: "InputError"; readonly message: string }
+        | { readonly __typename?: "PaymentError"; readonly message: string }
       >
     }
   }
@@ -1207,21 +1276,22 @@ export namespace GaloyGQL {
   }>
 
   export type UserQuizQuestionUpdateCompletedMutation = {
-    __typename?: "Mutation"
-    userQuizQuestionUpdateCompleted: {
-      __typename?: "UserQuizQuestionUpdateCompletedPayload"
-      errors: Array<
-        | { __typename?: "InputError"; message: string }
-        | { __typename?: "PaymentError"; message: string }
+    readonly __typename?: "Mutation"
+    readonly userQuizQuestionUpdateCompleted: {
+      readonly __typename?: "UserQuizQuestionUpdateCompletedPayload"
+      readonly errors: ReadonlyArray<
+        | { readonly __typename?: "InputError"; readonly message: string }
+        | { readonly __typename?: "PaymentError"; readonly message: string }
       >
-      userQuizQuestion?:
-        | {
-            __typename?: "UserQuizQuestion"
-            completed: boolean
-            question: { __typename?: "QuizQuestion"; id: string; earnAmount: number }
-          }
-        | null
-        | undefined
+      readonly userQuizQuestion?: {
+        readonly __typename?: "UserQuizQuestion"
+        readonly completed: boolean
+        readonly question: {
+          readonly __typename?: "QuizQuestion"
+          readonly id: string
+          readonly earnAmount: number
+        }
+      } | null
     }
   }
 
@@ -1230,14 +1300,18 @@ export namespace GaloyGQL {
   }>
 
   export type UpdateLanguageMutation = {
-    __typename?: "Mutation"
-    userUpdateLanguage: {
-      __typename?: "UserUpdateLanguagePayload"
-      errors: Array<
-        | { __typename?: "InputError"; message: string }
-        | { __typename?: "PaymentError"; message: string }
+    readonly __typename?: "Mutation"
+    readonly userUpdateLanguage: {
+      readonly __typename?: "UserUpdateLanguagePayload"
+      readonly errors: ReadonlyArray<
+        | { readonly __typename?: "InputError"; readonly message: string }
+        | { readonly __typename?: "PaymentError"; readonly message: string }
       >
-      user?: { __typename?: "User"; id: string; language: string } | null | undefined
+      readonly user?: {
+        readonly __typename?: "User"
+        readonly id: string
+        readonly language: string
+      } | null
     }
   }
 
@@ -1246,17 +1320,18 @@ export namespace GaloyGQL {
   }>
 
   export type UpdateUsernameMutation = {
-    __typename?: "Mutation"
-    userUpdateUsername: {
-      __typename?: "UserUpdateUsernamePayload"
-      errors: Array<
-        | { __typename?: "InputError"; message: string }
-        | { __typename?: "PaymentError"; message: string }
+    readonly __typename?: "Mutation"
+    readonly userUpdateUsername: {
+      readonly __typename?: "UserUpdateUsernamePayload"
+      readonly errors: ReadonlyArray<
+        | { readonly __typename?: "InputError"; readonly message: string }
+        | { readonly __typename?: "PaymentError"; readonly message: string }
       >
-      user?:
-        | { __typename?: "User"; id: string; username?: string | null | undefined }
-        | null
-        | undefined
+      readonly user?: {
+        readonly __typename?: "User"
+        readonly id: string
+        readonly username?: string | null
+      } | null
     }
   }
 
@@ -1265,70 +1340,53 @@ export namespace GaloyGQL {
   }>
 
   export type BtcPriceListQuery = {
-    __typename?: "Query"
-    btcPriceList?:
-      | Array<
-          | {
-              __typename?: "PricePoint"
-              timestamp: number
-              price: {
-                __typename?: "Price"
-                base: number
-                offset: number
-                currencyUnit: ExchangeCurrencyUnit
-                formattedAmount: string
-              }
-            }
-          | null
-          | undefined
-        >
-      | null
-      | undefined
+    readonly __typename?: "Query"
+    readonly btcPriceList?: ReadonlyArray<{
+      readonly __typename?: "PricePoint"
+      readonly timestamp: number
+      readonly price: {
+        readonly __typename?: "Price"
+        readonly base: number
+        readonly offset: number
+        readonly currencyUnit: ExchangeCurrencyUnit
+        readonly formattedAmount: string
+      }
+    } | null> | null
   }
 
   export type BusinessMapMarkersQueryVariables = Exact<{ [key: string]: never }>
 
   export type BusinessMapMarkersQuery = {
-    __typename?: "Query"
-    businessMapMarkers?:
-      | Array<
-          | {
-              __typename?: "MapMarker"
-              username?: string | null | undefined
-              mapInfo: {
-                __typename?: "MapInfo"
-                title: string
-                coordinates: {
-                  __typename?: "Coordinates"
-                  longitude: number
-                  latitude: number
-                }
-              }
-            }
-          | null
-          | undefined
-        >
-      | null
-      | undefined
+    readonly __typename?: "Query"
+    readonly businessMapMarkers?: ReadonlyArray<{
+      readonly __typename?: "MapMarker"
+      readonly username?: string | null
+      readonly mapInfo: {
+        readonly __typename?: "MapInfo"
+        readonly title: string
+        readonly coordinates: {
+          readonly __typename?: "Coordinates"
+          readonly longitude: number
+          readonly latitude: number
+        }
+      }
+    } | null> | null
   }
 
   export type ContactsQueryVariables = Exact<{ [key: string]: never }>
 
   export type ContactsQuery = {
-    __typename?: "Query"
-    me?:
-      | {
-          __typename?: "User"
-          id: string
-          contacts: Array<{
-            __typename?: "UserContact"
-            username: string
-            alias?: string | null | undefined
-            transactionsCount: number
-          }>
-        }
-      | null
-      | undefined
+    readonly __typename?: "Query"
+    readonly me?: {
+      readonly __typename?: "User"
+      readonly id: string
+      readonly contacts: ReadonlyArray<{
+        readonly __typename?: "UserContact"
+        readonly username: string
+        readonly alias?: string | null
+        readonly transactionsCount: number
+      }>
+    } | null
   }
 
   export type GetWalletCsvTransactionsQueryVariables = Exact<{
@@ -1336,19 +1394,16 @@ export namespace GaloyGQL {
   }>
 
   export type GetWalletCsvTransactionsQuery = {
-    __typename?: "Query"
-    me?:
-      | {
-          __typename?: "User"
-          id: string
-          defaultAccount: {
-            __typename?: "ConsumerAccount"
-            id: string
-            csvTransactions: string
-          }
-        }
-      | null
-      | undefined
+    readonly __typename?: "Query"
+    readonly me?: {
+      readonly __typename?: "User"
+      readonly id: string
+      readonly defaultAccount: {
+        readonly __typename?: "ConsumerAccount"
+        readonly id: string
+        readonly csvTransactions: string
+      }
+    } | null
   }
 
   export type MainQueryVariables = Exact<{
@@ -1357,105 +1412,95 @@ export namespace GaloyGQL {
   }>
 
   export type MainQuery = {
-    __typename?: "Query"
-    globals?: { __typename?: "Globals"; nodesIds: Array<string> } | null | undefined
-    btcPrice?:
-      | {
-          __typename?: "Price"
-          base: number
-          offset: number
-          currencyUnit: ExchangeCurrencyUnit
-          formattedAmount: string
-        }
-      | null
-      | undefined
-    me?:
-      | {
-          __typename?: "User"
-          id: string
-          language: string
-          username?: string | null | undefined
-          phone: string
-          defaultAccount: {
-            __typename?: "ConsumerAccount"
-            id: string
-            defaultWalletId: string
-            wallets: Array<{
-              __typename?: "BTCWallet"
-              id: string
-              balance: number
-              walletCurrency: WalletCurrency
-              transactions?:
-                | {
-                    __typename?: "TransactionConnection"
-                    pageInfo: { __typename?: "PageInfo"; hasNextPage: boolean }
-                    edges?:
-                      | Array<
-                          | {
-                              __typename?: "TransactionEdge"
-                              cursor: string
-                              node?:
-                                | {
-                                    __typename: "Transaction"
-                                    id: string
-                                    status: TxStatus
-                                    direction: TxDirection
-                                    memo?: string | null | undefined
-                                    createdAt: number
-                                    settlementAmount: number
-                                    settlementFee: number
-                                    settlementPrice: {
-                                      __typename?: "Price"
-                                      base: number
-                                      offset: number
-                                      currencyUnit: ExchangeCurrencyUnit
-                                      formattedAmount: string
-                                    }
-                                    initiationVia:
-                                      | {
-                                          __typename: "InitiationViaIntraLedger"
-                                          counterPartyWalletId?: string | null | undefined
-                                          counterPartyUsername?: string | null | undefined
-                                        }
-                                      | {
-                                          __typename: "InitiationViaLn"
-                                          paymentHash: string
-                                        }
-                                      | {
-                                          __typename: "InitiationViaOnChain"
-                                          address: string
-                                        }
-                                    settlementVia:
-                                      | {
-                                          __typename: "SettlementViaIntraLedger"
-                                          counterPartyWalletId?: string | null | undefined
-                                          counterPartyUsername?: string | null | undefined
-                                        }
-                                      | {
-                                          __typename: "SettlementViaLn"
-                                          paymentSecret?: string | null | undefined
-                                        }
-                                      | {
-                                          __typename: "SettlementViaOnChain"
-                                          transactionHash: string
-                                        }
-                                  }
-                                | null
-                                | undefined
-                            }
-                          | null
-                          | undefined
-                        >
-                      | null
-                      | undefined
-                  }
-                | null
-                | undefined
-            }>
-          }
-        }
-      | null
-      | undefined
+    readonly __typename?: "Query"
+    readonly globals?: {
+      readonly __typename?: "Globals"
+      readonly nodesIds: ReadonlyArray<string>
+    } | null
+    readonly btcPrice?: {
+      readonly __typename?: "Price"
+      readonly base: number
+      readonly offset: number
+      readonly currencyUnit: ExchangeCurrencyUnit
+      readonly formattedAmount: string
+    } | null
+    readonly me?: {
+      readonly __typename?: "User"
+      readonly id: string
+      readonly language: string
+      readonly username?: string | null
+      readonly phone: string
+      readonly defaultAccount: {
+        readonly __typename?: "ConsumerAccount"
+        readonly id: string
+        readonly defaultWalletId: string
+        readonly wallets: ReadonlyArray<{
+          readonly __typename?: "BTCWallet"
+          readonly id: string
+          readonly balance: number
+          readonly walletCurrency: WalletCurrency
+          readonly transactions?: {
+            readonly __typename?: "TransactionConnection"
+            readonly pageInfo: {
+              readonly __typename?: "PageInfo"
+              readonly hasNextPage: boolean
+              readonly hasPreviousPage: boolean
+              readonly startCursor?: string | null
+              readonly endCursor?: string | null
+            }
+            readonly edges?: ReadonlyArray<{
+              readonly __typename?: "TransactionEdge"
+              readonly cursor: string
+              readonly node: {
+                readonly __typename: "Transaction"
+                readonly id: string
+                readonly status: TxStatus
+                readonly direction: TxDirection
+                readonly memo?: string | null
+                readonly createdAt: number
+                readonly settlementAmount: number
+                readonly settlementFee: number
+                readonly settlementPrice: {
+                  readonly __typename?: "Price"
+                  readonly base: number
+                  readonly offset: number
+                  readonly currencyUnit: ExchangeCurrencyUnit
+                  readonly formattedAmount: string
+                }
+                readonly initiationVia:
+                  | {
+                      readonly __typename: "InitiationViaIntraLedger"
+                      readonly counterPartyWalletId?: string | null
+                      readonly counterPartyUsername?: string | null
+                    }
+                  | {
+                      readonly __typename: "InitiationViaLn"
+                      readonly paymentHash: string
+                    }
+                  | {
+                      readonly __typename: "InitiationViaOnChain"
+                      readonly address: string
+                    }
+                readonly settlementVia:
+                  | {
+                      readonly __typename: "SettlementViaIntraLedger"
+                      readonly counterPartyWalletId?: string | null
+                      readonly counterPartyUsername?: string | null
+                    }
+                  | {
+                      readonly __typename: "SettlementViaLn"
+                      readonly paymentSecret?: string | null
+                    }
+                  | {
+                      readonly __typename: "SettlementViaOnChain"
+                      readonly transactionHash: string
+                    }
+              }
+            }> | null
+          } | null
+        }>
+      }
+    } | null
   }
 
   export type OnChainTxFeeQueryVariables = Exact<{
@@ -1466,202 +1511,180 @@ export namespace GaloyGQL {
   }>
 
   export type OnChainTxFeeQuery = {
-    __typename?: "Query"
-    onChainTxFee: {
-      __typename?: "OnChainTxFee"
-      amount: number
-      targetConfirmations: number
+    readonly __typename?: "Query"
+    readonly onChainTxFee: {
+      readonly __typename?: "OnChainTxFee"
+      readonly amount: number
+      readonly targetConfirmations: number
     }
   }
 
   export type QuizQuestionsQueryVariables = Exact<{ [key: string]: never }>
 
   export type QuizQuestionsQuery = {
-    __typename?: "Query"
-    quizQuestions?:
-      | Array<
-          | { __typename?: "QuizQuestion"; id: string; earnAmount: number }
-          | null
-          | undefined
-        >
-      | null
-      | undefined
+    readonly __typename?: "Query"
+    readonly quizQuestions?: ReadonlyArray<{
+      readonly __typename?: "QuizQuestion"
+      readonly id: string
+      readonly earnAmount: number
+    } | null> | null
   }
 
   export type TransactionsListForContactQueryVariables = Exact<{
     username: Scalars["Username"]
     first?: InputMaybe<Scalars["Int"]>
     after?: InputMaybe<Scalars["String"]>
+    last?: InputMaybe<Scalars["Int"]>
+    before?: InputMaybe<Scalars["String"]>
   }>
 
   export type TransactionsListForContactQuery = {
-    __typename?: "Query"
-    me?:
-      | {
-          __typename?: "User"
-          id: string
-          contactByUsername: {
-            __typename?: "UserContact"
-            transactions?:
-              | {
-                  __typename?: "TransactionConnection"
-                  pageInfo: { __typename?: "PageInfo"; hasNextPage: boolean }
-                  edges?:
-                    | Array<
-                        | {
-                            __typename?: "TransactionEdge"
-                            cursor: string
-                            node?:
-                              | {
-                                  __typename: "Transaction"
-                                  id: string
-                                  status: TxStatus
-                                  direction: TxDirection
-                                  memo?: string | null | undefined
-                                  createdAt: number
-                                  settlementAmount: number
-                                  settlementFee: number
-                                  settlementPrice: {
-                                    __typename?: "Price"
-                                    base: number
-                                    offset: number
-                                    currencyUnit: ExchangeCurrencyUnit
-                                    formattedAmount: string
-                                  }
-                                  initiationVia:
-                                    | {
-                                        __typename: "InitiationViaIntraLedger"
-                                        counterPartyWalletId?: string | null | undefined
-                                        counterPartyUsername?: string | null | undefined
-                                      }
-                                    | {
-                                        __typename: "InitiationViaLn"
-                                        paymentHash: string
-                                      }
-                                    | {
-                                        __typename: "InitiationViaOnChain"
-                                        address: string
-                                      }
-                                  settlementVia:
-                                    | {
-                                        __typename: "SettlementViaIntraLedger"
-                                        counterPartyWalletId?: string | null | undefined
-                                        counterPartyUsername?: string | null | undefined
-                                      }
-                                    | {
-                                        __typename: "SettlementViaLn"
-                                        paymentSecret?: string | null | undefined
-                                      }
-                                    | {
-                                        __typename: "SettlementViaOnChain"
-                                        transactionHash: string
-                                      }
-                                }
-                              | null
-                              | undefined
-                          }
-                        | null
-                        | undefined
-                      >
-                    | null
-                    | undefined
-                }
-              | null
-              | undefined
+    readonly __typename?: "Query"
+    readonly me?: {
+      readonly __typename?: "User"
+      readonly id: string
+      readonly contactByUsername: {
+        readonly __typename?: "UserContact"
+        readonly transactions?: {
+          readonly __typename?: "TransactionConnection"
+          readonly pageInfo: {
+            readonly __typename?: "PageInfo"
+            readonly hasNextPage: boolean
+            readonly hasPreviousPage: boolean
+            readonly startCursor?: string | null
+            readonly endCursor?: string | null
           }
-        }
-      | null
-      | undefined
+          readonly edges?: ReadonlyArray<{
+            readonly __typename?: "TransactionEdge"
+            readonly cursor: string
+            readonly node: {
+              readonly __typename: "Transaction"
+              readonly id: string
+              readonly status: TxStatus
+              readonly direction: TxDirection
+              readonly memo?: string | null
+              readonly createdAt: number
+              readonly settlementAmount: number
+              readonly settlementFee: number
+              readonly settlementPrice: {
+                readonly __typename?: "Price"
+                readonly base: number
+                readonly offset: number
+                readonly currencyUnit: ExchangeCurrencyUnit
+                readonly formattedAmount: string
+              }
+              readonly initiationVia:
+                | {
+                    readonly __typename: "InitiationViaIntraLedger"
+                    readonly counterPartyWalletId?: string | null
+                    readonly counterPartyUsername?: string | null
+                  }
+                | { readonly __typename: "InitiationViaLn"; readonly paymentHash: string }
+                | {
+                    readonly __typename: "InitiationViaOnChain"
+                    readonly address: string
+                  }
+              readonly settlementVia:
+                | {
+                    readonly __typename: "SettlementViaIntraLedger"
+                    readonly counterPartyWalletId?: string | null
+                    readonly counterPartyUsername?: string | null
+                  }
+                | {
+                    readonly __typename: "SettlementViaLn"
+                    readonly paymentSecret?: string | null
+                  }
+                | {
+                    readonly __typename: "SettlementViaOnChain"
+                    readonly transactionHash: string
+                  }
+            }
+          }> | null
+        } | null
+      }
+    } | null
   }
 
   export type TransactionListQueryVariables = Exact<{
     first?: InputMaybe<Scalars["Int"]>
     after?: InputMaybe<Scalars["String"]>
+    last?: InputMaybe<Scalars["Int"]>
+    before?: InputMaybe<Scalars["String"]>
   }>
 
   export type TransactionListQuery = {
-    __typename?: "Query"
-    me?:
-      | {
-          __typename?: "User"
-          id: string
-          defaultAccount: {
-            __typename?: "ConsumerAccount"
-            id: string
-            wallets: Array<{
-              __typename?: "BTCWallet"
-              id: string
-              transactions?:
-                | {
-                    __typename?: "TransactionConnection"
-                    pageInfo: { __typename?: "PageInfo"; hasNextPage: boolean }
-                    edges?:
-                      | Array<
-                          | {
-                              __typename?: "TransactionEdge"
-                              cursor: string
-                              node?:
-                                | {
-                                    __typename: "Transaction"
-                                    id: string
-                                    status: TxStatus
-                                    direction: TxDirection
-                                    memo?: string | null | undefined
-                                    createdAt: number
-                                    settlementAmount: number
-                                    settlementFee: number
-                                    settlementPrice: {
-                                      __typename?: "Price"
-                                      base: number
-                                      offset: number
-                                      currencyUnit: ExchangeCurrencyUnit
-                                      formattedAmount: string
-                                    }
-                                    initiationVia:
-                                      | {
-                                          __typename: "InitiationViaIntraLedger"
-                                          counterPartyWalletId?: string | null | undefined
-                                          counterPartyUsername?: string | null | undefined
-                                        }
-                                      | {
-                                          __typename: "InitiationViaLn"
-                                          paymentHash: string
-                                        }
-                                      | {
-                                          __typename: "InitiationViaOnChain"
-                                          address: string
-                                        }
-                                    settlementVia:
-                                      | {
-                                          __typename: "SettlementViaIntraLedger"
-                                          counterPartyWalletId?: string | null | undefined
-                                          counterPartyUsername?: string | null | undefined
-                                        }
-                                      | {
-                                          __typename: "SettlementViaLn"
-                                          paymentSecret?: string | null | undefined
-                                        }
-                                      | {
-                                          __typename: "SettlementViaOnChain"
-                                          transactionHash: string
-                                        }
-                                  }
-                                | null
-                                | undefined
-                            }
-                          | null
-                          | undefined
-                        >
-                      | null
-                      | undefined
-                  }
-                | null
-                | undefined
-            }>
-          }
-        }
-      | null
-      | undefined
+    readonly __typename?: "Query"
+    readonly me?: {
+      readonly __typename?: "User"
+      readonly id: string
+      readonly defaultAccount: {
+        readonly __typename?: "ConsumerAccount"
+        readonly id: string
+        readonly wallets: ReadonlyArray<{
+          readonly __typename?: "BTCWallet"
+          readonly id: string
+          readonly transactions?: {
+            readonly __typename?: "TransactionConnection"
+            readonly pageInfo: {
+              readonly __typename?: "PageInfo"
+              readonly hasNextPage: boolean
+              readonly hasPreviousPage: boolean
+              readonly startCursor?: string | null
+              readonly endCursor?: string | null
+            }
+            readonly edges?: ReadonlyArray<{
+              readonly __typename?: "TransactionEdge"
+              readonly cursor: string
+              readonly node: {
+                readonly __typename: "Transaction"
+                readonly id: string
+                readonly status: TxStatus
+                readonly direction: TxDirection
+                readonly memo?: string | null
+                readonly createdAt: number
+                readonly settlementAmount: number
+                readonly settlementFee: number
+                readonly settlementPrice: {
+                  readonly __typename?: "Price"
+                  readonly base: number
+                  readonly offset: number
+                  readonly currencyUnit: ExchangeCurrencyUnit
+                  readonly formattedAmount: string
+                }
+                readonly initiationVia:
+                  | {
+                      readonly __typename: "InitiationViaIntraLedger"
+                      readonly counterPartyWalletId?: string | null
+                      readonly counterPartyUsername?: string | null
+                    }
+                  | {
+                      readonly __typename: "InitiationViaLn"
+                      readonly paymentHash: string
+                    }
+                  | {
+                      readonly __typename: "InitiationViaOnChain"
+                      readonly address: string
+                    }
+                readonly settlementVia:
+                  | {
+                      readonly __typename: "SettlementViaIntraLedger"
+                      readonly counterPartyWalletId?: string | null
+                      readonly counterPartyUsername?: string | null
+                    }
+                  | {
+                      readonly __typename: "SettlementViaLn"
+                      readonly paymentSecret?: string | null
+                    }
+                  | {
+                      readonly __typename: "SettlementViaOnChain"
+                      readonly transactionHash: string
+                    }
+              }
+            }> | null
+          } | null
+        }>
+      }
+    } | null
   }
 
   export type UserDefaultWalletIdQueryVariables = Exact<{
@@ -1669,8 +1692,8 @@ export namespace GaloyGQL {
   }>
 
   export type UserDefaultWalletIdQuery = {
-    __typename?: "Query"
-    userDefaultWalletId: string
+    readonly __typename?: "Query"
+    readonly userDefaultWalletId: string
   }
 
   export type UsernameAvailableQueryVariables = Exact<{
@@ -1678,72 +1701,133 @@ export namespace GaloyGQL {
   }>
 
   export type UsernameAvailableQuery = {
-    __typename?: "Query"
-    usernameAvailable?: boolean | null | undefined
+    readonly __typename?: "Query"
+    readonly usernameAvailable?: boolean | null
   }
 
-  export type MyUpdatesSubscriptionVariables = Exact<{ [key: string]: never }>
+  export type MyUpdatesSubscriptionVariables = Exact<{
+    recentTransactions?: InputMaybe<Scalars["Int"]>
+  }>
 
   export type MyUpdatesSubscription = {
-    __typename?: "Subscription"
-    myUpdates: {
-      __typename?: "MyUpdatesPayload"
-      errors: Array<
-        | { __typename?: "InputError"; message: string }
-        | { __typename?: "PaymentError"; message: string }
+    readonly __typename?: "Subscription"
+    readonly myUpdates: {
+      readonly __typename?: "MyUpdatesPayload"
+      readonly errors: ReadonlyArray<
+        | { readonly __typename?: "InputError"; readonly message: string }
+        | { readonly __typename?: "PaymentError"; readonly message: string }
       >
-      me?:
+      readonly me?: {
+        readonly __typename?: "User"
+        readonly id: string
+        readonly language: string
+        readonly username?: string | null
+        readonly phone: string
+        readonly defaultAccount: {
+          readonly __typename?: "ConsumerAccount"
+          readonly id: string
+          readonly defaultWalletId: string
+          readonly wallets: ReadonlyArray<{
+            readonly __typename?: "BTCWallet"
+            readonly id: string
+            readonly balance: number
+            readonly walletCurrency: WalletCurrency
+            readonly transactions?: {
+              readonly __typename?: "TransactionConnection"
+              readonly pageInfo: {
+                readonly __typename?: "PageInfo"
+                readonly hasNextPage: boolean
+                readonly hasPreviousPage: boolean
+                readonly startCursor?: string | null
+                readonly endCursor?: string | null
+              }
+              readonly edges?: ReadonlyArray<{
+                readonly __typename?: "TransactionEdge"
+                readonly cursor: string
+                readonly node: {
+                  readonly __typename: "Transaction"
+                  readonly id: string
+                  readonly status: TxStatus
+                  readonly direction: TxDirection
+                  readonly memo?: string | null
+                  readonly createdAt: number
+                  readonly settlementAmount: number
+                  readonly settlementFee: number
+                  readonly settlementPrice: {
+                    readonly __typename?: "Price"
+                    readonly base: number
+                    readonly offset: number
+                    readonly currencyUnit: ExchangeCurrencyUnit
+                    readonly formattedAmount: string
+                  }
+                  readonly initiationVia:
+                    | {
+                        readonly __typename: "InitiationViaIntraLedger"
+                        readonly counterPartyWalletId?: string | null
+                        readonly counterPartyUsername?: string | null
+                      }
+                    | {
+                        readonly __typename: "InitiationViaLn"
+                        readonly paymentHash: string
+                      }
+                    | {
+                        readonly __typename: "InitiationViaOnChain"
+                        readonly address: string
+                      }
+                  readonly settlementVia:
+                    | {
+                        readonly __typename: "SettlementViaIntraLedger"
+                        readonly counterPartyWalletId?: string | null
+                        readonly counterPartyUsername?: string | null
+                      }
+                    | {
+                        readonly __typename: "SettlementViaLn"
+                        readonly paymentSecret?: string | null
+                      }
+                    | {
+                        readonly __typename: "SettlementViaOnChain"
+                        readonly transactionHash: string
+                      }
+                }
+              }> | null
+            } | null
+          }>
+        }
+      } | null
+      readonly update?:
         | {
-            __typename?: "User"
-            id: string
-            defaultAccount: {
-              __typename?: "ConsumerAccount"
-              id: string
-              wallets: Array<{
-                __typename?: "BTCWallet"
-                id: string
-                walletCurrency: WalletCurrency
-                balance: number
-              }>
-            }
+            readonly __typename?: "IntraLedgerUpdate"
+            readonly walletId: string
+            readonly txNotificationType: TxNotificationType
+            readonly amount: number
+            readonly usdPerSat: number
+            readonly type: "IntraLedgerUpdate"
+          }
+        | {
+            readonly __typename?: "LnUpdate"
+            readonly walletId: string
+            readonly paymentHash: string
+            readonly status: InvoicePaymentStatus
+            readonly type: "LnUpdate"
+          }
+        | {
+            readonly __typename?: "OnChainUpdate"
+            readonly walletId: string
+            readonly txNotificationType: TxNotificationType
+            readonly txHash: string
+            readonly amount: number
+            readonly usdPerSat: number
+            readonly type: "OnChainUpdate"
+          }
+        | {
+            readonly __typename?: "Price"
+            readonly base: number
+            readonly offset: number
+            readonly currencyUnit: ExchangeCurrencyUnit
+            readonly formattedAmount: string
+            readonly type: "Price"
           }
         | null
-        | undefined
-      update?:
-        | {
-            __typename?: "IntraLedgerUpdate"
-            walletId: string
-            txNotificationType: TxNotificationType
-            amount: number
-            usdPerSat: number
-            type: "IntraLedgerUpdate"
-          }
-        | {
-            __typename?: "LnUpdate"
-            walletId: string
-            paymentHash: string
-            status: InvoicePaymentStatus
-            type: "LnUpdate"
-          }
-        | {
-            __typename?: "OnChainUpdate"
-            walletId: string
-            txNotificationType: TxNotificationType
-            txHash: string
-            amount: number
-            usdPerSat: number
-            type: "OnChainUpdate"
-          }
-        | {
-            __typename?: "Price"
-            base: number
-            offset: number
-            currencyUnit: ExchangeCurrencyUnit
-            formattedAmount: string
-            type: "Price"
-          }
-        | null
-        | undefined
     }
   }
 }

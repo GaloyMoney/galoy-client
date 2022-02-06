@@ -1,21 +1,14 @@
 import { gql } from "@apollo/client"
+import meFragment from "../fragments/me-fragment"
 
 const myUpdates = gql`
-  subscription myUpdates {
+  subscription myUpdates($recentTransactions: Int = 5) {
     myUpdates {
       errors {
         message
       }
       me {
-        id
-        defaultAccount {
-          id
-          wallets {
-            id
-            walletCurrency
-            balance
-          }
-        }
+        ...Me
       }
       update {
         type: __typename
@@ -46,6 +39,7 @@ const myUpdates = gql`
       }
     }
   }
+  ${meFragment}
 `
 
 export default myUpdates
