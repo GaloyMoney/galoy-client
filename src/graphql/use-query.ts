@@ -69,9 +69,22 @@ const mainQuery = (
   return useQueryWrapper<GaloyGQL.MainQuery, GaloyGQL.MainQueryVariables>("main", config)
 }
 
+const transactionListQuery = (
+  config?: QueryHookOptions<
+    GaloyGQL.TransactionListQuery,
+    GaloyGQL.TransactionListQueryVariables
+  >,
+): QueryResult<GaloyGQL.TransactionListQuery> & QueryHelpers => {
+  return useQueryWrapper<
+    GaloyGQL.TransactionListQuery,
+    GaloyGQL.TransactionListQueryVariables
+  >("transactionList", config)
+}
+
 export const useQuery = {
   main: mainQuery,
   onChainTxFee: onChainTxFeeQuery,
+  transactionList: transactionListQuery,
 }
 
 // ********** DELAYED QUERIES ********** //
@@ -116,13 +129,21 @@ const useDelayedQueryWrapper = <TData = unknown, TVars = unknown>(
   ]
 }
 
-const userDefaultWalletIdQuery = () => {
+const userDefaultWalletIdDelayedQuery = () => {
   return useDelayedQueryWrapper<
     GaloyGQL.UserDefaultWalletIdQuery,
     GaloyGQL.UserDefaultWalletIdQueryVariables
   >("userDefaultWalletId")
 }
 
+const transactionListDelayedQuery = () => {
+  return useDelayedQueryWrapper<
+    GaloyGQL.TransactionListQuery,
+    GaloyGQL.TransactionListQueryVariables
+  >("transactionList")
+}
+
 export const useDelayedQuery = {
-  userDefaultWalletId: userDefaultWalletIdQuery,
+  userDefaultWalletId: userDefaultWalletIdDelayedQuery,
+  transactionList: transactionListDelayedQuery,
 }

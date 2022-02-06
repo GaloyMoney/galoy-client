@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client"
-import transactionListFragment from "../fragments/transaction-list-fragment"
+import meFragment from "../fragments/me-fragment"
 
 const main = gql`
-  query main($hasToken: Boolean!, $recentTransactions: Int = 3) {
+  query main($hasToken: Boolean!, $recentTransactions: Int) {
     globals {
       nodesIds
     }
@@ -13,25 +13,10 @@ const main = gql`
       formattedAmount
     }
     me @include(if: $hasToken) {
-      id
-      language
-      username
-      phone
-      defaultAccount {
-        id
-        defaultWalletId
-        wallets {
-          id
-          balance
-          walletCurrency
-          transactions(first: $recentTransactions) {
-            ...TransactionList
-          }
-        }
-      }
+      ...Me
     }
   }
-  ${transactionListFragment}
+  ${meFragment}
 `
 
 export default main

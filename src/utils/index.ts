@@ -28,6 +28,17 @@ export const formatRelativeTime = (timestamp: number) => {
   }
 }
 
+export const formatTime = (timestamp: number) => {
+  return new Date(timestamp).toLocaleString("en-US", {
+    weekday: "short",
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+  })
+}
+
 const usdFormatter = new Intl.NumberFormat("en-US", {
   style: "currency",
   currency: "USD",
