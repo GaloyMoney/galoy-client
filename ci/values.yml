@@ -1,0 +1,7 @@
+#@data/values
+---
+git_uri: git@github.com:GaloyMoney/galoy-client.git
+git_branch: main
+
+artifacts_bucket_name: ((staging-gcp-creds.bucket_name))
+staging_inception_creds: ((staging-gcp-creds.creds_json))

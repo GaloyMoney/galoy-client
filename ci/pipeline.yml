@@ -1,0 +1,78 @@
+#@ def pipeline_image():
+#@   return data.values.docker_registry + "/galoy-app-pipeline"
+#@ end
+
+#@ def task_image_config():
+type: registry-image
+source:
+  username: #@ data.values.docker_registry_user
+  password: #@ data.values.docker_registry_password
+  repository: #@ pipeline_image()
+#@ end
+
+jobs:
+- name: install-deps
+  plan:
+  - in_parallel:
+    - { get: deps, trigger: true }
+    - { get: pipeline-tasks }
+    - { get: deps-version, params: { bump: patch }}
+  
+  - task: install-deps
+    config:
+      platform: linux
+      image_resource: #@ task_image_config()
+      inputs:
+      - name: pipeline-tasks
+      - name: deps
+      - name: deps-version
+      outputs:
+      - name: bundled-deps
+      run:
+        path: pipeline-tasks/ci/tasks/install-deps.sh
+
+  - put: bundled-deps
+    params:
+      file: bundled-deps/bundled-deps-*.tgz
+
+resources:
+- name: repo
+  type: git
+  source:
+    ignore_paths: ["ci/*[^md]"]
+    fetch_tags: true
+    uri: #@ data.values.git_uri
+    branch: #@ data.values.git_branch
+    private_key: #@ data.values.github_private_key
+
+- name: pipeline-tasks
+  type: git
+  source:
+    paths: [ci/tasks/*, Makefile]
+    uri: #@ data.values.git_uri
+    branch: #@ data.values.git_branch
+    private_key: #@ data.values.github_private_key
+
+- name: deps
+  type: git
+  source:
+    paths: [yarn.lock]
+    uri: #@ data.values.git_uri
+    branch: #@ data.values.git_branch
+    private_key: #@ data.values.github_private_key
+
+- name: deps-version
+  type: semver
+  source:
+    initial_version: 0.1.0
+    driver: gcs
+    bucket: #@ data.values.artifacts_bucket_name
+    key: galoy-client-artifacts/versions/deps
+    json_key: #@ data.values.staging_inception_creds
+
+- name: bundled-deps
+  type: gcs-resource
+  source:
+    bucket: #@ data.values.artifacts_bucket_name
+    json_key: #@ data.values.staging_inception_creds
+    regexp: galoy-client-artifacts/deps/bundled-deps-v(.*)-.*.tgz
