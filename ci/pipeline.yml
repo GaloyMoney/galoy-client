@@ -22,14 +22,14 @@ jobs:
     - { get: pipeline-tasks }
   - task: test
     config:
-    platform: linux
-    image_resource: #@ task_image_config()
-    inputs:
-    - name: bundled-deps
-    - name: pipeline-tasks
-    - name: repo
-    run:
-      path: pipeline-tasks/ci/tasks/check-code.sh
+      platform: linux
+      image_resource: #@ task_image_config()
+      inputs:
+      - name: bundled-deps
+      - name: pipeline-tasks
+      - name: repo
+      run:
+        path: pipeline-tasks/ci/tasks/check-code.sh
 
 - name: test
   serial: true
@@ -40,39 +40,39 @@ jobs:
     - { get: pipeline-tasks }
   - task: test
     config:
-    platform: linux
-    image_resource: #@ task_image_config()
-    inputs:
-    - name: bundled-deps
-    - name: pipeline-tasks
-    - name: repo
-    run:
-      path: pipeline-tasks/ci/tasks/test.sh
+      platform: linux
+      image_resource: #@ task_image_config()
+      inputs:
+      - name: bundled-deps
+      - name: pipeline-tasks
+      - name: repo
+      run:
+        path: pipeline-tasks/ci/tasks/test.sh
 
 - name: install-deps
   serial: true
   plan:
-    - in_parallel:
-        - { get: deps, trigger: true }
-        - { get: pipeline-tasks }
-        - { get: deps-version, params: { bump: patch } }
+  - in_parallel:
+    - { get: deps, trigger: true }
+    - { get: pipeline-tasks }
+    - { get: deps-version, params: { bump: patch } }
 
-    - task: install-deps
-      config:
-        platform: linux
-        image_resource: #@ task_image_config()
-        inputs:
-          - name: pipeline-tasks
-          - name: deps
-          - name: deps-version
-        outputs:
-          - name: bundled-deps
-        run:
-          path: pipeline-tasks/ci/tasks/install-deps.sh
+  - task: install-deps
+    config:
+      platform: linux
+      image_resource: #@ task_image_config()
+      inputs:
+      - name: pipeline-tasks
+      - name: deps
+      - name: deps-version
+      outputs:
+      - name: bundled-deps
+      run:
+        path: pipeline-tasks/ci/tasks/install-deps.sh
 
-    - put: bundled-deps
-      params:
-        file: bundled-deps/bundled-deps-*.tgz
+  - put: bundled-deps
+    params:
+      file: bundled-deps/bundled-deps-*.tgz
 
 resources:
 - name: repo
