@@ -1,3 +1,5 @@
+#@ load("@ytt:data", "data")
+
 #@ def pipeline_image():
 #@   return data.values.docker_registry + "/galoy-app-pipeline"
 #@ end
@@ -11,29 +13,66 @@ source:
 #@ end
 
 jobs:
-- name: install-deps
+- name: check-code
+  serial: true
   plan:
   - in_parallel:
-    - { get: deps, trigger: true }
+    - { get: repo, trigger: true }
+    - { get: bundled-deps, trigger: true }
     - { get: pipeline-tasks }
-    - { get: deps-version, params: { bump: patch }}
-  
-  - task: install-deps
+  - task: test
     config:
-      platform: linux
-      image_resource: #@ task_image_config()
-      inputs:
-      - name: pipeline-tasks
-      - name: deps
-      - name: deps-version
-      outputs:
-      - name: bundled-deps
-      run:
-        path: pipeline-tasks/ci/tasks/install-deps.sh
+    platform: linux
+    image_resource: #@ task_image_config()
+    inputs:
+    - name: bundled-deps
+    - name: pipeline-tasks
+    - name: repo
+    run:
+      path: pipeline-tasks/ci/tasks/check-code.sh
 
-  - put: bundled-deps
-    params:
-      file: bundled-deps/bundled-deps-*.tgz
+- name: test
+  serial: true
+  plan:
+  - in_parallel:
+    - { get: repo, trigger: true }
+    - { get: bundled-deps, trigger: true }
+    - { get: pipeline-tasks }
+  - task: test
+    config:
+    platform: linux
+    image_resource: #@ task_image_config()
+    inputs:
+    - name: bundled-deps
+    - name: pipeline-tasks
+    - name: repo
+    run:
+      path: pipeline-tasks/ci/tasks/test.sh
+
+- name: install-deps
+  serial: true
+  plan:
+    - in_parallel:
+        - { get: deps, trigger: true }
+        - { get: pipeline-tasks }
+        - { get: deps-version, params: { bump: patch } }
+
+    - task: install-deps
+      config:
+        platform: linux
+        image_resource: #@ task_image_config()
+        inputs:
+          - name: pipeline-tasks
+          - name: deps
+          - name: deps-version
+        outputs:
+          - name: bundled-deps
+        run:
+          path: pipeline-tasks/ci/tasks/install-deps.sh
+
+    - put: bundled-deps
+      params:
+        file: bundled-deps/bundled-deps-*.tgz
 
 resources:
 - name: repo
