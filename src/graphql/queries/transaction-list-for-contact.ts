@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client"
 import transactionListFragment from "../fragments/transaction-list-fragment"
 
-const transactionsListForContact = gql`
-  query transactionsListForContact(
+const transactionListForContact = gql`
+  query transactionListForContact(
     $username: Username!
     $first: Int
     $after: String
@@ -21,4 +21,4 @@ const transactionsListForContact = gql`
   ${transactionListFragment}
 `
 
-export default transactionsListForContact
+export default transactionListForContact

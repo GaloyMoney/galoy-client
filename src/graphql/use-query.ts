@@ -81,10 +81,33 @@ const transactionListQuery = (
   >("transactionList", config)
 }
 
+const contactsQuery = (
+  config?: QueryHookOptions<GaloyGQL.ContactsQuery, GaloyGQL.ContactsQueryVariables>,
+): QueryResult<GaloyGQL.ContactsQuery> & QueryHelpers => {
+  return useQueryWrapper<GaloyGQL.ContactsQuery, GaloyGQL.ContactsQueryVariables>(
+    "contacts",
+    config,
+  )
+}
+
+const transactionListForContactQuery = (
+  config?: QueryHookOptions<
+    GaloyGQL.TransactionListForContactQuery,
+    GaloyGQL.TransactionListForContactQueryVariables
+  >,
+): QueryResult<GaloyGQL.TransactionListForContactQuery> & QueryHelpers => {
+  return useQueryWrapper<
+    GaloyGQL.TransactionListForContactQuery,
+    GaloyGQL.TransactionListForContactQueryVariables
+  >("transactionListForContact", config)
+}
+
 export const useQuery = {
   main: mainQuery,
   onChainTxFee: onChainTxFeeQuery,
   transactionList: transactionListQuery,
+  contacts: contactsQuery,
+  transactionListForContact: transactionListForContactQuery,
 }
 
 // ********** DELAYED QUERIES ********** //
@@ -143,7 +166,15 @@ const transactionListDelayedQuery = () => {
   >("transactionList")
 }
 
+const transactionListForContactDelayedQuery = () => {
+  return useDelayedQueryWrapper<
+    GaloyGQL.TransactionListForContactQuery,
+    GaloyGQL.TransactionListForContactQueryVariables
+  >("transactionListForContact")
+}
+
 export const useDelayedQuery = {
   userDefaultWalletId: userDefaultWalletIdDelayedQuery,
   transactionList: transactionListDelayedQuery,
+  transactionListForContact: transactionListForContactDelayedQuery,
 }
