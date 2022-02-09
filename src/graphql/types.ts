@@ -1530,7 +1530,7 @@ export namespace GaloyGQL {
     } | null> | null
   }
 
-  export type TransactionsListForContactQueryVariables = Exact<{
+  export type TransactionListForContactQueryVariables = Exact<{
     username: Scalars["Username"]
     first?: InputMaybe<Scalars["Int"]>
     after?: InputMaybe<Scalars["String"]>
@@ -1538,7 +1538,7 @@ export namespace GaloyGQL {
     before?: InputMaybe<Scalars["String"]>
   }>
 
-  export type TransactionsListForContactQuery = {
+  export type TransactionListForContactQuery = {
     readonly __typename?: "Query"
     readonly me?: {
       readonly __typename?: "User"
