@@ -61,4 +61,4 @@ jq --arg v "$(cat ../version/version)" '.version = $v' package.json > ../tmp && 
 
 git add package.json
 git status
-git commit -m "ci(release): release version $(cat version/version)"
+git commit -m "ci(release): release version $(cat ../version/version)"
