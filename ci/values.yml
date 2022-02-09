@@ -1,7 +1,7 @@
 #@data/values
 ---
 git_uri: git@github.com:GaloyMoney/galoy-client.git
-git_branch: add-ci
+git_branch: main
 github_private_key: ((github.private_key))
 github_token: ((github.api_token))
 
