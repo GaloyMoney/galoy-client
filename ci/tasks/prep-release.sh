@@ -57,7 +57,7 @@ git config --global user.name "CI Bot"
 
 pushd repo
 
-jq --arg v "$(cat version/version)" '.version = $v' > tmp && mv tmp package.json
+jq --arg v "$(cat ../version/version)" '.version = $v' package.json > ../tmp && mv ../tmp package.json
 
 git add package.json
 git status
