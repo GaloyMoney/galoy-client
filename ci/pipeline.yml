@@ -85,21 +85,21 @@ jobs:
       - name: repo
       run:
         path: pipeline-tasks/ci/tasks/prep-release.sh
-  - in_parallel:
-    - put: repo-out
-      params:
-        repository: repo
-        rebase: true
-    - put: gh-release
-      params:
-        name: artifacts/gh-release-name
-        tag: artifacts/gh-release-tag
-        body: artifacts/gh-release-notes.md
-    - put: npm-release
-      params:
-        path: repo
-        version: version/version
-        public: true
+  - put: repo-out
+    params:
+      tag: artifacts/gh-release-tag
+      repository: repo
+      rebase: true
+  - put: gh-release
+    params:
+      name: artifacts/gh-release-name
+      tag: artifacts/gh-release-tag
+      body: artifacts/gh-release-notes.md
+  - put: npm-release
+    params:
+      path: repo
+      version: version/version
+      public: true
   - put: version
     params:
       file: version/version
