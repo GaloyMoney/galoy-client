@@ -82,9 +82,19 @@ jobs:
       outputs:
       - name: version
       - name: artifacts
+      run:
+        path: pipeline-tasks/ci/tasks/vendor/prep-release-src.sh
+  - task: update-repo
+    config:
+      platform: linux
+      image_resource: #@ task_image_config()
+      inputs:
+      - name: repo
+      - name: version
+      outputs:
       - name: repo
       run:
-        path: pipeline-tasks/ci/tasks/prep-release.sh
+        path: pipeline-tasks/ci/tasks/update-repo.sh
   - put: repo-out
     params:
       tag: artifacts/gh-release-tag
