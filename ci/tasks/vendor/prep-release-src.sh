@@ -1,19 +1,21 @@
 #!/bin/bash
 
+set -eu
+
 # ------------ CHANGELOG ------------
 
 pushd repo
 
 # First time
 if [[ $(cat ../version/version) == "0.0.0" ]]; then
-  git cliff --config ../pipeline-tasks/ci/config/git-cliff.toml > ../artifacts/gh-release-notes.md
+  git cliff --config ../pipeline-tasks/ci/config/vendor/git-cliff.toml > ../artifacts/gh-release-notes.md
 
 # Fetch changelog from last ref
 else
   export prev_ref=$(git rev-list -n 1 $(cat ../version/version))
   export new_ref=$(git rev-parse HEAD)
 
-  git cliff --config ../pipeline-tasks/ci/config/git-cliff.toml $prev_ref..$new_ref > ../artifacts/gh-release-notes.md
+  git cliff --config ../pipeline-tasks/ci/config/vendor/git-cliff.toml $prev_ref..$new_ref > ../artifacts/gh-release-notes.md
 fi
 
 popd
@@ -50,15 +52,3 @@ echo ""
 
 cat version/version > artifacts/gh-release-tag
 echo "v$(cat version/version) Release" > artifacts/gh-release-name
-
-# ----------- UPDATE REPO -----------
-git config --global user.email "bot@galoy.io"
-git config --global user.name "CI Bot"
-
-pushd repo
-
-jq --arg v "$(cat ../version/version)" '.version = $v' package.json > ../tmp && mv ../tmp package.json
-
-git add package.json
-git status
-git commit -m "ci(release): release version $(cat ../version/version)"
