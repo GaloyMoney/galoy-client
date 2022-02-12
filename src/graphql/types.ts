@@ -228,7 +228,9 @@ export namespace GaloyGQL {
   export type IntraLedgerUpdate = {
     readonly __typename?: "IntraLedgerUpdate"
     readonly amount: Scalars["SatAmount"]
+    readonly displayCurrencyPerSat: Scalars["Float"]
     readonly txNotificationType: TxNotificationType
+    /** @deprecated updated over displayCurrencyPerSat */
     readonly usdPerSat: Scalars["Float"]
     readonly walletId: Scalars["WalletId"]
   }
@@ -523,8 +525,10 @@ export namespace GaloyGQL {
   export type OnChainUpdate = {
     readonly __typename?: "OnChainUpdate"
     readonly amount: Scalars["SatAmount"]
+    readonly displayCurrencyPerSat: Scalars["Float"]
     readonly txHash: Scalars["OnChainTxHash"]
     readonly txNotificationType: TxNotificationType
+    /** @deprecated updated over displayCurrencyPerSat */
     readonly usdPerSat: Scalars["Float"]
     readonly walletId: Scalars["WalletId"]
   }
@@ -1073,7 +1077,7 @@ export namespace GaloyGQL {
   }
 
   export type DeviceNotificationTokenCreateMutationVariables = Exact<{
-    deviceToken: Scalars["String"]
+    input: DeviceNotificationTokenCreateInput
   }>
 
   export type DeviceNotificationTokenCreateMutation = {
@@ -1295,11 +1299,11 @@ export namespace GaloyGQL {
     }
   }
 
-  export type UpdateLanguageMutationVariables = Exact<{
-    language: Scalars["Language"]
+  export type UserUpdateLanguageMutationVariables = Exact<{
+    input: UserUpdateLanguageInput
   }>
 
-  export type UpdateLanguageMutation = {
+  export type UserUpdateLanguageMutation = {
     readonly __typename?: "Mutation"
     readonly userUpdateLanguage: {
       readonly __typename?: "UserUpdateLanguagePayload"
@@ -1315,11 +1319,11 @@ export namespace GaloyGQL {
     }
   }
 
-  export type UpdateUsernameMutationVariables = Exact<{
-    username: Scalars["Username"]
+  export type UserUpdateUsernameMutationVariables = Exact<{
+    input: UserUpdateUsernameInput
   }>
 
-  export type UpdateUsernameMutation = {
+  export type UserUpdateUsernameMutation = {
     readonly __typename?: "Mutation"
     readonly userUpdateUsername: {
       readonly __typename?: "UserUpdateUsernamePayload"
@@ -1389,11 +1393,11 @@ export namespace GaloyGQL {
     } | null
   }
 
-  export type GetWalletCsvTransactionsQueryVariables = Exact<{
+  export type DefaultWalletCsvTransactionsQueryVariables = Exact<{
     defaultWalletId: Scalars["WalletId"]
   }>
 
-  export type GetWalletCsvTransactionsQuery = {
+  export type DefaultWalletCsvTransactionsQuery = {
     readonly __typename?: "Query"
     readonly me?: {
       readonly __typename?: "User"
@@ -1800,7 +1804,7 @@ export namespace GaloyGQL {
             readonly walletId: string
             readonly txNotificationType: TxNotificationType
             readonly amount: number
-            readonly usdPerSat: number
+            readonly displayCurrencyPerSat: number
             readonly type: "IntraLedgerUpdate"
           }
         | {
@@ -1816,7 +1820,7 @@ export namespace GaloyGQL {
             readonly txNotificationType: TxNotificationType
             readonly txHash: string
             readonly amount: number
-            readonly usdPerSat: number
+            readonly displayCurrencyPerSat: number
             readonly type: "OnChainUpdate"
           }
         | {
