@@ -176,7 +176,7 @@ resources:
   source:
     paths: [ci/tasks/*, Makefile]
     uri: #@ data.values.git_uri
-    branch: ci-build
+    branch: #@ data.values.git_branch
     private_key: #@ data.values.github_private_key
 
 - name: deps
