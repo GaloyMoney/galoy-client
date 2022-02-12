@@ -61,17 +61,13 @@ jobs:
       run:
         path: pipeline-tasks/ci/tasks/test.sh
 
-- name: release
+- name: build
   serial: true
   plan:
   - in_parallel:
-    - get: repo
-      passed:
-      - check-code
-      - test
-    - get: pipeline-tasks
-    - get: version
-    - get: bundled-deps
+    - { get: repo, trigger: true }
+    - { get: bundled-deps, trigger: true }
+    - { get: pipeline-tasks }
   - task: build
     config:
       platform: linux
@@ -84,6 +80,18 @@ jobs:
       - name: repo
       run:
         path: pipeline-tasks/ci/tasks/build.sh
+
+- name: release
+  serial: true
+  plan:
+  - in_parallel:
+    - get: repo
+      passed:
+      - check-code
+      - test
+      - build
+    - get: pipeline-tasks
+    - get: version
   - task: prep-release
     config:
       platform: linux
@@ -168,7 +176,7 @@ resources:
   source:
     paths: [ci/tasks/*, Makefile]
     uri: #@ data.values.git_uri
-    branch: #@ data.values.git_branch
+    branch: ci-build
     private_key: #@ data.values.github_private_key
 
 - name: deps
