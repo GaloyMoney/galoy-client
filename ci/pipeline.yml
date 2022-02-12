@@ -61,6 +61,26 @@ jobs:
       run:
         path: pipeline-tasks/ci/tasks/test.sh
 
+- name: build
+  serial: true
+  plan:
+  - in_parallel:
+    - { get: repo, trigger: true }
+    - { get: bundled-deps, trigger: true }
+    - { get: pipeline-tasks }
+  - task: build
+    config:
+      platform: linux
+      image_resource: #@ task_image_config()
+      inputs:
+      - name: bundled-deps
+      - name: pipeline-tasks
+      - name: repo
+      outputs:
+      - name: repo
+      run:
+        path: pipeline-tasks/ci/tasks/build.sh
+
 - name: release
   serial: true
   plan:
@@ -69,6 +89,7 @@ jobs:
       passed:
       - check-code
       - test
+      - build
     - get: pipeline-tasks
     - get: version
   - task: prep-release
