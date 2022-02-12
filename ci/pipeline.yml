@@ -71,11 +71,13 @@ jobs:
       - test
     - get: pipeline-tasks
     - get: version
+    - get: bundled-deps
   - task: build
     config:
       platform: linux
       image_resource: #@ task_image_config()
       inputs:
+      - name: bundled-deps
       - name: pipeline-tasks
       - name: repo
       outputs:
