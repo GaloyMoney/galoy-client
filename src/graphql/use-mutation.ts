@@ -74,260 +74,77 @@ const useMutationWrapper = <TData = unknown, TVars = unknown, TFunc = unknown>(
   return [sendMutation as unknown as TFunc, { ...result, errorsMessage }]
 }
 
-type CaptchaCreateChallengeFunction = (
-  options?: MutationFunctionOptions<
-    GaloyGQL.CaptchaCreateChallengeMutation,
-    GaloyGQL.CaptchaCreateChallengeMutationVariables
-  >,
-) => Promise<MutationResult<GaloyGQL.CaptchaCreateChallengeMutation> & MutationHelpers>
+type MutationFunction<TData, TVars> = (
+  options?: MutationFunctionOptions<TData, TVars>,
+) => Promise<MutationResult<TData> & MutationHelpers>
 
-const captchaCreateChallengeMutation = (
-  config?: MutationHookOptions<
-    GaloyGQL.CaptchaCreateChallengeMutation,
-    GaloyGQL.CaptchaCreateChallengeMutationVariables
-  >,
-): [
-  CaptchaCreateChallengeFunction,
-  MutationResult<GaloyGQL.CaptchaCreateChallengeMutation> & MutationHelpers,
-] => {
-  return useMutationWrapper<
-    GaloyGQL.CaptchaCreateChallengeMutation,
-    GaloyGQL.CaptchaCreateChallengeMutationVariables,
-    CaptchaCreateChallengeFunction
-  >("captchaCreateChallenge", config)
+const defineMutation = <TData, TVars>(name: keyof typeof MUTATIONS) => {
+  return (
+    config?: MutationHookOptions<TData, TVars>,
+  ): [MutationFunction<TData, TVars>, MutationResult<TData> & MutationHelpers] => {
+    return useMutationWrapper<TData, TVars, MutationFunction<TData, TVars>>(name, config)
+  }
 }
 
-type CaptchaRequestAuthCodeFunction = (
-  options?: MutationFunctionOptions<
-    GaloyGQL.CaptchaRequestAuthCodeMutation,
-    GaloyGQL.CaptchaRequestAuthCodeMutationVariables
-  >,
-) => Promise<MutationResult<GaloyGQL.CaptchaRequestAuthCodeMutation> & MutationHelpers>
+const captchaCreateChallengeMutation = defineMutation<
+  GaloyGQL.CaptchaCreateChallengeMutation,
+  GaloyGQL.CaptchaCreateChallengeMutationVariables
+>("captchaCreateChallenge")
 
-const captchaRequestAuthCodeMutation = (
-  config?: MutationHookOptions<
-    GaloyGQL.CaptchaRequestAuthCodeMutation,
-    GaloyGQL.CaptchaRequestAuthCodeMutationVariables
-  >,
-): [
-  CaptchaRequestAuthCodeFunction,
-  MutationResult<GaloyGQL.CaptchaRequestAuthCodeMutation> & MutationHelpers,
-] => {
-  return useMutationWrapper<
-    GaloyGQL.CaptchaRequestAuthCodeMutation,
-    GaloyGQL.CaptchaRequestAuthCodeMutationVariables,
-    CaptchaRequestAuthCodeFunction
-  >("captchaRequestAuthCode", config)
-}
+const captchaRequestAuthCodeMutation = defineMutation<
+  GaloyGQL.CaptchaRequestAuthCodeMutation,
+  GaloyGQL.CaptchaRequestAuthCodeMutationVariables
+>("captchaRequestAuthCode")
 
-type OnChainAddressCurrentFunction = (
-  options?: MutationFunctionOptions<
-    GaloyGQL.OnChainAddressCurrentMutation,
-    GaloyGQL.OnChainAddressCurrentMutationVariables
-  >,
-) => Promise<MutationResult<GaloyGQL.OnChainAddressCurrentMutation> & MutationHelpers>
+const onChainAddressCurrentMutation = defineMutation<
+  GaloyGQL.OnChainAddressCurrentMutation,
+  GaloyGQL.OnChainAddressCurrentMutationVariables
+>("onChainAddressCurrent")
 
-const onChainAddressCurrentMutation = (
-  config?: MutationHookOptions<
-    GaloyGQL.OnChainAddressCurrentMutation,
-    GaloyGQL.OnChainAddressCurrentMutationVariables
-  >,
-): [
-  OnChainAddressCurrentFunction,
-  MutationResult<GaloyGQL.OnChainAddressCurrentMutation> & MutationHelpers,
-] => {
-  return useMutationWrapper<
-    GaloyGQL.OnChainAddressCurrentMutation,
-    GaloyGQL.OnChainAddressCurrentMutationVariables,
-    OnChainAddressCurrentFunction
-  >("onChainAddressCurrent", config)
-}
+const lnInvoiceCreateMutation = defineMutation<
+  GaloyGQL.LnInvoiceCreateMutation,
+  GaloyGQL.LnInvoiceCreateMutationVariables
+>("lnInvoiceCreate")
 
-type LnInvoiceCreateFunction = (
-  options?: MutationFunctionOptions<
-    GaloyGQL.LnInvoiceCreateMutation,
-    GaloyGQL.LnInvoiceCreateMutationVariables
-  >,
-) => Promise<MutationResult<GaloyGQL.LnInvoiceCreateMutation> & MutationHelpers>
+const lnNoAmountInvoiceCreateMutation = defineMutation<
+  GaloyGQL.LnNoAmountInvoiceCreateMutation,
+  GaloyGQL.LnNoAmountInvoiceCreateMutationVariables
+>("lnNoAmountInvoiceCreate")
 
-const lnInvoiceCreateMutation = (
-  config?: MutationHookOptions<
-    GaloyGQL.LnInvoiceCreateMutation,
-    GaloyGQL.LnInvoiceCreateMutationVariables
-  >,
-): [
-  LnInvoiceCreateFunction,
-  MutationResult<GaloyGQL.LnInvoiceCreateMutation> & MutationHelpers,
-] => {
-  return useMutationWrapper<
-    GaloyGQL.LnInvoiceCreateMutation,
-    GaloyGQL.LnInvoiceCreateMutationVariables,
-    LnInvoiceCreateFunction
-  >("lnInvoiceCreate", config)
-}
+const intraLedgerPaymentSendMutation = defineMutation<
+  GaloyGQL.IntraLedgerPaymentSendMutation,
+  GaloyGQL.IntraLedgerPaymentSendMutationVariables
+>("intraLedgerPaymentSend")
 
-type LnNoAmountInvoiceCreateFunction = (
-  options?: MutationFunctionOptions<
-    GaloyGQL.LnNoAmountInvoiceCreateMutation,
-    GaloyGQL.LnNoAmountInvoiceCreateMutationVariables
-  >,
-) => Promise<MutationResult<GaloyGQL.LnNoAmountInvoiceCreateMutation> & MutationHelpers>
+const lnInvoicePaymentSendMutation = defineMutation<
+  GaloyGQL.LnInvoicePaymentSendMutation,
+  GaloyGQL.LnInvoicePaymentSendMutationVariables
+>("lnInvoicePaymentSend")
 
-const lnNoAmountInvoiceCreateMutation = (
-  config?: MutationHookOptions<
-    GaloyGQL.LnNoAmountInvoiceCreateMutation,
-    GaloyGQL.LnNoAmountInvoiceCreateMutationVariables
-  >,
-): [
-  LnNoAmountInvoiceCreateFunction,
-  MutationResult<GaloyGQL.LnNoAmountInvoiceCreateMutation> & MutationHelpers,
-] => {
-  return useMutationWrapper<
-    GaloyGQL.LnNoAmountInvoiceCreateMutation,
-    GaloyGQL.LnNoAmountInvoiceCreateMutationVariables,
-    LnNoAmountInvoiceCreateFunction
-  >("lnNoAmountInvoiceCreate", config)
-}
+const lnInvoiceFeeProbeMutation = defineMutation<
+  GaloyGQL.LnInvoiceFeeProbeMutation,
+  GaloyGQL.LnInvoiceFeeProbeMutationVariables
+>("lnInvoiceFeeProbe")
 
-type IntraLedgerPaymentSendFunction = (
-  options?: MutationFunctionOptions<
-    GaloyGQL.IntraLedgerPaymentSendMutation,
-    GaloyGQL.IntraLedgerPaymentSendMutationVariables
-  >,
-) => Promise<MutationResult<GaloyGQL.IntraLedgerPaymentSendMutation> & MutationHelpers>
+const onChainPaymentSendMutation = defineMutation<
+  GaloyGQL.OnChainPaymentSendMutation,
+  GaloyGQL.OnChainPaymentSendMutationVariables
+>("onChainPaymentSend")
 
-const intraLedgerPaymentSendMutation = (
-  config?: MutationHookOptions<
-    GaloyGQL.IntraLedgerPaymentSendMutation,
-    GaloyGQL.IntraLedgerPaymentSendMutationVariables
-  >,
-): [
-  IntraLedgerPaymentSendFunction,
-  MutationResult<GaloyGQL.IntraLedgerPaymentSendMutation> & MutationHelpers,
-] => {
-  return useMutationWrapper<
-    GaloyGQL.IntraLedgerPaymentSendMutation,
-    GaloyGQL.IntraLedgerPaymentSendMutationVariables,
-    IntraLedgerPaymentSendFunction
-  >("intraLedgerPaymentSend", config)
-}
+const lnNoAmountInvoicePaymentSendMutation = defineMutation<
+  GaloyGQL.LnNoAmountInvoicePaymentSendMutation,
+  GaloyGQL.LnNoAmountInvoicePaymentSendMutationVariables
+>("lnNoAmountInvoicePaymentSend")
 
-type LnInvoicePaymentSendFunction = (
-  options?: MutationFunctionOptions<
-    GaloyGQL.LnInvoicePaymentSendMutation,
-    GaloyGQL.LnInvoicePaymentSendMutationVariables
-  >,
-) => Promise<MutationResult<GaloyGQL.LnInvoicePaymentSendMutation> & MutationHelpers>
+const lnNoAmountInvoiceFeeProbeMutation = defineMutation<
+  GaloyGQL.LnNoAmountInvoiceFeeProbeMutation,
+  GaloyGQL.LnNoAmountInvoiceFeeProbeMutationVariables
+>("lnNoAmountInvoiceFeeProbe")
 
-const lnInvoicePaymentSendMutation = (
-  config?: MutationHookOptions<
-    GaloyGQL.LnInvoicePaymentSendMutation,
-    GaloyGQL.LnInvoicePaymentSendMutationVariables
-  >,
-): [
-  LnInvoicePaymentSendFunction,
-  MutationResult<GaloyGQL.LnInvoicePaymentSendMutation> & MutationHelpers,
-] => {
-  return useMutationWrapper<
-    GaloyGQL.LnInvoicePaymentSendMutation,
-    GaloyGQL.LnInvoicePaymentSendMutationVariables,
-    LnInvoicePaymentSendFunction
-  >("lnInvoicePaymentSend", config)
-}
-
-type LnInvoiceFeeProbeFunction = (
-  options?: MutationFunctionOptions<
-    GaloyGQL.LnInvoiceFeeProbeMutation,
-    GaloyGQL.LnInvoiceFeeProbeMutationVariables
-  >,
-) => Promise<MutationResult<GaloyGQL.LnInvoiceFeeProbeMutation> & MutationHelpers>
-
-const lnInvoiceFeeProbeMutation = (
-  config?: MutationHookOptions<
-    GaloyGQL.LnInvoiceFeeProbeMutation,
-    GaloyGQL.LnInvoiceFeeProbeMutationVariables
-  >,
-): [
-  LnInvoiceFeeProbeFunction,
-  MutationResult<GaloyGQL.LnInvoiceFeeProbeMutation> & MutationHelpers,
-] => {
-  return useMutationWrapper<
-    GaloyGQL.LnInvoiceFeeProbeMutation,
-    GaloyGQL.LnInvoiceFeeProbeMutationVariables,
-    LnInvoiceFeeProbeFunction
-  >("lnInvoiceFeeProbe", config)
-}
-
-type OnChainPaymentSendFunction = (
-  options?: MutationFunctionOptions<
-    GaloyGQL.OnChainPaymentSendMutation,
-    GaloyGQL.OnChainPaymentSendMutationVariables
-  >,
-) => Promise<MutationResult<GaloyGQL.OnChainPaymentSendMutation> & MutationHelpers>
-
-const onChainPaymentSendMutation = (
-  config?: MutationHookOptions<
-    GaloyGQL.OnChainPaymentSendMutation,
-    GaloyGQL.OnChainPaymentSendMutationVariables
-  >,
-): [
-  OnChainPaymentSendFunction,
-  MutationResult<GaloyGQL.OnChainPaymentSendMutation> & MutationHelpers,
-] => {
-  return useMutationWrapper<
-    GaloyGQL.OnChainPaymentSendMutation,
-    GaloyGQL.OnChainPaymentSendMutationVariables,
-    OnChainPaymentSendFunction
-  >("onChainPaymentSend", config)
-}
-
-type LnNoAmountInvoicePaymentSendFunction = (
-  options?: MutationFunctionOptions<
-    GaloyGQL.LnNoAmountInvoicePaymentSendMutation,
-    GaloyGQL.LnNoAmountInvoicePaymentSendMutationVariables
-  >,
-) => Promise<
-  MutationResult<GaloyGQL.LnNoAmountInvoicePaymentSendMutation> & MutationHelpers
->
-
-const lnNoAmountInvoicePaymentSendMutation = (
-  config?: MutationHookOptions<
-    GaloyGQL.LnNoAmountInvoicePaymentSendMutation,
-    GaloyGQL.LnNoAmountInvoicePaymentSendMutationVariables
-  >,
-): [
-  LnNoAmountInvoicePaymentSendFunction,
-  MutationResult<GaloyGQL.LnNoAmountInvoicePaymentSendMutation> & MutationHelpers,
-] => {
-  return useMutationWrapper<
-    GaloyGQL.LnNoAmountInvoicePaymentSendMutation,
-    GaloyGQL.LnNoAmountInvoicePaymentSendMutationVariables,
-    LnNoAmountInvoicePaymentSendFunction
-  >("lnNoAmountInvoicePaymentSend", config)
-}
-
-type LnNoAmountInvoiceFeeProbeFunction = (
-  options?: MutationFunctionOptions<
-    GaloyGQL.LnNoAmountInvoiceFeeProbeMutation,
-    GaloyGQL.LnNoAmountInvoiceFeeProbeMutationVariables
-  >,
-) => Promise<MutationResult<GaloyGQL.LnNoAmountInvoiceFeeProbeMutation> & MutationHelpers>
-
-const lnNoAmountInvoiceFeeProbeMutation = (
-  config?: MutationHookOptions<
-    GaloyGQL.LnNoAmountInvoiceFeeProbeMutation,
-    GaloyGQL.LnNoAmountInvoiceFeeProbeMutationVariables
-  >,
-): [
-  LnNoAmountInvoiceFeeProbeFunction,
-  MutationResult<GaloyGQL.LnNoAmountInvoiceFeeProbeMutation> & MutationHelpers,
-] => {
-  return useMutationWrapper<
-    GaloyGQL.LnNoAmountInvoiceFeeProbeMutation,
-    GaloyGQL.LnNoAmountInvoiceFeeProbeMutationVariables,
-    LnNoAmountInvoiceFeeProbeFunction
-  >("lnNoAmountInvoiceFeeProbe", config)
-}
+const userUpdateLanguageMutation = defineMutation<
+  GaloyGQL.UserUpdateLanguageMutation,
+  GaloyGQL.UserUpdateLanguageMutationVariables
+>("userUpdateLanguage")
 
 export const useMutation = {
   captchaCreateChallenge: captchaCreateChallengeMutation,
@@ -337,6 +154,7 @@ export const useMutation = {
   lnInvoiceFeeProbe: lnInvoiceFeeProbeMutation,
   lnInvoicePaymentSend: lnInvoicePaymentSendMutation,
   lnNoAmountInvoiceCreate: lnNoAmountInvoiceCreateMutation,
+  userUpdateLanguage: userUpdateLanguageMutation,
   lnNoAmountInvoiceFeeProbe: lnNoAmountInvoiceFeeProbeMutation,
   lnNoAmountInvoicePaymentSend: lnNoAmountInvoicePaymentSendMutation,
   onChainAddressCurrent: onChainAddressCurrentMutation,

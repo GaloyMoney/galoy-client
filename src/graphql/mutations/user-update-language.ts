@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client"
 
 const userUpdateLanguage = gql`
-  mutation updateLanguage($language: Language!) {
-    userUpdateLanguage(input: { language: $language }) {
+  mutation userUpdateLanguage($input: UserUpdateLanguageInput!) {
+    userUpdateLanguage(input: $input) {
       errors {
         message
       }

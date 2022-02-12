@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client"
 
 const deviceNotificationTokenCreate = gql`
-  mutation deviceNotificationTokenCreate($deviceToken: String!) {
-    deviceNotificationTokenCreate(input: { deviceToken: $deviceToken }) {
+  mutation deviceNotificationTokenCreate($input: DeviceNotificationTokenCreateInput!) {
+    deviceNotificationTokenCreate(input: $input) {
       errors {
         message
       }

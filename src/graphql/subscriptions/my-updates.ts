@@ -28,13 +28,13 @@ const myUpdates = gql`
           txNotificationType
           txHash
           amount
-          usdPerSat
+          displayCurrencyPerSat
         }
         ... on IntraLedgerUpdate {
           walletId
           txNotificationType
           amount
-          usdPerSat
+          displayCurrencyPerSat
         }
       }
     }

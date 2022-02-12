@@ -14,7 +14,6 @@ const userQuizQuestionUpdateCompleted = gql`
           id
           earnAmount
         }
-
         completed
       }
     }

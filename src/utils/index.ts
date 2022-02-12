@@ -29,7 +29,7 @@ export const formatRelativeTime = (timestamp: number) => {
 }
 
 export const formatTime = (timestamp: number) => {
-  return new Date(timestamp).toLocaleString("en-US", {
+  return new Date(1000 * timestamp).toLocaleString(i18n.locale, {
     weekday: "short",
     year: "numeric",
     month: "short",

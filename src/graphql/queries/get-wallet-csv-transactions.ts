@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client"
 
 const getWalletCsvTransactions = gql`
-  query getWalletCsvTransactions($defaultWalletId: WalletId!) {
+  query defaultWalletCsvTransactions($defaultWalletId: WalletId!) {
     me {
       id
       defaultAccount {
