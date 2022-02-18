@@ -90,6 +90,7 @@ jobs:
       - check-code
       - test
       - build
+    - get: bundled-deps
     - get: pipeline-tasks
     - get: version
   - task: prep-release
@@ -105,6 +106,18 @@ jobs:
       - name: artifacts
       run:
         path: pipeline-tasks/ci/tasks/vendor/prep-release-src.sh
+  - task: build
+    config:
+      platform: linux
+      image_resource: #@ task_image_config()
+      inputs:
+      - name: bundled-deps
+      - name: pipeline-tasks
+      - name: repo
+      outputs:
+      - name: repo
+      run:
+        path: pipeline-tasks/ci/tasks/build.sh
   - task: update-repo
     config:
       platform: linux
