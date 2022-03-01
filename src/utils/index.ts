@@ -65,3 +65,33 @@ export const truncatedDisplay = (
 
   return text
 }
+
+export const sameDay = (d1: number, d2: number | Date): boolean => {
+  const parsedD1 = new Date(1000 * d1)
+  const parsedD2 = typeof d2 === "number" ? new Date(d2) : d2
+
+  return (
+    parsedD1.getFullYear() === parsedD2.getFullYear() &&
+    parsedD1.getMonth() === parsedD2.getMonth() &&
+    parsedD1.getDate() === parsedD2.getDate()
+  )
+}
+
+export const sameMonth = (d1: number, d2: number | Date): boolean => {
+  const parsedD1 = new Date(1000 * d1)
+  const parsedD2 = typeof d2 === "number" ? new Date(d2) : d2
+
+  return (
+    parsedD1.getFullYear() === parsedD2.getFullYear() &&
+    parsedD1.getMonth() === parsedD2.getMonth()
+  )
+}
+
+export const unixTime = (): number => Math.floor(Date.now() / 1000)
+
+export const isToday = (timestamp: number) => sameDay(timestamp, new Date())
+
+export const isYesterday = (timestamp: number) =>
+  sameDay(timestamp, new Date().setDate(new Date().getDate() - 1))
+
+export const isThisMonth = (timestamp: number) => sameMonth(timestamp, new Date())
