@@ -2,7 +2,24 @@ import bolt11 from "bolt11"
 import url from "url"
 import { networks, address } from "bitcoinjs-lib"
 
-import { getDescription, getDestination } from "../index"
+export const getDescription = (decoded: bolt11.PaymentRequestObject) => {
+  const data = decoded.tags.find((value) => value.tagName === "description")?.data
+  if (data) {
+    return data as string
+  }
+}
+
+export const getDestination = (
+  decoded: bolt11.PaymentRequestObject,
+): string | undefined => decoded.payeeNodeKey
+
+export const getHashFromInvoice = (invoice: string): string | undefined => {
+  const decoded = bolt11.decode(invoice)
+  const data = decoded.tags.find((value) => value.tagName === "payment_hash")?.data
+  if (data) {
+    return data as string
+  }
+}
 
 export type Network = "mainnet" | "testnet" | "regtest"
 export type PaymentType = "lightning" | "onchain" | "intraledger" | "lnurl"
