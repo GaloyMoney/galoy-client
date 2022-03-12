@@ -10,6 +10,7 @@ generates:
       scalars:
         AccountApiKeyLabel: "string"
         AuthToken: "string"
+        CentAmount: "number"
         ContactAlias: "string"
         Hex32Bytes: "string"
         Language: "string"

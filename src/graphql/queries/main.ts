@@ -2,7 +2,7 @@ import { gql } from "@apollo/client"
 import meFragment from "../fragments/me-fragment"
 
 const main = gql`
-  query main($hasToken: Boolean!, $recentTransactions: Int) {
+  query main($isAuthenticated: Boolean!, $recentTransactions: Int) {
     globals {
       nodesIds
     }
@@ -12,7 +12,7 @@ const main = gql`
       currencyUnit
       formattedAmount
     }
-    me @include(if: $hasToken) {
+    me @include(if: $isAuthenticated) {
       ...Me
     }
   }
