@@ -38,7 +38,7 @@ describe("truncatedDisplay", () => {
 })
 
 describe("datetime utils", () => {
-  const mockedUnixTime = 1598110996 // Sat, Aug 22, 2020, 8:43 AM
+  const mockedUnixTime = 1598110996 // Sat, Aug 22, 2020, 15:43:16 GMT
 
   beforeAll(() => {
     jest.setSystemTime(1000 * mockedUnixTime)
@@ -55,7 +55,7 @@ describe("datetime utils", () => {
 
   describe("formatTime", () => {
     it("works", () => {
-      expect(formatTime(mockedUnixTime - 60)).toEqual("Sat, Aug 22, 2020, 8:42 AM")
+      expect(formatTime(mockedUnixTime - 60)).toEqual("Sat, Aug 22, 2020, 3:42 PM")
     })
   })
 
