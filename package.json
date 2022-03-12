@@ -13,7 +13,7 @@
     "prettier:check": "prettier --check .",
     "prettier:fix": "prettier --write .",
     "test:verify": "jest --coverage",
-    "test": "jest",
+    "test": "TZ=UTC jest",
     "tsc:check": "tsc --pretty --noEmit --skipLibCheck"
   },
   "dependencies": {
