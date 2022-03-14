@@ -23,7 +23,7 @@ const ES = {
   "Hash": undefined,
   "History": "Historial",
   "Home": "Inicio",
-  "Invaild verification. Please try again": undefined,
+  "Invalid verification. Please try again": undefined,
   "Invalid QR Code": undefined,
   "Invoice Expired...": undefined,
   "Invoice has been copied to the clipboard": undefined,
