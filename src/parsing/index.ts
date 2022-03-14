@@ -201,6 +201,6 @@ export const parsePaymentDestination = ({
 
   return {
     valid: false,
-    errorMessage: "Invaild payment destination",
+    errorMessage: "Invalid payment destination",
   }
 }
