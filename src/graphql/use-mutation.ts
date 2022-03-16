@@ -24,6 +24,8 @@ import userContactUpdateAlias from "./mutations/user-contact-update-alias"
 import userLogin from "./mutations/user-login"
 import userQuizQuestionUpdateCompleted from "./mutations/user-quiz-question-update-completed"
 import userUpdateLanguage from "./mutations/user-update-language"
+import lnNoAmountUsdInvoicePaymentSend from "./mutations/ln-no-amount-usd-invoice-payment-send"
+import lnUsdInvoiceCreate from "./mutations/ln-usd-invoice-create"
 
 export const MUTATIONS = {
   captchaCreateChallenge,
@@ -31,9 +33,11 @@ export const MUTATIONS = {
   deviceNotificationTokenCreate,
   intraLedgerPaymentSend,
   lnInvoiceCreate,
+  lnUsdInvoiceCreate,
   lnInvoiceFeeProbe,
   lnInvoicePaymentSend,
   lnNoAmountInvoiceCreate,
+  lnNoAmountUsdInvoicePaymentSend,
   lnNoAmountInvoiceFeeProbe,
   lnNoAmountInvoicePaymentSend,
   onChainAddressCurrent,
@@ -106,6 +110,11 @@ const lnInvoiceCreateMutation = defineMutation<
   GaloyGQL.LnInvoiceCreateMutationVariables
 >("lnInvoiceCreate")
 
+const lnUsdInvoiceCreateMutation = defineMutation<
+  GaloyGQL.LnUsdInvoiceCreateMutation,
+  GaloyGQL.LnUsdInvoiceCreateMutationVariables
+>("lnUsdInvoiceCreate")
+
 const lnNoAmountInvoiceCreateMutation = defineMutation<
   GaloyGQL.LnNoAmountInvoiceCreateMutation,
   GaloyGQL.LnNoAmountInvoiceCreateMutationVariables
@@ -120,6 +129,11 @@ const lnInvoicePaymentSendMutation = defineMutation<
   GaloyGQL.LnInvoicePaymentSendMutation,
   GaloyGQL.LnInvoicePaymentSendMutationVariables
 >("lnInvoicePaymentSend")
+
+const lnNoAmountUsdInvoicePaymentSendMutation = defineMutation<
+  GaloyGQL.LnNoAmountUsdInvoicePaymentSendMutation,
+  GaloyGQL.LnNoAmountUsdInvoicePaymentSendMutationVariables
+>("lnNoAmountUsdInvoicePaymentSend")
 
 const lnInvoiceFeeProbeMutation = defineMutation<
   GaloyGQL.LnInvoiceFeeProbeMutation,
@@ -159,4 +173,6 @@ export const useMutation = {
   lnNoAmountInvoicePaymentSend: lnNoAmountInvoicePaymentSendMutation,
   onChainAddressCurrent: onChainAddressCurrentMutation,
   onChainPaymentSend: onChainPaymentSendMutation,
+  lnUsdInvoiceCreate: lnUsdInvoiceCreateMutation,
+  lnNoAmountUsdInvoicePaymentSend: lnNoAmountUsdInvoicePaymentSendMutation,
 }
