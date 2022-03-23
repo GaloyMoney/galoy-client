@@ -15,6 +15,16 @@ export const translate: GaloyTranslate = (scope, options) => {
   return translation
 }
 
+export type GaloyTranslateUnknown = (
+  scope: string,
+  options?: i18n.TranslateOptions | undefined,
+) => string
+
+export const translateUnknown: GaloyTranslateUnknown = (scope, options) => {
+  const translation = i18n.t(scope, { defaultValue: scope, ...options })
+  return translation
+}
+
 export const setLocale = (langauge: string | undefined): void => {
   if (langauge && langauge !== "DEFAULT" && i18n.locale !== langauge) {
     i18n.locale = langauge
