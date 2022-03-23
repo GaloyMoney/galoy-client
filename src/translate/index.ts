@@ -30,3 +30,5 @@ export const setLocale = (langauge: string | undefined): void => {
     i18n.locale = langauge
   }
 }
+
+export * from "./es"
