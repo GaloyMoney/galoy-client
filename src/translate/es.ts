@@ -43,7 +43,8 @@ const ES = {
   "Load more transactions": "Obtener más transacciones",
   "Login to send": undefined,
   "Login": "Iniciar sesión",
-  "Logout": "Cerrar sesion",
+  "Logout": "Cerrar sesión",
+  "New Password": undefined,
   "Next": "Próximo",
   "No transactions": "No transacciones",
   "OnChain": undefined,
@@ -64,6 +65,7 @@ const ES = {
   "Recover Account": undefined,
   "Recover your account": undefined,
   "Reload Application": undefined,
+  "Save": undefined,
   "Scan QR code": "Escanear QR",
   "Send another payment": undefined,
   "Send Bitcoin": "Enviar Bitcoin",
@@ -91,6 +93,7 @@ const ES = {
   "Waiting for payment confirmation...": undefined,
   "Yesterday": "Ayer",
   "You can't send to yourself": undefined,
+  "You successfully recovered your account. Please change your password.": undefined,
 } as const
 
 export type TranslationKey = keyof typeof ES
