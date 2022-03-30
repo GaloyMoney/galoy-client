@@ -1,14 +1,16 @@
 import { gql } from "@apollo/client"
 
 const lnUsdInvoiceCreate = gql`
-  mutation LnUsdInvoiceCreate($input: LnUsdInvoiceCreateInput!) {
+  mutation lnUsdInvoiceCreate($input: LnUsdInvoiceCreateInput!) {
     lnUsdInvoiceCreate(input: $input) {
       errors {
         message
       }
       invoice {
-        paymentRequest
         paymentHash
+        paymentRequest
+        paymentSecret
+        satoshis
       }
     }
   }

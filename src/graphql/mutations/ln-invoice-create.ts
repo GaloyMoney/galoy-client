@@ -7,8 +7,10 @@ const lnInvoiceCreate = gql`
         message
       }
       invoice {
-        paymentRequest
         paymentHash
+        paymentRequest
+        paymentSecret
+        satoshis
       }
     }
   }
