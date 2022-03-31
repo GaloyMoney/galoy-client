@@ -2,8 +2,11 @@ import i18n from "i18n-js"
 
 import ES from "./es"
 
+import * as es from "./es-m"
+import * as en from "./en-m"
+
 i18n.fallbacks = true
-i18n.translations = { es: ES }
+i18n.translations = { es: { ...es, ...ES }, en }
 
 export type GaloyTranslate = (
   scope: keyof typeof ES,
@@ -30,5 +33,11 @@ export const setLocale = (langauge: string | undefined): void => {
     i18n.locale = langauge
   }
 }
+
+export const getLocale = (): string => {
+  return i18n.locale
+}
+
+export { toNumber as toLocaleNumber } from "i18n-js"
 
 export * from "./es"
