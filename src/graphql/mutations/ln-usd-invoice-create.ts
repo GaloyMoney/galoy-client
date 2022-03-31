@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client"
 
-const lnInvoiceCreate = gql`
-  mutation lnInvoiceCreate($input: LnInvoiceCreateInput!) {
-    lnInvoiceCreate(input: $input) {
+const lnUsdInvoiceCreate = gql`
+  mutation lnUsdInvoiceCreate($input: LnUsdInvoiceCreateInput!) {
+    lnUsdInvoiceCreate(input: $input) {
       errors {
         message
       }
@@ -15,4 +15,5 @@ const lnInvoiceCreate = gql`
     }
   }
 `
-export default lnInvoiceCreate
+
+export default lnUsdInvoiceCreate

@@ -923,7 +923,7 @@ export namespace GaloyGQL {
      */
     readonly language: Scalars["Language"]
     /** Phone number with international calling code. */
-    readonly phone: Scalars["Phone"]
+    readonly phone?: Maybe<Scalars["Phone"]>
     /**
      * List the quiz questions the user may have completed.
      * @deprecated will be moved to Accounts
@@ -1048,7 +1048,7 @@ export namespace GaloyGQL {
     readonly id: string
     readonly language: string
     readonly username?: string | null
-    readonly phone: string
+    readonly phone?: string | null
     readonly defaultAccount: {
       readonly __typename?: "ConsumerAccount"
       readonly id: string
@@ -1324,8 +1324,10 @@ export namespace GaloyGQL {
       >
       readonly invoice?: {
         readonly __typename?: "LnInvoice"
-        readonly paymentRequest: string
         readonly paymentHash: string
+        readonly paymentRequest: string
+        readonly paymentSecret: string
+        readonly satoshis?: number | null
       } | null
     }
   }
@@ -1376,8 +1378,9 @@ export namespace GaloyGQL {
       >
       readonly invoice?: {
         readonly __typename?: "LnNoAmountInvoice"
-        readonly paymentRequest: string
         readonly paymentHash: string
+        readonly paymentRequest: string
+        readonly paymentSecret: string
       } | null
     }
   }
@@ -1411,6 +1414,66 @@ export namespace GaloyGQL {
         | { readonly __typename?: "InputError"; readonly message: string }
         | { readonly __typename?: "PaymentError"; readonly message: string }
       >
+    }
+  }
+
+  export type LnNoAmountUsdInvoicePaymentSendMutationVariables = Exact<{
+    input: LnNoAmountUsdInvoicePaymentInput
+  }>
+
+  export type LnNoAmountUsdInvoicePaymentSendMutation = {
+    readonly __typename?: "Mutation"
+    readonly lnNoAmountUsdInvoicePaymentSend: {
+      readonly __typename?: "PaymentSendPayload"
+      readonly status?: PaymentSendResult | null
+      readonly errors: ReadonlyArray<
+        | { readonly __typename?: "InputError"; readonly message: string }
+        | { readonly __typename?: "PaymentError"; readonly message: string }
+      >
+    }
+  }
+
+  export type LnUsdInvoiceCreateOnBehalfOfRecipientMutationVariables = Exact<{
+    input: LnUsdInvoiceCreateOnBehalfOfRecipientInput
+  }>
+
+  export type LnUsdInvoiceCreateOnBehalfOfRecipientMutation = {
+    readonly __typename?: "Mutation"
+    readonly lnUsdInvoiceCreateOnBehalfOfRecipient: {
+      readonly __typename?: "LnInvoicePayload"
+      readonly errors: ReadonlyArray<
+        | { readonly __typename?: "InputError"; readonly message: string }
+        | { readonly __typename?: "PaymentError"; readonly message: string }
+      >
+      readonly invoice?: {
+        readonly __typename?: "LnInvoice"
+        readonly paymentHash: string
+        readonly paymentRequest: string
+        readonly paymentSecret: string
+        readonly satoshis?: number | null
+      } | null
+    }
+  }
+
+  export type LnUsdInvoiceCreateMutationVariables = Exact<{
+    input: LnUsdInvoiceCreateInput
+  }>
+
+  export type LnUsdInvoiceCreateMutation = {
+    readonly __typename?: "Mutation"
+    readonly lnUsdInvoiceCreate: {
+      readonly __typename?: "LnInvoicePayload"
+      readonly errors: ReadonlyArray<
+        | { readonly __typename?: "InputError"; readonly message: string }
+        | { readonly __typename?: "PaymentError"; readonly message: string }
+      >
+      readonly invoice?: {
+        readonly __typename?: "LnInvoice"
+        readonly paymentHash: string
+        readonly paymentRequest: string
+        readonly paymentSecret: string
+        readonly satoshis?: number | null
+      } | null
     }
   }
 
@@ -1635,7 +1698,7 @@ export namespace GaloyGQL {
       readonly id: string
       readonly language: string
       readonly username?: string | null
-      readonly phone: string
+      readonly phone?: string | null
       readonly defaultAccount: {
         readonly __typename?: "ConsumerAccount"
         readonly id: string
@@ -2060,7 +2123,7 @@ export namespace GaloyGQL {
         readonly id: string
         readonly language: string
         readonly username?: string | null
-        readonly phone: string
+        readonly phone?: string | null
         readonly defaultAccount: {
           readonly __typename?: "ConsumerAccount"
           readonly id: string
