@@ -21,7 +21,7 @@ export const translate: GaloyTranslate = (scope, options) => {
 export type GaloyTranslateUnknown = (
   scope: string,
   options?: i18n.TranslateOptions | undefined,
-) => string | Record<string, string | Record<string, any>>
+) => any
 
 export const translateUnknown: GaloyTranslateUnknown = (scope, options) => {
   const translation = i18n.t(scope, { defaultValue: scope, ...options })
