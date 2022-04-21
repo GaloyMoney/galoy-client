@@ -119,7 +119,7 @@ const useDelayedQueryWrapper = <TData = unknown, TVars = unknown>(
   const [loading, setLoading] = useState<boolean>(false)
 
   const sendQuery = useCallback(
-    async (variables) => {
+    async (variables: TVars) => {
       setLoading(true)
       try {
         const result = await client.query({

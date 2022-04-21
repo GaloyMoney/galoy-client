@@ -30,6 +30,29 @@ export const useResetClient = () => {
   }
 }
 
+export const getRequest =
+  (headers: Record<string, string>) =>
+  async (path: string, params: Record<string, string> = {}) => {
+    try {
+      const url = new URL(path)
+      url.search = new URLSearchParams(params).toString()
+
+      const response = await fetch(url.toString(), {
+        method: "get",
+        headers: {
+          "Content-Type": "application/json",
+          ...headers,
+        },
+      })
+
+      const data = await response.json()
+
+      return data.error ? new Error(data.error) : data
+    } catch (err) {
+      return err
+    }
+  }
+
 export const postRequest =
   (authToken: string | undefined) =>
   async (path: string, variables: Record<string, string | number | boolean> = {}) => {
@@ -88,10 +111,10 @@ export const createGaloyClient: CreateGaloyClientFunction =
       return forward(operation)
     })
 
-    const httpLink = new HttpLink({ uri: config.graphqlUri })
+    const httpLink = new HttpLink({ uri: config.graphqlUrl })
 
     const wsLink = new WebSocketLink({
-      uri: config.graphqlSubscriptionUri,
+      uri: config.graphqlSubscriptionUrl,
       options: {
         reconnect: true,
         reconnectionAttempts: 3,
@@ -128,7 +151,24 @@ export const createGaloyServerClient: CreateGaloyClientFunction =
     return new ApolloClient({
       ssrMode: true,
       link: createHttpLink({
-        uri: config.graphqlUri,
+        uri: config.graphqlUrl,
+        headers: {
+          "authorization": authToken ? `Bearer ${authToken}` : "",
+          "x-real-ip": headers?.["x-real-ip"],
+          "x-forwarded-for": headers?.["x-forwarded-for"],
+        },
+      }),
+      cache: new InMemoryCache(),
+    })
+  }
+
+export const createGaloyServerAdminClient: CreateGaloyClientFunction =
+  ({ config }) =>
+  ({ authToken, headers } = {}) => {
+    return new ApolloClient({
+      ssrMode: true,
+      link: createHttpLink({
+        uri: config.graphqlAdminUrl,
         headers: {
           "authorization": authToken ? `Bearer ${authToken}` : "",
           "x-real-ip": headers?.["x-real-ip"],
