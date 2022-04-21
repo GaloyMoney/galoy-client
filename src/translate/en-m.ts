@@ -593,6 +593,9 @@ export default {
     title: "Transactions",
     transactionHistoryTitle: "Transaction History",
   },
+  TransferScreen: {
+    title: "Transfer"
+  },
   UsernameScreen: {
     "3CharactersMinimum": "at least 3 characters are necessary",
     "50CharactersMaximum": "Username cannot be longer than 50 characters",
