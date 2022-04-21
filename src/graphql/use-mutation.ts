@@ -69,8 +69,8 @@ const useMutationWrapper = <TData = unknown, TVars = unknown, TFunc = unknown>(
   const errorsMessage = result?.error?.message || joinErrorsMessages(errors)
 
   const sendMutation = useCallback(
-    async (...args) => {
-      const mutationResult = await mutationFunction(...args)
+    async (options?: MutationFunctionOptions<TData, TVars>) => {
+      const mutationResult = await mutationFunction(options)
       const mutationErrors = (mutationResult?.data as any)?.[mutationName]?.errors
       const mutationErrorsMessage =
         result?.error?.message || joinErrorsMessages(mutationErrors)
