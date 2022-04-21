@@ -33,7 +33,11 @@ export default {
       {
         content: [
           {
-            answers: ["Dinero Digital", "Un juego de Video", "Un nuevo personaje de caricatura."],
+            answers: [
+              "Dinero Digital",
+              "Un juego de Video",
+              "Un nuevo personaje de caricatura."
+            ],
             feedback: [
               'Correcto. ¡Acabas de ganar 1 "Satoshi"!',
               "Incorrecto, por favor intenta de nuevo",
@@ -63,7 +67,11 @@ export default {
             type: "Text",
           },
           {
-            answers: ["En el Internet", "En La Luna", "En una cuenta del Banco Federal"],
+            answers: [
+              "En el Internet",
+              "En La Luna",
+              "En una cuenta del Banco Federal"
+            ],
             feedback: [
               "¡Correcto! Acabas de ganar otros 5 Satoshis.",
               "Incorrecto, Buen... Aun no.",
@@ -558,6 +566,7 @@ export default {
     "DEFAULT": "Predeterminado (OS)",
     "en-US": "Inglés",
     "es-SV": "Español",
+    "pt-BR": "Portugués",
   },
   SplashScreen: {
     update: "\nTu aplicación está desactualizada. Se necesita una actualización antes de que se pueda utilizar la aplicación. Esto se puede hacer desde PlayStore para Android y Testflight para iOS.",

@@ -33,7 +33,11 @@ export default {
       {
         content: [
           {
-            answers: ["Digital money", "A video game", "A new cartoon character"],
+            answers: [
+              "Digital money",
+              "A video game",
+              "A new cartoon character"
+            ],
             feedback: [
               "Correct. You just earned 1 “sat”!",
               "Incorrect, please try again.",
@@ -63,7 +67,11 @@ export default {
             type: "Text",
           },
           {
-            answers: ["On the Internet", "On the moon", "In a Federal bank account"],
+            answers: [
+              "On the Internet",
+              "On the moon",
+              "In a Federal bank account"
+            ],
             feedback: [
               "Correct. You just earned another 5 sats.",
               "Incorrect. Well… at least not yet ;)",
@@ -575,6 +583,7 @@ export default {
     "DEFAULT": "Default (OS)",
     "en-US": "English",
     "es-SV": "Spanish",
+    "pt-BR": "Portuguese",
   },
   SplashScreen: {
     update: "Your app is outdated. An update is needed before the app can be used.\n\nThis can be done from the PlayStore for Android and Testflight for iOS",

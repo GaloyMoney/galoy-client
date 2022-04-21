@@ -2,11 +2,12 @@ import i18n from "i18n-js"
 
 import ES from "./es"
 
-import es from "./es-m"
 import en from "./en-m"
+import es from "./es-m"
+import pt from "./pt-br-m"
 
 i18n.fallbacks = true
-i18n.translations = { es: { ...es, ...ES }, en }
+i18n.translations = { es: { ...es, ...ES }, pt, en }
 
 export type GaloyTranslate = (
   scope: keyof typeof ES,
