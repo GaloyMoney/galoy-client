@@ -582,6 +582,7 @@ export default {
   Languages: {
     "DEFAULT": "Default (OS)",
     "en-US": "English",
+    "es": "Spanish",
     "es-SV": "Spanish",
     "pt-BR": "Portuguese",
   },
