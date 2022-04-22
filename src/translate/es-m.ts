@@ -565,6 +565,7 @@ export default {
   Languages: {
     "DEFAULT": "Predeterminado (OS)",
     "en-US": "Inglés",
+    "es": "Español",
     "es-SV": "Español",
     "pt-BR": "Portugués",
   },
