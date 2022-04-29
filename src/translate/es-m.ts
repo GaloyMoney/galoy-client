@@ -577,7 +577,8 @@ export default {
     transactionHistoryTitle: "Historial",
   },
   TransferScreen: {
-    title: "Transferir"
+    title: "Transferir",
+    percentageToConvert: "% para convertir",
   },
   UsernameScreen: {
     "3CharactersMinimum": "al menos de 3 letras son necesarias",

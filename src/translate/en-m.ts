@@ -594,7 +594,8 @@ export default {
     transactionHistoryTitle: "Transaction History",
   },
   TransferScreen: {
-    title: "Transfer"
+    title: "Transfer",
+    percentageToConvert: "% to convert",
   },
   UsernameScreen: {
     "3CharactersMinimum": "at least 3 characters are necessary",
