@@ -41,7 +41,7 @@ type QueryHelpers = {
 const useQueryWrapper = <TData = unknown, TVars = unknown>(
   queryName: keyof typeof QUERIES,
   config?: QueryHookOptions<TData, TVars>,
-): QueryResult<TData> & QueryHelpers => {
+): QueryResult<TData, TVars> & QueryHelpers => {
   const result = useApolloQuery<TData, TVars>(QUERIES[queryName], config)
 
   const { data, error } = result
@@ -56,7 +56,8 @@ const onChainTxFeeQuery = (
     GaloyGQL.OnChainTxFeeQuery,
     GaloyGQL.OnChainTxFeeQueryVariables
   >,
-): QueryResult<GaloyGQL.OnChainTxFeeQuery> & QueryHelpers => {
+): QueryResult<GaloyGQL.OnChainTxFeeQuery, GaloyGQL.OnChainTxFeeQueryVariables> &
+  QueryHelpers => {
   return useQueryWrapper<GaloyGQL.OnChainTxFeeQuery, GaloyGQL.OnChainTxFeeQueryVariables>(
     "onChainTxFee",
     config,
@@ -65,7 +66,7 @@ const onChainTxFeeQuery = (
 
 const mainQuery = (
   config?: QueryHookOptions<GaloyGQL.MainQuery, GaloyGQL.MainQueryVariables>,
-): QueryResult<GaloyGQL.MainQuery> & QueryHelpers => {
+): QueryResult<GaloyGQL.MainQuery, GaloyGQL.MainQueryVariables> & QueryHelpers => {
   return useQueryWrapper<GaloyGQL.MainQuery, GaloyGQL.MainQueryVariables>("main", config)
 }
 
@@ -83,7 +84,8 @@ const transactionListQuery = (
 
 const contactsQuery = (
   config?: QueryHookOptions<GaloyGQL.ContactsQuery, GaloyGQL.ContactsQueryVariables>,
-): QueryResult<GaloyGQL.ContactsQuery> & QueryHelpers => {
+): QueryResult<GaloyGQL.ContactsQuery, GaloyGQL.ContactsQueryVariables> &
+  QueryHelpers => {
   return useQueryWrapper<GaloyGQL.ContactsQuery, GaloyGQL.ContactsQueryVariables>(
     "contacts",
     config,
@@ -95,7 +97,11 @@ const transactionListForContactQuery = (
     GaloyGQL.TransactionListForContactQuery,
     GaloyGQL.TransactionListForContactQueryVariables
   >,
-): QueryResult<GaloyGQL.TransactionListForContactQuery> & QueryHelpers => {
+): QueryResult<
+  GaloyGQL.TransactionListForContactQuery,
+  GaloyGQL.TransactionListForContactQueryVariables
+> &
+  QueryHelpers => {
   return useQueryWrapper<
     GaloyGQL.TransactionListForContactQuery,
     GaloyGQL.TransactionListForContactQueryVariables
