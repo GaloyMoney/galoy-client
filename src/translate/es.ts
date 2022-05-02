@@ -90,7 +90,7 @@ const ES = {
   "Today": "Hoy",
   "Transaction List": undefined,
   "Transactions with %{contactUsername}": "Las transacciones con %{contactUsername}",
-  "username or invoice": undefined,
+  "username, invoice, or address": undefined,
   "Username": "Nombre de usuario",
   "Verify Account": undefined,
   "Verify you are human": undefined,
