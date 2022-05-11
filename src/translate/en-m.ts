@@ -512,6 +512,9 @@ export default {
     tapQrCodeCopy: "Tap QR Code to Copy",
     title: "Receive Bitcoin",
     error: "Failed to generate invoice. Please contact support if this problem persists.",
+    copyInvoice: "Copy Invoice",
+    shareInvoice: "Share Invoice",
+    addAmount: "Request Specific Amount"
   },
   ScanningQRCodeScreen: {
     invalidContent: "We found:\n\n{{found}}\n\nThis is not a valid Bitcoin address or Lightning invoice",
