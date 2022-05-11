@@ -556,7 +556,7 @@ export default {
     amountIsRequired: "Amount is required",
     cost: "Cost",
     destination: "Destination",
-    DestinationIsRequired: "Destination is required",
+    destinationIsRequired: "Destination is required",
     fee: "network fee",
     feeCalculationUnsuccessful: "Calculation unsuccessful ⚠️",
     input: "Username, Lightning or BTC Address",

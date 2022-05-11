@@ -538,7 +538,7 @@ export default {
     amountIsRequired: "Se requiere cantidad",
     cost: "Costo",
     destination: "Destino",
-    DestinationIsRequired: "El destino es obligatorio",
+    destinationIsRequired: "El destino es obligatorio",
     fee: "tarifa de red",
     feeCalculationUnsuccessful: "Error al calcular, inténtelo de nuevo ⚠️",
     input: "nombre de usuario o factura",
