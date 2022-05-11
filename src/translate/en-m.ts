@@ -520,6 +520,9 @@ export default {
     tapQrCodeCopy: "Tap QR Code to Copy",
     title: "Receive Bitcoin",
     error: "Failed to generate invoice. Please contact support if this problem persists.",
+    copyInvoice: "Copy Invoice",
+    shareInvoice: "Share Invoice",
+    addAmount: "Request Specific Amount"
   },
   ScanningQRCodeScreen: {
     invalidContent: "We found:\n\n{{found}}\n\nThis is not a valid Bitcoin address or Lightning invoice",
@@ -547,7 +550,7 @@ export default {
     confirmPayment: "Confirm payment",
     confirmPaymentQuestion: "Do you want to confirm this payment?",
     destinationLabel: "To:",
-    feeLabel: "Fee:",
+    feeLabel: "Fee",
     memoLabel: "Note:",
     paymentFinal: "Payments are final.",
     stalePrice: "Your bitcoin price is old and was last updated {{timePeriod}} ago. Please restart the app before making a payment.",
@@ -558,10 +561,13 @@ export default {
   SendBitcoinScreen: {
     amount: "Amount",
     amountExceed: "Amount exceeds your balance of {{balance}}",
+    amountIsRequired: "Amount is required",
     cost: "Cost",
+    destination: "Destination",
+    destinationIsRequired: "Destination is required",
     fee: "network fee",
     feeCalculationUnsuccessful: "Calculation unsuccessful ⚠️",
-    input: "username or invoice",
+    input: "Username, Lightning or BTC Address",
     invalidUsername: "Invalid username",
     noAmount: "This invoice doesn't have an amount, so you need to manually specify how much money you want to send",
     notConfirmed: "Payment has been sent\nbut is not confirmed yet\n\nYou can check the status\nof the payment in Transactions",
@@ -600,6 +606,10 @@ export default {
     noTransaction: "No transaction to show",
     title: "Transactions",
     transactionHistoryTitle: "Transaction History",
+  },
+  TransferScreen: {
+    title: "Transfer",
+    percentageToConvert: "% to convert",
   },
   UsernameScreen: {
     "3CharactersMinimum": "at least 3 characters are necessary",
@@ -659,6 +669,7 @@ export default {
     feeSats: "Fees (sats)",
     feesUsd: "Fees (USD)",
     firstName: "First Name",
+    from: "From",
     hour: "hour",
     hours: "hours",
     invoice: "Invoice",

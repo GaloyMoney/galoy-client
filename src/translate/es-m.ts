@@ -503,6 +503,9 @@ export default {
     tapQrCodeCopy: "Toque el código QR para copiar",
     title: "Recibir Bitcoin",
     error: "Error al generar la factura. Póngase en contacto con el soporte técnico si este problema persiste.",
+    copyInvoice: "Copiar factura",
+    shareInvoice: "Compartir factura",
+    addAmount: "Solicitar Monto Específico"
   },
   ScanningQRCodeScreen: {
     invalidContent: "Encontramos lo siguiente:\n\n{{found}}\n\nEsto no es una dirección Bitcoin o factura Lightning válida",
@@ -530,7 +533,7 @@ export default {
     confirmPayment: "Confirmar y pagar",
     confirmPaymentQuestion: "¿Desea confirmar este pago?",
     destinationLabel: "Para:",
-    feeLabel: "Tarifa de red:",
+    feeLabel: "Tarifa de red",
     memoLabel: "Nota:",
     paymentFinal:"Recuerde que los pagos son definitivos y una vez realizados son irreversibles.",
     stalePrice: "El precio de bitcoin está desactualizado, se actualizó por última vez hace {{timePeriod}}. Por favor reinicie la aplicación antes de realizar el pago.",
@@ -540,7 +543,10 @@ export default {
   },
   SendBitcoinScreen: {
     amount: "Cantidad",
+    amountIsRequired: "Se requiere cantidad",
     cost: "Costo",
+    destination: "Destino",
+    destinationIsRequired: "El destino es obligatorio",
     fee: "tarifa de red",
     feeCalculationUnsuccessful: "Error al calcular, inténtelo de nuevo ⚠️",
     input: "nombre de usuario o factura",
@@ -583,6 +589,10 @@ export default {
     noTransaction: "\nNo se han realizado transacciones",
     title: "Transacciones",
     transactionHistoryTitle: "Historial",
+  },
+  TransferScreen: {
+    title: "Transferir",
+    percentageToConvert: "% para convertir",
   },
   UsernameScreen: {
     "3CharactersMinimum": "al menos de 3 letras son necesarias",
@@ -642,6 +652,7 @@ export default {
     feeSats: "Tarifas (sats)",
     feesUsd: "Tarifas (USD) ",
     firstName: "Nombre",
+    from: "Desde",
     hour: "hora",
     hours: "horas",
     invoice: "Factura",
