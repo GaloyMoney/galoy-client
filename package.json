@@ -23,8 +23,8 @@
     "cross-fetch": "^3.1.5",
     "graphql": "^16.5.0",
     "i18n-js": "^3.9.2",
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0",
+    "react": "^18.1.0",
+    "react-dom": "^18.1.0",
     "subscriptions-transport-ws": "^0.11.0",
     "url": "^0.11.0"
   },
