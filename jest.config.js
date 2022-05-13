@@ -6,5 +6,7 @@ module.exports = {
   modulePaths: ["<rootDir>/src"],
   setupFilesAfterEnv: ["<rootDir>/src/setupTests.ts"],
   testPathIgnorePatterns: ["/node_modules/"],
-  timers: "fake",
+  fakeTimers: {
+    enableGlobally: true,
+  },
 }
