@@ -565,7 +565,7 @@ export default {
     invalidUsername: "Nome de usuário inválido",
     noAmount: "Esta fatura não tem um valor, então você precisa especificar manualmente quanto dinheiro deseja enviar",
     notConfirmed: "Pagamento foi enviado\nmas ainda não está confirmado\n\nVocê pode verificar o status\no pagamento em Transações",
-    note: "nota opcional",
+    note: "Nota opcional",
     success: "Pagamento enviado com sucesso",
     title: "Enviar Bitcoin",
     usernameNotFound: "Um usuário correspondente ao nome de usuário digitado não pôde ser encontrado.",
