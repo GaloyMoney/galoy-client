@@ -128,6 +128,12 @@ export namespace GaloyGQL {
     readonly validationCode: Scalars["String"]
   }
 
+  export type CentAmountPayload = {
+    readonly __typename?: "CentAmountPayload"
+    readonly amount?: Maybe<Scalars["CentAmount"]>
+    readonly errors: ReadonlyArray<Error>
+  }
+
   export type ConsumerAccount = Account & {
     readonly __typename?: "ConsumerAccount"
     /** return CSV stream, base64 encoded, of the list of transactions in the wallet */
@@ -220,6 +226,16 @@ export namespace GaloyGQL {
     readonly txNotificationType: TxNotificationType
     /** @deprecated updated over displayCurrencyPerSat */
     readonly usdPerSat: Scalars["Float"]
+    readonly walletId: Scalars["WalletId"]
+  }
+
+  export type IntraLedgerUsdPaymentSendInput = {
+    /** Amount in cents. */
+    readonly amount: Scalars["CentAmount"]
+    /** Optional memo to be attached to the payment. */
+    readonly memo?: InputMaybe<Scalars["Memo"]>
+    readonly recipientWalletId: Scalars["WalletId"]
+    /** The wallet ID of the sender. */
     readonly walletId: Scalars["WalletId"]
   }
 
@@ -326,6 +342,12 @@ export namespace GaloyGQL {
     readonly walletId: Scalars["WalletId"]
   }
 
+  export type LnNoAmountUsdInvoiceFeeProbeInput = {
+    readonly amount: Scalars["CentAmount"]
+    readonly paymentRequest: Scalars["LnPaymentRequest"]
+    readonly walletId: Scalars["WalletId"]
+  }
+
   export type LnNoAmountUsdInvoicePaymentInput = {
     /** Amount to pay in USD cents. */
     readonly amount: Scalars["CentAmount"]
@@ -363,6 +385,11 @@ export namespace GaloyGQL {
     readonly recipientWalletId: Scalars["WalletId"]
   }
 
+  export type LnUsdInvoiceFeeProbeInput = {
+    readonly paymentRequest: Scalars["LnPaymentRequest"]
+    readonly walletId: Scalars["WalletId"]
+  }
+
   export type MapInfo = {
     readonly __typename?: "MapInfo"
     readonly coordinates: Coordinates
@@ -390,10 +417,16 @@ export namespace GaloyGQL {
     readonly deviceNotificationTokenCreate: SuccessPayload
     /**
      * Actions a payment which is internal to the ledger e.g. it does
-     * not use onchain/lightning.  Does not currently support payments to or from USD wallets.
-     * Returns payment status (success, failed, pending, already_paid).
+     * not use onchain/lightning. Returns payment status (success,
+     * failed, pending, already_paid).
      */
     readonly intraLedgerPaymentSend: PaymentSendPayload
+    /**
+     * Actions a payment which is internal to the ledger e.g. it does
+     * not use onchain/lightning. Returns payment status (success,
+     * failed, pending, already_paid).
+     */
+    readonly intraLedgerUsdPaymentSend: PaymentSendPayload
     /**
      * Returns a lightning invoice for an associated wallet.
      * When invoice is paid the value will be credited to a BTC wallet.
@@ -432,6 +465,7 @@ export namespace GaloyGQL {
      * Returns payment status (success, failed, pending, already_paid).
      */
     readonly lnNoAmountInvoicePaymentSend: PaymentSendPayload
+    readonly lnNoAmountUsdInvoiceFeeProbe: CentAmountPayload
     /**
      * Pay a lightning invoice using a balance from a wallet which is owned by the account of the current user.
      * Provided wallet must be USD and have sufficient balance to cover amount specified in mutation request.
@@ -441,17 +475,18 @@ export namespace GaloyGQL {
     /**
      * Returns a lightning invoice denominated in satoshis for an associated wallet.
      * When invoice is paid the equivalent value at invoice creation will be credited to a USD wallet.
-     * Expires after 2 minutes (short expiry time because there is a USD/BTC exchange rate
+     * Expires after 5 minutes (short expiry time because there is a USD/BTC exchange rate
      * associated with the amount).
      */
     readonly lnUsdInvoiceCreate: LnInvoicePayload
     /**
      * Returns a lightning invoice denominated in satoshis for an associated wallet.
      * When invoice is paid the equivalent value at invoice creation will be credited to a USD wallet.
-     * Expires after 2 minutes (short expiry time because there is a USD/BTC exchange rate
+     * Expires after 5 minutes (short expiry time because there is a USD/BTC exchange rate
      *   associated with the amount).
      */
     readonly lnUsdInvoiceCreateOnBehalfOfRecipient: LnInvoicePayload
+    readonly lnUsdInvoiceFeeProbe: SatAmountPayload
     readonly onChainAddressCreate: OnChainAddressPayload
     readonly onChainAddressCurrent: OnChainAddressPayload
     readonly onChainPaymentSend: PaymentSendPayload
@@ -483,6 +518,10 @@ export namespace GaloyGQL {
 
   export type MutationIntraLedgerPaymentSendArgs = {
     input: IntraLedgerPaymentSendInput
+  }
+
+  export type MutationIntraLedgerUsdPaymentSendArgs = {
+    input: IntraLedgerUsdPaymentSendInput
   }
 
   export type MutationLnInvoiceCreateArgs = {
@@ -517,6 +556,10 @@ export namespace GaloyGQL {
     input: LnNoAmountInvoicePaymentInput
   }
 
+  export type MutationLnNoAmountUsdInvoiceFeeProbeArgs = {
+    input: LnNoAmountUsdInvoiceFeeProbeInput
+  }
+
   export type MutationLnNoAmountUsdInvoicePaymentSendArgs = {
     input: LnNoAmountUsdInvoicePaymentInput
   }
@@ -527,6 +570,10 @@ export namespace GaloyGQL {
 
   export type MutationLnUsdInvoiceCreateOnBehalfOfRecipientArgs = {
     input: LnUsdInvoiceCreateOnBehalfOfRecipientInput
+  }
+
+  export type MutationLnUsdInvoiceFeeProbeArgs = {
+    input: LnUsdInvoiceFeeProbeInput
   }
 
   export type MutationOnChainAddressCreateArgs = {
