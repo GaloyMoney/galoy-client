@@ -392,7 +392,7 @@ export default {
             ],
             id: "HighlyDivisible",
             question: "Quelle est la plus petite fraction de bitcoin qu'une personne peut posséder, ou utiliser?",
-            text: "La monnaie fiduciaire peut être seulement dépensée en montants multiples d'un centime - c'est-à-dire deux décimales pour un dollar CAD ($0.01).\n\n D'autre part, un bitcoin peut être divisé en 100 000 000 d'unités. Cela signifie qu'il est possible de dépenser aussi peu que ₿0.00000001. Notez le symbole \"₿\" utilisé, qui est l\'équivalent Bitcoin du \"$\". Vous verrez parfois l'utilisation de \"BTC\", au lieu du ₿. \n\nPar contraste, Bitcoin permet de très petits paiements - aussi peu qu'un centime de CAD",
+            text: "La monnaie fiduciaire peut être seulement dépensée en montants multiples d'un centime - c'est-à-dire deux décimales pour un dollar CAD ($0.01).\n\n D'autre part, un bitcoin peut être divisé en 100 000 000 d'unités. Cela signifie qu'il est possible de dépenser aussi peu que ₿0.00000001. Notez le symbole \"₿\" utilisé, qui est l'équivalent Bitcoin du \"$\". Vous verrez parfois l'utilisation de \"BTC\", au lieu du ₿. \n\nPar contraste, Bitcoin permet de très petits paiements - aussi peu qu'un centime de CAD",
             title: "Caractéristique spéciale #4: \nHautement divisible",
             type: "Text",
           },

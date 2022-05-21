@@ -591,7 +591,8 @@ export default {
     "en-US": "English",
     "es": "Spanish",
     "es-SV": "Spanish",
-    "pt-BR": "Portuguese",
+    "pt-BR": "Portuguese (Brazil)",
+    "fr-CA": "French (Canada)"
   },
   SplashScreen: {
     update: "Your app is outdated. An update is needed before the app can be used.\n\nThis can be done from the PlayStore for Android and Testflight for iOS",

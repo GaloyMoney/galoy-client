@@ -585,7 +585,8 @@ export default {
     "en-US": "English",
     "es": "Spanish",
     "es-SV": "Spanish",
-    "pt-BR": "Portuguese",
+    "pt-BR": "Portuguese (Brazil)",
+    "fr-CA": "French (Canada)"
   },
   SplashScreen: {
     update: "Seu aplicativo está desatualizado. Uma atualização é necessária antes que o aplicativo possa ser usado.\n\nIsso pode ser feito na PlayStore para Android e Testflight para iOS",
