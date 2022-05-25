@@ -1289,6 +1289,26 @@ export namespace GaloyGQL {
     }> | null
   }
 
+  export type AccountUpdateDefaultWalletIdMutationVariables = Exact<{
+    input: AccountUpdateDefaultWalletIdInput
+  }>
+
+  export type AccountUpdateDefaultWalletIdMutation = {
+    readonly __typename?: "Mutation"
+    readonly accountUpdateDefaultWalletId: {
+      readonly __typename?: "AccountUpdateDefaultWalletIdPayload"
+      readonly errors: ReadonlyArray<
+        | { readonly __typename: "InputError"; readonly message: string }
+        | { readonly __typename: "PaymentError"; readonly message: string }
+      >
+      readonly account?: {
+        readonly __typename: "ConsumerAccount"
+        readonly id: string
+        readonly defaultWalletId: string
+      } | null
+    }
+  }
+
   export type CaptchaCreateChallengeMutationVariables = Exact<{ [key: string]: never }>
 
   export type CaptchaCreateChallengeMutation = {
@@ -1296,11 +1316,11 @@ export namespace GaloyGQL {
     readonly captchaCreateChallenge: {
       readonly __typename?: "CaptchaCreateChallengePayload"
       readonly errors: ReadonlyArray<
-        | { readonly __typename?: "InputError"; readonly message: string }
-        | { readonly __typename?: "PaymentError"; readonly message: string }
+        | { readonly __typename: "InputError"; readonly message: string }
+        | { readonly __typename: "PaymentError"; readonly message: string }
       >
       readonly result?: {
-        readonly __typename?: "CaptchaCreateChallengeResult"
+        readonly __typename: "CaptchaCreateChallengeResult"
         readonly id: string
         readonly challengeCode: string
         readonly newCaptcha: boolean
@@ -1319,8 +1339,8 @@ export namespace GaloyGQL {
       readonly __typename?: "SuccessPayload"
       readonly success?: boolean | null
       readonly errors: ReadonlyArray<
-        | { readonly __typename?: "InputError"; readonly message: string }
-        | { readonly __typename?: "PaymentError"; readonly message: string }
+        | { readonly __typename: "InputError"; readonly message: string }
+        | { readonly __typename: "PaymentError"; readonly message: string }
       >
     }
   }
@@ -1335,8 +1355,8 @@ export namespace GaloyGQL {
       readonly __typename?: "SuccessPayload"
       readonly success?: boolean | null
       readonly errors: ReadonlyArray<
-        | { readonly __typename?: "InputError"; readonly message: string }
-        | { readonly __typename?: "PaymentError"; readonly message: string }
+        | { readonly __typename: "InputError"; readonly message: string }
+        | { readonly __typename: "PaymentError"; readonly message: string }
       >
     }
   }
@@ -1351,8 +1371,24 @@ export namespace GaloyGQL {
       readonly __typename?: "PaymentSendPayload"
       readonly status?: PaymentSendResult | null
       readonly errors: ReadonlyArray<
-        | { readonly __typename?: "InputError"; readonly message: string }
-        | { readonly __typename?: "PaymentError"; readonly message: string }
+        | { readonly __typename: "InputError"; readonly message: string }
+        | { readonly __typename: "PaymentError"; readonly message: string }
+      >
+    }
+  }
+
+  export type IntraLedgerUsdPaymentSendMutationVariables = Exact<{
+    input: IntraLedgerUsdPaymentSendInput
+  }>
+
+  export type IntraLedgerUsdPaymentSendMutation = {
+    readonly __typename?: "Mutation"
+    readonly intraLedgerUsdPaymentSend: {
+      readonly __typename?: "PaymentSendPayload"
+      readonly status?: PaymentSendResult | null
+      readonly errors: ReadonlyArray<
+        | { readonly __typename: "InputError"; readonly message: string }
+        | { readonly __typename: "PaymentError"; readonly message: string }
       >
     }
   }
@@ -1366,11 +1402,11 @@ export namespace GaloyGQL {
     readonly lnInvoiceCreate: {
       readonly __typename?: "LnInvoicePayload"
       readonly errors: ReadonlyArray<
-        | { readonly __typename?: "InputError"; readonly message: string }
-        | { readonly __typename?: "PaymentError"; readonly message: string }
+        | { readonly __typename: "InputError"; readonly message: string }
+        | { readonly __typename: "PaymentError"; readonly message: string }
       >
       readonly invoice?: {
-        readonly __typename?: "LnInvoice"
+        readonly __typename: "LnInvoice"
         readonly paymentHash: string
         readonly paymentRequest: string
         readonly paymentSecret: string
@@ -1389,8 +1425,8 @@ export namespace GaloyGQL {
       readonly __typename?: "SatAmountPayload"
       readonly amount?: number | null
       readonly errors: ReadonlyArray<
-        | { readonly __typename?: "InputError"; readonly message: string }
-        | { readonly __typename?: "PaymentError"; readonly message: string }
+        | { readonly __typename: "InputError"; readonly message: string }
+        | { readonly __typename: "PaymentError"; readonly message: string }
       >
     }
   }
@@ -1405,8 +1441,8 @@ export namespace GaloyGQL {
       readonly __typename?: "PaymentSendPayload"
       readonly status?: PaymentSendResult | null
       readonly errors: ReadonlyArray<
-        | { readonly __typename?: "InputError"; readonly message: string }
-        | { readonly __typename?: "PaymentError"; readonly message: string }
+        | { readonly __typename: "InputError"; readonly message: string }
+        | { readonly __typename: "PaymentError"; readonly message: string }
       >
     }
   }
@@ -1420,11 +1456,11 @@ export namespace GaloyGQL {
     readonly lnNoAmountInvoiceCreate: {
       readonly __typename?: "LnNoAmountInvoicePayload"
       readonly errors: ReadonlyArray<
-        | { readonly __typename?: "InputError"; readonly message: string }
-        | { readonly __typename?: "PaymentError"; readonly message: string }
+        | { readonly __typename: "InputError"; readonly message: string }
+        | { readonly __typename: "PaymentError"; readonly message: string }
       >
       readonly invoice?: {
-        readonly __typename?: "LnNoAmountInvoice"
+        readonly __typename: "LnNoAmountInvoice"
         readonly paymentHash: string
         readonly paymentRequest: string
         readonly paymentSecret: string
@@ -1442,8 +1478,8 @@ export namespace GaloyGQL {
       readonly __typename?: "SatAmountPayload"
       readonly amount?: number | null
       readonly errors: ReadonlyArray<
-        | { readonly __typename?: "InputError"; readonly message: string }
-        | { readonly __typename?: "PaymentError"; readonly message: string }
+        | { readonly __typename: "InputError"; readonly message: string }
+        | { readonly __typename: "PaymentError"; readonly message: string }
       >
     }
   }
@@ -1458,8 +1494,24 @@ export namespace GaloyGQL {
       readonly __typename?: "PaymentSendPayload"
       readonly status?: PaymentSendResult | null
       readonly errors: ReadonlyArray<
-        | { readonly __typename?: "InputError"; readonly message: string }
-        | { readonly __typename?: "PaymentError"; readonly message: string }
+        | { readonly __typename: "InputError"; readonly message: string }
+        | { readonly __typename: "PaymentError"; readonly message: string }
+      >
+    }
+  }
+
+  export type LnNoAmountUsdInvoiceFeeProbeMutationVariables = Exact<{
+    input: LnNoAmountUsdInvoiceFeeProbeInput
+  }>
+
+  export type LnNoAmountUsdInvoiceFeeProbeMutation = {
+    readonly __typename?: "Mutation"
+    readonly lnNoAmountUsdInvoiceFeeProbe: {
+      readonly __typename?: "CentAmountPayload"
+      readonly amount?: number | null
+      readonly errors: ReadonlyArray<
+        | { readonly __typename: "InputError"; readonly message: string }
+        | { readonly __typename: "PaymentError"; readonly message: string }
       >
     }
   }
@@ -1474,8 +1526,8 @@ export namespace GaloyGQL {
       readonly __typename?: "PaymentSendPayload"
       readonly status?: PaymentSendResult | null
       readonly errors: ReadonlyArray<
-        | { readonly __typename?: "InputError"; readonly message: string }
-        | { readonly __typename?: "PaymentError"; readonly message: string }
+        | { readonly __typename: "InputError"; readonly message: string }
+        | { readonly __typename: "PaymentError"; readonly message: string }
       >
     }
   }
@@ -1489,11 +1541,11 @@ export namespace GaloyGQL {
     readonly lnUsdInvoiceCreateOnBehalfOfRecipient: {
       readonly __typename?: "LnInvoicePayload"
       readonly errors: ReadonlyArray<
-        | { readonly __typename?: "InputError"; readonly message: string }
-        | { readonly __typename?: "PaymentError"; readonly message: string }
+        | { readonly __typename: "InputError"; readonly message: string }
+        | { readonly __typename: "PaymentError"; readonly message: string }
       >
       readonly invoice?: {
-        readonly __typename?: "LnInvoice"
+        readonly __typename: "LnInvoice"
         readonly paymentHash: string
         readonly paymentRequest: string
         readonly paymentSecret: string
@@ -1511,16 +1563,32 @@ export namespace GaloyGQL {
     readonly lnUsdInvoiceCreate: {
       readonly __typename?: "LnInvoicePayload"
       readonly errors: ReadonlyArray<
-        | { readonly __typename?: "InputError"; readonly message: string }
-        | { readonly __typename?: "PaymentError"; readonly message: string }
+        | { readonly __typename: "InputError"; readonly message: string }
+        | { readonly __typename: "PaymentError"; readonly message: string }
       >
       readonly invoice?: {
-        readonly __typename?: "LnInvoice"
+        readonly __typename: "LnInvoice"
         readonly paymentHash: string
         readonly paymentRequest: string
         readonly paymentSecret: string
         readonly satoshis?: number | null
       } | null
+    }
+  }
+
+  export type LnUsdInvoiceFeeProbeMutationVariables = Exact<{
+    input: LnUsdInvoiceFeeProbeInput
+  }>
+
+  export type LnUsdInvoiceFeeProbeMutation = {
+    readonly __typename?: "Mutation"
+    readonly lnUsdInvoiceFeeProbe: {
+      readonly __typename?: "SatAmountPayload"
+      readonly amount?: number | null
+      readonly errors: ReadonlyArray<
+        | { readonly __typename: "InputError"; readonly message: string }
+        | { readonly __typename: "PaymentError"; readonly message: string }
+      >
     }
   }
 
@@ -1534,8 +1602,8 @@ export namespace GaloyGQL {
       readonly __typename?: "OnChainAddressPayload"
       readonly address?: string | null
       readonly errors: ReadonlyArray<
-        | { readonly __typename?: "InputError"; readonly message: string }
-        | { readonly __typename?: "PaymentError"; readonly message: string }
+        | { readonly __typename: "InputError"; readonly message: string }
+        | { readonly __typename: "PaymentError"; readonly message: string }
       >
     }
   }
@@ -1550,8 +1618,8 @@ export namespace GaloyGQL {
       readonly __typename?: "PaymentSendPayload"
       readonly status?: PaymentSendResult | null
       readonly errors: ReadonlyArray<
-        | { readonly __typename?: "InputError"; readonly message: string }
-        | { readonly __typename?: "PaymentError"; readonly message: string }
+        | { readonly __typename: "InputError"; readonly message: string }
+        | { readonly __typename: "PaymentError"; readonly message: string }
       >
     }
   }
@@ -1565,8 +1633,8 @@ export namespace GaloyGQL {
     readonly userContactUpdateAlias: {
       readonly __typename?: "UserContactUpdateAliasPayload"
       readonly errors: ReadonlyArray<
-        | { readonly __typename?: "InputError"; readonly message: string }
-        | { readonly __typename?: "PaymentError"; readonly message: string }
+        | { readonly __typename: "InputError"; readonly message: string }
+        | { readonly __typename: "PaymentError"; readonly message: string }
       >
     }
   }
@@ -1581,8 +1649,8 @@ export namespace GaloyGQL {
       readonly __typename?: "AuthTokenPayload"
       readonly authToken?: string | null
       readonly errors: ReadonlyArray<
-        | { readonly __typename?: "InputError"; readonly message: string }
-        | { readonly __typename?: "PaymentError"; readonly message: string }
+        | { readonly __typename: "InputError"; readonly message: string }
+        | { readonly __typename: "PaymentError"; readonly message: string }
       >
     }
   }
@@ -1596,8 +1664,8 @@ export namespace GaloyGQL {
     readonly userQuizQuestionUpdateCompleted: {
       readonly __typename?: "UserQuizQuestionUpdateCompletedPayload"
       readonly errors: ReadonlyArray<
-        | { readonly __typename?: "InputError"; readonly message: string }
-        | { readonly __typename?: "PaymentError"; readonly message: string }
+        | { readonly __typename: "InputError"; readonly message: string }
+        | { readonly __typename: "PaymentError"; readonly message: string }
       >
       readonly userQuizQuestion?: {
         readonly __typename?: "UserQuizQuestion"
@@ -1620,11 +1688,11 @@ export namespace GaloyGQL {
     readonly userUpdateLanguage: {
       readonly __typename?: "UserUpdateLanguagePayload"
       readonly errors: ReadonlyArray<
-        | { readonly __typename?: "InputError"; readonly message: string }
-        | { readonly __typename?: "PaymentError"; readonly message: string }
+        | { readonly __typename: "InputError"; readonly message: string }
+        | { readonly __typename: "PaymentError"; readonly message: string }
       >
       readonly user?: {
-        readonly __typename?: "User"
+        readonly __typename: "User"
         readonly id: string
         readonly language: string
       } | null
@@ -1640,11 +1708,11 @@ export namespace GaloyGQL {
     readonly userUpdateUsername: {
       readonly __typename?: "UserUpdateUsernamePayload"
       readonly errors: ReadonlyArray<
-        | { readonly __typename?: "InputError"; readonly message: string }
-        | { readonly __typename?: "PaymentError"; readonly message: string }
+        | { readonly __typename: "InputError"; readonly message: string }
+        | { readonly __typename: "PaymentError"; readonly message: string }
       >
       readonly user?: {
-        readonly __typename?: "User"
+        readonly __typename: "User"
         readonly id: string
         readonly username?: string | null
       } | null

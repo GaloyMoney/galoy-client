@@ -4,9 +4,11 @@ const userUpdateUsername = gql`
   mutation userUpdateUsername($input: UserUpdateUsernameInput!) {
     userUpdateUsername(input: $input) {
       errors {
+        __typename
         message
       }
       user {
+        __typename
         id
         username
       }

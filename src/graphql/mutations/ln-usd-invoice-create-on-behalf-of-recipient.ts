@@ -6,9 +6,11 @@ const lnUsdInvoiceCreateOnBehalfOfRecipient = gql`
   ) {
     lnUsdInvoiceCreateOnBehalfOfRecipient(input: $input) {
       errors {
+        __typename
         message
       }
       invoice {
+        __typename
         paymentHash
         paymentRequest
         paymentSecret

@@ -4,6 +4,7 @@ const intraLedgerPaymentSend = gql`
   mutation intraLedgerPaymentSend($input: IntraLedgerPaymentSendInput!) {
     intraLedgerPaymentSend(input: $input) {
       errors {
+        __typename
         message
       }
       status
