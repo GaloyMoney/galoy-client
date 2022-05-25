@@ -8,19 +8,23 @@ import { useCallback } from "react"
 
 import { GaloyGQL, joinErrorsMessages } from "../index"
 
+import accountUpdateDefaultWalletId from "./mutations/account-update-default-wallet-id"
 import captchaCreateChallenge from "./mutations/captcha-create-challenge"
 import captchaRequestAuthCode from "./mutations/captcha-request-auth-code"
 import deviceNotificationTokenCreate from "./mutations/device-notification-token-create"
 import intraLedgerPaymentSend from "./mutations/intra-ledger-paymest-send"
+import intraLedgerUsdPaymentSend from "./mutations/intra-ledger-usd-payment-send"
 import lnInvoiceCreate from "./mutations/ln-invoice-create"
 import lnInvoiceFeeProbe from "./mutations/ln-invoice-fee-probe"
 import lnInvoicePaymentSend from "./mutations/ln-invoice-payment-send"
 import lnNoAmountInvoiceCreate from "./mutations/ln-no-amount-invoice-create"
 import lnNoAmountInvoiceFeeProbe from "./mutations/ln-no-amount-invoice-fee-probe"
 import lnNoAmountInvoicePaymentSend from "./mutations/ln-no-amount-invoice-payment-send"
+import lnNoAmountUsdInvoiceFeeProbe from "./mutations/ln-no-amount-usd-invoice-fee-probe"
 import lnNoAmountUsdInvoicePaymentSend from "./mutations/ln-no-amount-usd-invoice-payment-send"
 import lnUsdInvoiceCreate from "./mutations/ln-usd-invoice-create"
 import lnUsdInvoiceCreateOnBehalfOfRecipient from "./mutations/ln-usd-invoice-create-on-behalf-of-recipient"
+import lnUsdInvoiceFeeProbe from "./mutations/ln-usd-invoice-fee-probe"
 import onChainAddressCurrent from "./mutations/on-chain-address-current"
 import onChainPaymentSend from "./mutations/on-chain-payment-send"
 import userContactUpdateAlias from "./mutations/user-contact-update-alias"
@@ -30,19 +34,23 @@ import userUpdateLanguage from "./mutations/user-update-language"
 import userUpdateUsername from "./mutations/user-update-username"
 
 export const MUTATIONS = {
+  accountUpdateDefaultWalletId,
   captchaCreateChallenge,
   captchaRequestAuthCode,
   deviceNotificationTokenCreate,
   intraLedgerPaymentSend,
+  intraLedgerUsdPaymentSend,
   lnInvoiceCreate,
   lnInvoiceFeeProbe,
   lnInvoicePaymentSend,
   lnNoAmountInvoiceCreate,
   lnNoAmountInvoiceFeeProbe,
   lnNoAmountInvoicePaymentSend,
+  lnNoAmountUsdInvoiceFeeProbe,
   lnNoAmountUsdInvoicePaymentSend,
   lnUsdInvoiceCreate,
   lnUsdInvoiceCreateOnBehalfOfRecipient,
+  lnUsdInvoiceFeeProbe,
   onChainAddressCurrent,
   onChainPaymentSend,
   userContactUpdateAlias,
@@ -94,6 +102,11 @@ const defineMutation = <TData, TVars>(name: keyof typeof MUTATIONS) => {
   }
 }
 
+const accountUpdateDefaultWalletIdMutation = defineMutation<
+  GaloyGQL.AccountUpdateDefaultWalletIdMutation,
+  GaloyGQL.AccountUpdateDefaultWalletIdMutationVariables
+>("accountUpdateDefaultWalletId")
+
 const captchaCreateChallengeMutation = defineMutation<
   GaloyGQL.CaptchaCreateChallengeMutation,
   GaloyGQL.CaptchaCreateChallengeMutationVariables
@@ -104,45 +117,55 @@ const captchaRequestAuthCodeMutation = defineMutation<
   GaloyGQL.CaptchaRequestAuthCodeMutationVariables
 >("captchaRequestAuthCode")
 
-const onChainAddressCurrentMutation = defineMutation<
-  GaloyGQL.OnChainAddressCurrentMutation,
-  GaloyGQL.OnChainAddressCurrentMutationVariables
->("onChainAddressCurrent")
-
-const lnInvoiceCreateMutation = defineMutation<
-  GaloyGQL.LnInvoiceCreateMutation,
-  GaloyGQL.LnInvoiceCreateMutationVariables
->("lnInvoiceCreate")
-
-const lnNoAmountInvoiceCreateMutation = defineMutation<
-  GaloyGQL.LnNoAmountInvoiceCreateMutation,
-  GaloyGQL.LnNoAmountInvoiceCreateMutationVariables
->("lnNoAmountInvoiceCreate")
+const deviceNotificationTokenCreateMutation = defineMutation<
+  GaloyGQL.DeviceNotificationTokenCreateMutation,
+  GaloyGQL.DeviceNotificationTokenCreateMutationVariables
+>("deviceNotificationTokenCreate")
 
 const intraLedgerPaymentSendMutation = defineMutation<
   GaloyGQL.IntraLedgerPaymentSendMutation,
   GaloyGQL.IntraLedgerPaymentSendMutationVariables
 >("intraLedgerPaymentSend")
 
-const lnInvoicePaymentSendMutation = defineMutation<
-  GaloyGQL.LnInvoicePaymentSendMutation,
-  GaloyGQL.LnInvoicePaymentSendMutationVariables
->("lnInvoicePaymentSend")
+const intraLedgerUsdPaymentSendMutation = defineMutation<
+  GaloyGQL.IntraLedgerUsdPaymentSendMutation,
+  GaloyGQL.IntraLedgerUsdPaymentSendMutationVariables
+>("intraLedgerUsdPaymentSend")
+
+const lnInvoiceCreateMutation = defineMutation<
+  GaloyGQL.LnInvoiceCreateMutation,
+  GaloyGQL.LnInvoiceCreateMutationVariables
+>("lnInvoiceCreate")
 
 const lnInvoiceFeeProbeMutation = defineMutation<
   GaloyGQL.LnInvoiceFeeProbeMutation,
   GaloyGQL.LnInvoiceFeeProbeMutationVariables
 >("lnInvoiceFeeProbe")
 
-const lnNoAmountInvoicePaymentSendMutation = defineMutation<
-  GaloyGQL.LnNoAmountInvoicePaymentSendMutation,
-  GaloyGQL.LnNoAmountInvoicePaymentSendMutationVariables
->("lnNoAmountInvoicePaymentSend")
+const lnInvoicePaymentSendMutation = defineMutation<
+  GaloyGQL.LnInvoicePaymentSendMutation,
+  GaloyGQL.LnInvoicePaymentSendMutationVariables
+>("lnInvoicePaymentSend")
+
+const lnNoAmountInvoiceCreateMutation = defineMutation<
+  GaloyGQL.LnNoAmountInvoiceCreateMutation,
+  GaloyGQL.LnNoAmountInvoiceCreateMutationVariables
+>("lnNoAmountInvoiceCreate")
 
 const lnNoAmountInvoiceFeeProbeMutation = defineMutation<
   GaloyGQL.LnNoAmountInvoiceFeeProbeMutation,
   GaloyGQL.LnNoAmountInvoiceFeeProbeMutationVariables
 >("lnNoAmountInvoiceFeeProbe")
+
+const lnNoAmountInvoicePaymentSendMutation = defineMutation<
+  GaloyGQL.LnNoAmountInvoicePaymentSendMutation,
+  GaloyGQL.LnNoAmountInvoicePaymentSendMutationVariables
+>("lnNoAmountInvoicePaymentSend")
+
+const lnNoAmountUsdInvoiceFeeProbeMutation = defineMutation<
+  GaloyGQL.LnNoAmountUsdInvoiceFeeProbeMutation,
+  GaloyGQL.LnNoAmountUsdInvoiceFeeProbeMutationVariables
+>("lnNoAmountUsdInvoiceFeeProbe")
 
 const lnNoAmountUsdInvoicePaymentSendMutation = defineMutation<
   GaloyGQL.LnNoAmountUsdInvoicePaymentSendMutation,
@@ -159,10 +182,35 @@ const lnUsdInvoiceCreateOnBehalfOfRecipientMutation = defineMutation<
   GaloyGQL.LnUsdInvoiceCreateOnBehalfOfRecipientMutationVariables
 >("lnUsdInvoiceCreateOnBehalfOfRecipient")
 
+const lnUsdInvoiceFeeProbeMutation = defineMutation<
+  GaloyGQL.LnUsdInvoiceFeeProbeMutation,
+  GaloyGQL.LnUsdInvoiceFeeProbeMutationVariables
+>("lnUsdInvoiceFeeProbe")
+
+const onChainAddressCurrentMutation = defineMutation<
+  GaloyGQL.OnChainAddressCurrentMutation,
+  GaloyGQL.OnChainAddressCurrentMutationVariables
+>("onChainAddressCurrent")
+
 const onChainPaymentSendMutation = defineMutation<
   GaloyGQL.OnChainPaymentSendMutation,
   GaloyGQL.OnChainPaymentSendMutationVariables
 >("onChainPaymentSend")
+
+const userContactUpdateAliasMutation = defineMutation<
+  GaloyGQL.UserContactUpdateAliasMutation,
+  GaloyGQL.UserContactUpdateAliasMutationVariables
+>("userContactUpdateAlias")
+
+const userLoginMutation = defineMutation<
+  GaloyGQL.UserLoginMutation,
+  GaloyGQL.UserLoginMutationVariables
+>("userLogin")
+
+const userQuizQuestionUpdateCompletedMutation = defineMutation<
+  GaloyGQL.UserQuizQuestionUpdateCompletedMutation,
+  GaloyGQL.UserQuizQuestionUpdateCompletedMutationVariables
+>("userQuizQuestionUpdateCompleted")
 
 const userUpdateLanguageMutation = defineMutation<
   GaloyGQL.UserUpdateLanguageMutation,
@@ -175,20 +223,28 @@ const userUpdateUsernameMutation = defineMutation<
 >("userUpdateUsername")
 
 export const useMutation = {
+  accountUpdateDefaultWalletId: accountUpdateDefaultWalletIdMutation,
   captchaCreateChallenge: captchaCreateChallengeMutation,
   captchaRequestAuthCode: captchaRequestAuthCodeMutation,
+  deviceNotificationTokenCreate: deviceNotificationTokenCreateMutation,
   intraLedgerPaymentSend: intraLedgerPaymentSendMutation,
+  intraLedgerUsdPaymentSend: intraLedgerUsdPaymentSendMutation,
   lnInvoiceCreate: lnInvoiceCreateMutation,
   lnInvoiceFeeProbe: lnInvoiceFeeProbeMutation,
   lnInvoicePaymentSend: lnInvoicePaymentSendMutation,
   lnNoAmountInvoiceCreate: lnNoAmountInvoiceCreateMutation,
   lnNoAmountInvoiceFeeProbe: lnNoAmountInvoiceFeeProbeMutation,
   lnNoAmountInvoicePaymentSend: lnNoAmountInvoicePaymentSendMutation,
+  lnNoAmountUsdInvoiceFeeProbe: lnNoAmountUsdInvoiceFeeProbeMutation,
   lnNoAmountUsdInvoicePaymentSend: lnNoAmountUsdInvoicePaymentSendMutation,
   lnUsdInvoiceCreate: lnUsdInvoiceCreateMutation,
   lnUsdInvoiceCreateOnBehalfOfRecipient: lnUsdInvoiceCreateOnBehalfOfRecipientMutation,
+  lnUsdInvoiceFeeProbe: lnUsdInvoiceFeeProbeMutation,
   onChainAddressCurrent: onChainAddressCurrentMutation,
   onChainPaymentSend: onChainPaymentSendMutation,
+  userContactUpdateAlias: userContactUpdateAliasMutation,
+  userLogin: userLoginMutation,
+  userQuizQuestionUpdateCompleted: userQuizQuestionUpdateCompletedMutation,
   userUpdateLanguage: userUpdateLanguageMutation,
   userUpdateUsername: userUpdateUsernameMutation,
 }

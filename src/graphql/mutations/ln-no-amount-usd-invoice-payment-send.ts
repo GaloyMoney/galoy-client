@@ -4,6 +4,7 @@ const lnNoAmountUsdInvoicePaymentSend = gql`
   mutation lnNoAmountUsdInvoicePaymentSend($input: LnNoAmountUsdInvoicePaymentInput!) {
     lnNoAmountUsdInvoicePaymentSend(input: $input) {
       errors {
+        __typename
         message
       }
       status

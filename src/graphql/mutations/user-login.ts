@@ -4,6 +4,7 @@ const userLogin = gql`
   mutation userLogin($input: UserLoginInput!) {
     userLogin(input: $input) {
       errors {
+        __typename
         message
       }
       authToken
