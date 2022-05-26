@@ -80,113 +80,161 @@ export const parsePaymentDestination = ({
   const protocol = split[0].toLocaleLowerCase()
   const destinationText = split[1] ?? split[0]
 
-  if (destinationText.match(/^lnurl/iu)) {
-    return {
-      valid: true,
-      paymentType: "lnurl",
-      lnurl: destinationText,
-    }
-  }
+  const paymentType = getPaymentType({ protocol, destinationText })
 
-  if (protocol === "lightning" || destinationText.match(/^ln(bc|tb).{50,}/iu)) {
-    if (
-      (network === "mainnet" && !destinationText.match(/^lnbc/iu)) ||
-      (network === "testnet" && !destinationText.match(/^lntb/iu)) ||
-      (network === "regtest" && !destinationText.match(/^lnbcrt/iu))
-    ) {
-      return {
-        valid: false,
-        paymentType: "lightning",
-        paymentRequest: destinationText,
-        errorMessage: `Invalid lightning invoice for ${network} network`,
-      }
-    }
-
-    let payReq: bolt11.PaymentRequestObject | undefined = undefined
-    try {
-      payReq = bolt11.decode(destinationText)
-    } catch (err) {
-      console.debug("[Parse error: decode]:", err)
-      return {
-        valid: false,
-        paymentType: "lightning",
-        paymentRequest: destinationText,
-        errorMessage: err instanceof Error ? err.message : "Invalid lightning invoice",
-      }
-    }
-
-    const sameNode = pubKey === getDestination(payReq)
-
-    const amount =
-      payReq.satoshis || payReq.millisatoshis
-        ? payReq.satoshis ?? Number(payReq.millisatoshis) / 1000
-        : undefined
-
-    if (lightningInvoiceHasExpired(payReq)) {
-      return {
-        valid: false,
-        paymentType: "lightning",
-        sameNode,
-        amount,
-        paymentRequest: destinationText,
-        errorMessage: "invoice has expired",
-      }
-    }
-
-    const memo = getDescription(payReq)
-    return {
-      valid: true,
-      paymentRequest: destinationText,
-      sameNode,
-      amount,
-      memo,
-      paymentType: "lightning",
-    }
-  }
-
-  if (protocol === "onchain" || destinationText.match(/^(1|3|bc1|tb1|bcrt1)/iu)) {
-    try {
-      const decodedData = url.parse(destinationText, true)
-
-      // some apps encode addresses in UPPERCASE
-      const path = decodedData?.pathname
-      if (!path) {
-        throw new Error("No address detected in decoded destination")
-      }
-
-      let amount: number | undefined = undefined
-      try {
-        amount = decodedData?.query?.amount
-          ? parseAmount(decodedData.query.amount as string)
-          : undefined
-      } catch (err) {
-        console.debug("[Parse error: amount]:", err)
-        return {
-          valid: false,
-          address: path,
-          errorMessage: "Invalid amount in payment destination",
-        }
-      }
-
-      // will throw if address is not valid
-      address.toOutputScript(path, networks[network === "mainnet" ? "bitcoin" : network])
+  switch (paymentType) {
+    case "lnurl":
       return {
         valid: true,
-        paymentType: "onchain",
-        address: path,
-        amount,
+        paymentType: "lnurl",
+        lnurl: destinationText,
       }
-    } catch (err) {
-      console.debug("[Parse error: onchain]:", err)
-      return {
-        valid: false,
-        errorMessage: "Invalid bitcoin address",
-      }
+    case "lightning":
+      return getLightningPaymentResponse({ destinationText, network, pubKey })
+    case "onchain":
+      return getOnChainPaymentResponse({ destinationText, network })
+    case "intraledger":
+      return getIntraLedgerPaymentResponse({ protocol, destinationText })
+  }
+}
+
+const getPaymentType = ({
+  protocol,
+  destinationText,
+}: {
+  protocol: string
+  destinationText: string
+}): PaymentType => {
+  if (destinationText.match(/^lnurl/iu)) {
+    return "lnurl"
+  }
+  if (protocol === "lightning" || destinationText.match(/^ln(bc|tb).{50,}/iu)) {
+    return "lightning"
+  }
+  if (protocol === "onchain" || destinationText.match(/^(1|3|bc1|tb1|bcrt1)/iu)) {
+    return "onchain"
+  }
+  return "intraledger"
+}
+
+const getLightningPaymentResponse = ({
+  destinationText,
+  network,
+  pubKey,
+}: {
+  destinationText: string
+  network: Network
+  pubKey: string
+}): ValidPaymentReponse => {
+  if (
+    (network === "mainnet" && !destinationText.match(/^lnbc/iu)) ||
+    (network === "testnet" && !destinationText.match(/^lntb/iu)) ||
+    (network === "regtest" && !destinationText.match(/^lnbcrt/iu))
+  ) {
+    return {
+      valid: false,
+      paymentType: "lightning",
+      paymentRequest: destinationText,
+      errorMessage: `Invalid lightning invoice for ${network} network`,
     }
   }
 
-  // No payment type detected, assume intraledger
+  let payReq: bolt11.PaymentRequestObject | undefined = undefined
+  try {
+    payReq = bolt11.decode(destinationText)
+  } catch (err) {
+    console.debug("[Parse error: decode]:", err)
+    return {
+      valid: false,
+      paymentType: "lightning",
+      paymentRequest: destinationText,
+      errorMessage: err instanceof Error ? err.message : "Invalid lightning invoice",
+    }
+  }
 
+  const sameNode = pubKey === getDestination(payReq)
+
+  const amount =
+    payReq.satoshis || payReq.millisatoshis
+      ? payReq.satoshis ?? Number(payReq.millisatoshis) / 1000
+      : undefined
+
+  if (lightningInvoiceHasExpired(payReq)) {
+    return {
+      valid: false,
+      paymentType: "lightning",
+      sameNode,
+      amount,
+      paymentRequest: destinationText,
+      errorMessage: "invoice has expired",
+    }
+  }
+
+  const memo = getDescription(payReq)
+  return {
+    valid: true,
+    paymentRequest: destinationText,
+    sameNode,
+    amount,
+    memo,
+    paymentType: "lightning",
+  }
+}
+
+const getOnChainPaymentResponse = ({
+  destinationText,
+  network,
+}: {
+  destinationText: string
+  network: Network
+}): ValidPaymentReponse => {
+  try {
+    const decodedData = url.parse(destinationText, true)
+
+    // some apps encode addresses in UPPERCASE
+    const path = decodedData?.pathname
+    if (!path) {
+      throw new Error("No address detected in decoded destination")
+    }
+
+    let amount: number | undefined = undefined
+    try {
+      amount = decodedData?.query?.amount
+        ? parseAmount(decodedData.query.amount as string)
+        : undefined
+    } catch (err) {
+      console.debug("[Parse error: amount]:", err)
+      return {
+        valid: false,
+        address: path,
+        errorMessage: "Invalid amount in payment destination",
+      }
+    }
+
+    // will throw if address is not valid
+    address.toOutputScript(path, networks[network === "mainnet" ? "bitcoin" : network])
+    return {
+      valid: true,
+      paymentType: "onchain",
+      address: path,
+      amount,
+    }
+  } catch (err) {
+    console.debug("[Parse error: onchain]:", err)
+    return {
+      valid: false,
+      errorMessage: "Invalid bitcoin address",
+    }
+  }
+}
+
+const getIntraLedgerPaymentResponse = ({
+  protocol,
+  destinationText,
+}: {
+  protocol: string
+  destinationText: string
+}): ValidPaymentReponse => {
   const handle = protocol.match(/^(http|\/\/)/iu)
     ? destinationText.split("/").at(-1)
     : destinationText
