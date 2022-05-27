@@ -75,10 +75,7 @@ export const parsePaymentDestination = ({
     return { valid: false }
   }
 
-  // input might start with 'lightning:', 'bitcoin:'
-  const split = destination.split(":")
-  const protocol = split[0].toLocaleLowerCase()
-  const destinationText = split[1] ?? split[0]
+  const { protocol, destinationText } = getProtocolAndData(destination)
 
   const paymentType = getPaymentType({ protocol, destinationText })
 
@@ -90,7 +87,7 @@ export const parsePaymentDestination = ({
         lnurl: destinationText,
       }
     case "lightning":
-      return getLightningPaymentResponse({ destinationText, network, pubKey })
+      return getLightningPaymentResponse({ destination, network, pubKey })
     case "onchain":
       return getOnChainPaymentResponse({ destinationText, network })
     case "intraledger":
@@ -108,7 +105,11 @@ const getPaymentType = ({
   if (destinationText.match(/^lnurl/iu)) {
     return "lnurl"
   }
-  if (protocol === "lightning" || destinationText.match(/^ln(bc|tb).{50,}/iu)) {
+  if (
+    protocol === "lightning" ||
+    destinationText.match(/^ln(bc|tb).{50,}/iu) ||
+    (destinationText && getLNParam(destinationText) != null)
+  ) {
     return "lightning"
   }
   if (protocol === "onchain" || destinationText.match(/^(1|3|bc1|tb1|bcrt1)/iu)) {
@@ -118,35 +119,39 @@ const getPaymentType = ({
 }
 
 const getLightningPaymentResponse = ({
-  destinationText,
+  destination,
   network,
   pubKey,
 }: {
-  destinationText: string
+  destination: string
   network: Network
   pubKey: string
 }): ValidPaymentReponse => {
+  const paymentType = "lightning"
+  const { protocol, destinationText } = getProtocolAndData(destination)
+  const lnProtocol = getLNParam(destination) ?? protocol
   if (
-    (network === "mainnet" && !destinationText.match(/^lnbc/iu)) ||
-    (network === "testnet" && !destinationText.match(/^lntb/iu)) ||
-    (network === "regtest" && !destinationText.match(/^lnbcrt/iu))
+    (network === "mainnet" && !lnProtocol.match(/^lnbc/iu)) ||
+    (network === "testnet" && !lnProtocol.match(/^lntb/iu)) ||
+    (network === "regtest" && !lnProtocol.match(/^lnbcrt/iu))
   ) {
     return {
       valid: false,
-      paymentType: "lightning",
+      paymentType,
       paymentRequest: destinationText,
       errorMessage: `Invalid lightning invoice for ${network} network`,
     }
   }
 
+  const dataToDecode = getDataToDecode(destinationText)
+
   let payReq: bolt11.PaymentRequestObject | undefined = undefined
   try {
-    payReq = bolt11.decode(destinationText)
+    payReq = bolt11.decode(dataToDecode)
   } catch (err) {
-    console.debug("[Parse error: decode]:", err)
     return {
       valid: false,
-      paymentType: "lightning",
+      paymentType,
       paymentRequest: destinationText,
       errorMessage: err instanceof Error ? err.message : "Invalid lightning invoice",
     }
@@ -162,7 +167,7 @@ const getLightningPaymentResponse = ({
   if (lightningInvoiceHasExpired(payReq)) {
     return {
       valid: false,
-      paymentType: "lightning",
+      paymentType,
       sameNode,
       amount,
       paymentRequest: destinationText,
@@ -177,7 +182,7 @@ const getLightningPaymentResponse = ({
     sameNode,
     amount,
     memo,
-    paymentType: "lightning",
+    paymentType,
   }
 }
 
@@ -251,4 +256,34 @@ const getIntraLedgerPaymentResponse = ({
     valid: false,
     errorMessage: "Invalid payment destination",
   }
+}
+
+const getProtocolAndData = (
+  destination: string,
+): { protocol: string; destinationText: string } => {
+  // input might start with 'lightning:', 'bitcoin:'
+  const split = destination.split(":")
+  const protocol = split[0].toLocaleLowerCase()
+  const destinationText = split[1] ?? split[0]
+  return { protocol, destinationText }
+}
+
+const inputDataToObject = (data: string): any => {
+  return url.parse(data, true)
+}
+
+const getLNParam = (data: string): string | undefined => {
+  return inputDataToObject(data)?.query?.lightning
+}
+
+const getDataToDecode = (inputData: string): string => {
+  const lnParam = getLNParam(inputData)
+  if (lnParam != null) {
+    return lnParam
+  }
+  const { protocol, destinationText } = getProtocolAndData(inputData)
+  // some apps encode lightning invoices in UPPERCASE
+  return (
+    protocol.toLowerCase() === "lightning" ? destinationText : protocol
+  ).toLowerCase()
 }
