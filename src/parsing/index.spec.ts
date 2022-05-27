@@ -22,6 +22,9 @@ const lnUrlInvoice =
 const lnInvoice =
   "LNBC6864270N1P05ZVJJPP5FPEHVLV3DD2R76065R9V0L3N8QV9MFWU9RYHVPJ5XSZ3P4HY734QDZHXYSV89EQYVMZQSNFW3PXCMMRDDPX7MMDYPP8YATWVD5ZQMMWYPQH2EM4WD6ZQVESYQ5YYUN4DE3KSGZ0DEK8J2GCQZPGXQRRSS6LQA5JLLVUGLW5TPSUG4S2TMT5C8FNERR95FUH8HTCSYX52CP3WZSWJ32XJ5GEWYFN7MG293V6JLA9CZ8ZNDHWDHCNNKUL2QKF6PJLSPJ2NL3J"
 
+const lntbInvoice =
+  "lntb1m1pd2awsppp54q20f42rpuzapqpxl4l5a2vhrm89pth7rj0nv3fyqvkl89hc8myqdqqcqzysms67f23xktazlazsjdwvqv7j59c34q5vqp4gnmddpkmlwqpufecxf9ledyq0ma495wrak26nvq5qcg6lgw7zwfy5yq4w54ux7qay3tsqrg02mh"
+
 const checkOnChain = (address: string, network: Network) => {
   const { valid, paymentType } = parsePaymentDestination({
     destination: address,
@@ -60,18 +63,6 @@ describe("parsePaymentDestination", () => {
     expect(result.valid).toBeTruthy()
     expect(result.paymentType).toBe("lnurl")
     expect(result.lnurl).toBe(lnUrlInvoice)
-  })
-
-  it("invalidates a network mismatch", () => {
-    const result = parsePaymentDestination({
-      // lnInovice is a mainnet invoice
-      destination: lnInvoice,
-      network: "testnet",
-      pubKey: "",
-    })
-    expect(result.valid).toBeFalsy()
-    expect(result.paymentType).toBe("lightning")
-    expect(result.errorMessage).toBe("Invalid lightning invoice for testnet network")
   })
 
   describe("OnChain", () => {
@@ -145,6 +136,29 @@ describe("parsePaymentDestination", () => {
   })
 
   describe("Lightning", () => {
+    it("invalidates a mainnet invoice on testnet", () => {
+      const result = parsePaymentDestination({
+        // lnInovice is a mainnet invoice
+        destination: lnInvoice,
+        network: "testnet",
+        pubKey: "",
+      })
+      expect(result.valid).toBeFalsy()
+      expect(result.paymentType).toBe("lightning")
+      expect(result.errorMessage).toBe("Invalid lightning invoice for testnet network")
+    })
+
+    it("invalidates a testnet invoice on mainnet", () => {
+      // lntbInovice is a testnet invoice
+      const result = parsePaymentDestination({
+        destination: lntbInvoice,
+        network: "mainnet",
+        pubKey: "",
+      })
+      expect(result.valid).toBeFalsy()
+      expect(result.paymentType).toBe("lightning")
+    })
+
     it("detects a lightning param in an onchain address", () => {
       const address =
         "bitcoin:bc1qylh3u67j673h6y6alv70m0pl2yz53tzhvxgg7u?amount=0.00001&label=sbddesign%3A%20For%20lunch%20Tuesday&message=For%20lunch%20Tuesday&lightning=lnbc10u1p3pj257pp5yztkwjcz5ftl5laxkav23zmzekaw37zk6kmv80pk4xaev5qhtz7qdpdwd3xger9wd5kwm36yprx7u3qd36kucmgyp282etnv3shjcqzpgxqyz5vqsp5usyc4lk9chsfp53kvcnvq456ganh60d89reykdngsmtj6yw3nhvq9qyyssqjcewm5cjwz4a6rfjx77c490yced6pemk0upkxhy89cmm7sct66k8gneanwykzgdrwrfje69h9u5u0w57rrcsysas7gadwmzxc8c6t0spjazup6"
