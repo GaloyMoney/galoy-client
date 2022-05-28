@@ -20,6 +20,7 @@ const transactionListFragment = gql`
 
         settlementAmount
         settlementFee
+        settlementCurrency
         settlementPrice {
           base
           offset
