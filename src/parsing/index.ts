@@ -81,17 +81,13 @@ export const parsePaymentDestination = ({
 
   switch (paymentType) {
     case "lnurl":
-      return {
-        valid: true,
-        paymentType: "lnurl",
-        lnurl: destinationText,
-      }
+      return getLNURLPayResponse({ destinationText })
     case "lightning":
-      return getLightningPaymentResponse({ destination, network, pubKey })
+      return getLightningPayResponse({ destination, network, pubKey })
     case "onchain":
-      return getOnChainPaymentResponse({ destinationText, network })
+      return getOnChainPayResponse({ destinationText, network })
     case "intraledger":
-      return getIntraLedgerPaymentResponse({ protocol, destinationText })
+      return getIntraLedgerPayResponse({ protocol, destinationText })
   }
 }
 
@@ -118,7 +114,19 @@ const getPaymentType = ({
   return "intraledger"
 }
 
-const getLightningPaymentResponse = ({
+const getLNURLPayResponse = ({
+  destinationText,
+}: {
+  destinationText: string
+}): ValidPaymentReponse => {
+  return {
+    valid: true,
+    paymentType: "lnurl",
+    lnurl: destinationText,
+  }
+}
+
+const getLightningPayResponse = ({
   destination,
   network,
   pubKey,
@@ -131,7 +139,8 @@ const getLightningPaymentResponse = ({
   const { protocol, destinationText } = getProtocolAndData(destination)
   const lnProtocol = getLNParam(destination) ?? protocol
   if (
-    (network === "mainnet" && !lnProtocol.match(/^lnbc/iu)) ||
+    (network === "mainnet" &&
+      !(lnProtocol.match(/^lnbc/iu) && !lnProtocol.match(/^lnbcrt/iu))) ||
     (network === "testnet" && !lnProtocol.match(/^lntb/iu)) ||
     (network === "regtest" && !lnProtocol.match(/^lnbcrt/iu))
   ) {
@@ -186,7 +195,7 @@ const getLightningPaymentResponse = ({
   }
 }
 
-const getOnChainPaymentResponse = ({
+const getOnChainPayResponse = ({
   destinationText,
   network,
 }: {
@@ -194,7 +203,7 @@ const getOnChainPaymentResponse = ({
   network: Network
 }): ValidPaymentReponse => {
   try {
-    const decodedData = url.parse(destinationText, true)
+    const decodedData = inputDataToObject(destinationText)
 
     // some apps encode addresses in UPPERCASE
     const path = decodedData?.pathname
@@ -233,7 +242,7 @@ const getOnChainPaymentResponse = ({
   }
 }
 
-const getIntraLedgerPaymentResponse = ({
+const getIntraLedgerPayResponse = ({
   protocol,
   destinationText,
 }: {

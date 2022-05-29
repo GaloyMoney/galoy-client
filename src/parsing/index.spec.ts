@@ -25,6 +25,9 @@ const lnInvoice =
 const lntbInvoice =
   "lntb1m1pd2awsppp54q20f42rpuzapqpxl4l5a2vhrm89pth7rj0nv3fyqvkl89hc8myqdqqcqzysms67f23xktazlazsjdwvqv7j59c34q5vqp4gnmddpkmlwqpufecxf9ledyq0ma495wrak26nvq5qcg6lgw7zwfy5yq4w54ux7qay3tsqrg02mh"
 
+const lnbcrtInvoice =
+  "lnbcrt1u1psjhly3pp5mxvvnc6aw00vtvx004xrt05vfmy3nthxdd5cmyfxv45y66mfpxxqdqqcqzpgxqyz5vqsp5v399u058lal7u3dzswtntktg93wzdtggr2sqqkzy5t6ffd0n4pgq9qyyssqk204pw6as2599mdrefqx5lrycjax5559xnv2lrp9m4wpqavk6enkmtme09yxdt56552mx6v8eg9gpwxvl9mn0t5dea2gtmajzmukffsph8074z"
+
 const checkOnChain = (address: string, network: Network) => {
   const { valid, paymentType } = parsePaymentDestination({
     destination: address,
@@ -148,11 +151,56 @@ describe("parsePaymentDestination", () => {
       expect(result.errorMessage).toBe("Invalid lightning invoice for testnet network")
     })
 
+    it("invalidates a regtest invoice on testnet", () => {
+      const result = parsePaymentDestination({
+        // lnInovice is a regtest invoice
+        destination: lnbcrtInvoice,
+        network: "testnet",
+        pubKey: "",
+      })
+      expect(result.valid).toBeFalsy()
+      expect(result.paymentType).toBe("lightning")
+      expect(result.errorMessage).toBe("Invalid lightning invoice for testnet network")
+    })
+
     it("invalidates a testnet invoice on mainnet", () => {
       // lntbInovice is a testnet invoice
       const result = parsePaymentDestination({
         destination: lntbInvoice,
         network: "mainnet",
+        pubKey: "",
+      })
+      expect(result.valid).toBeFalsy()
+      expect(result.paymentType).toBe("lightning")
+    })
+
+    it("invalidates a regtest invoice on mainnet", () => {
+      // lntbInovice is a regtest invoice
+      const result = parsePaymentDestination({
+        destination: lnbcrtInvoice,
+        network: "mainnet",
+        pubKey: "",
+      })
+      expect(result.valid).toBeFalsy()
+      expect(result.paymentType).toBe("lightning")
+    })
+
+    it("invalidates a testnet invoice on regtest", () => {
+      // lntbInovice is a testnet invoice
+      const result = parsePaymentDestination({
+        destination: lntbInvoice,
+        network: "regtest",
+        pubKey: "",
+      })
+      expect(result.valid).toBeFalsy()
+      expect(result.paymentType).toBe("lightning")
+    })
+
+    it("invalidates a mainnet invoice on regtest", () => {
+      // lntbInovice is a mainnet invoice
+      const result = parsePaymentDestination({
+        destination: lnInvoice,
+        network: "regtest",
         pubKey: "",
       })
       expect(result.valid).toBeFalsy()
