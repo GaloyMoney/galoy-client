@@ -66,29 +66,34 @@ type ParsePaymentDestinationArgs = {
   pubKey: string
 }
 
-export const parsePaymentDestination = ({
-  destination,
-  network,
-  pubKey,
-}: ParsePaymentDestinationArgs): ValidPaymentReponse => {
-  if (!destination) {
-    return { valid: false }
+const inputDataToObject = (data: string): any => {
+  return url.parse(data, true)
+}
+
+const getLNParam = (data: string): string | undefined => {
+  return inputDataToObject(data)?.query?.lightning
+}
+
+const getProtocolAndData = (
+  destination: string,
+): { protocol: string; destinationText: string } => {
+  // input might start with 'lightning:', 'bitcoin:'
+  const split = destination.split(":")
+  const protocol = split[0].toLocaleLowerCase()
+  const destinationText = split[1] ?? split[0]
+  return { protocol, destinationText }
+}
+
+const getDataToDecode = (inputData: string): string => {
+  const lnParam = getLNParam(inputData)
+  if (lnParam != null) {
+    return lnParam
   }
-
-  const { protocol, destinationText } = getProtocolAndData(destination)
-
-  const paymentType = getPaymentType({ protocol, destinationText })
-
-  switch (paymentType) {
-    case "lnurl":
-      return getLNURLPayResponse({ destinationText })
-    case "lightning":
-      return getLightningPayResponse({ destination, network, pubKey })
-    case "onchain":
-      return getOnChainPayResponse({ destinationText, network })
-    case "intraledger":
-      return getIntraLedgerPayResponse({ protocol, destinationText })
-  }
+  const { protocol, destinationText } = getProtocolAndData(inputData)
+  // some apps encode lightning invoices in UPPERCASE
+  return (
+    protocol.toLowerCase() === "lightning" ? destinationText : protocol
+  ).toLowerCase()
 }
 
 const getPaymentType = ({
@@ -267,32 +272,27 @@ const getIntraLedgerPayResponse = ({
   }
 }
 
-const getProtocolAndData = (
-  destination: string,
-): { protocol: string; destinationText: string } => {
-  // input might start with 'lightning:', 'bitcoin:'
-  const split = destination.split(":")
-  const protocol = split[0].toLocaleLowerCase()
-  const destinationText = split[1] ?? split[0]
-  return { protocol, destinationText }
-}
-
-const inputDataToObject = (data: string): any => {
-  return url.parse(data, true)
-}
-
-const getLNParam = (data: string): string | undefined => {
-  return inputDataToObject(data)?.query?.lightning
-}
-
-const getDataToDecode = (inputData: string): string => {
-  const lnParam = getLNParam(inputData)
-  if (lnParam != null) {
-    return lnParam
+export const parsePaymentDestination = ({
+  destination,
+  network,
+  pubKey,
+}: ParsePaymentDestinationArgs): ValidPaymentReponse => {
+  if (!destination) {
+    return { valid: false }
   }
-  const { protocol, destinationText } = getProtocolAndData(inputData)
-  // some apps encode lightning invoices in UPPERCASE
-  return (
-    protocol.toLowerCase() === "lightning" ? destinationText : protocol
-  ).toLowerCase()
+
+  const { protocol, destinationText } = getProtocolAndData(destination)
+
+  const paymentType = getPaymentType({ protocol, destinationText })
+
+  switch (paymentType) {
+    case "lnurl":
+      return getLNURLPayResponse({ destinationText })
+    case "lightning":
+      return getLightningPayResponse({ destination, network, pubKey })
+    case "onchain":
+      return getOnChainPayResponse({ destinationText, network })
+    case "intraledger":
+      return getIntraLedgerPayResponse({ protocol, destinationText })
+  }
 }
