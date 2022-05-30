@@ -136,8 +136,8 @@ const getLightningPayResponse = ({
   pubKey: string
 }): ValidPaymentReponse => {
   const paymentType = "lightning"
-  const { protocol, destinationText } = getProtocolAndData(destination)
-  const lnProtocol = getLNParam(destination) ?? protocol
+  const { destinationText } = getProtocolAndData(destination)
+  const lnProtocol = getLNParam(destination) ?? destinationText
   if (
     (network === "mainnet" &&
       !(lnProtocol.match(/^lnbc/iu) && !lnProtocol.match(/^lnbcrt/iu))) ||

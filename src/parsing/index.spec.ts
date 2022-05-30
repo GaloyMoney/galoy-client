@@ -28,6 +28,9 @@ const lntbInvoice =
 const lnbcrtInvoice =
   "lnbcrt1u1psjhly3pp5mxvvnc6aw00vtvx004xrt05vfmy3nthxdd5cmyfxv45y66mfpxxqdqqcqzpgxqyz5vqsp5v399u058lal7u3dzswtntktg93wzdtggr2sqqkzy5t6ffd0n4pgq9qyyssqk204pw6as2599mdrefqx5lrycjax5559xnv2lrp9m4wpqavk6enkmtme09yxdt56552mx6v8eg9gpwxvl9mn0t5dea2gtmajzmukffsph8074z"
 
+const expiredLNInvoice =
+  "LNBC11245410N1P05Z2LTPP52W2GX57TZVLM09SWZ8M0CAWGQPVTL3KUWZA836H5LG6HK2N2PRYQDPHXYSV89EQYVMJQSNFW3PXCMMRDDZXJMNWV4EZQST4VA6HXAPQXGU8G6QCQZPGXQRRSSVS7S2WT4GX90MQC9CVMA8UYDSTX5P0FA68V03U96HQDPFCT9DGDQQSENNAAGAXND6664CTKV88GMQ689LS0J7FFAD4DRN6SPLXAXZ0CQYZAU9Q"
+
 const checkOnChain = (address: string, network: Network) => {
   const { valid, paymentType } = parsePaymentDestination({
     destination: address,
@@ -220,48 +223,41 @@ describe("parsePaymentDestination", () => {
       expect(errorMessage).not.toBe("invoice has expired")
     })
 
-    // it("validates an opennode invoice", () => {
-    //   const address =
-    //     "LNBC6864270N1P05ZVJJPP5FPEHVLV3DD2R76065R9V0L3N8QV9MFWU9RYHVPJ5XSZ3P4HY734QDZHXYSV89EQYVMZQSNFW3PXCMMRDDPX7MMDYPP8YATWVD5ZQMMWYPQH2EM4WD6ZQVESYQ5YYUN4DE3KSGZ0DEK8J2GCQZPGXQRRSS6LQA5JLLVUGLW5TPSUG4S2TMT5C8FNERR95FUH8HTCSYX52CP3WZSWJ32XJ5GEWYFN7MG293V6JLA9CZ8ZNDHWDHCNNKUL2QKF6PJLSPJ2NL3J"
+    it("validates an opennode invoice", () => {
+      const { valid, paymentType, errorMessage } = parsePaymentDestination({
+        destination: lnInvoice,
+        network: "mainnet",
+        pubKey: "",
+      })
+      expect(valid).toBeTruthy()
+      expect(paymentType).toBe("lightning")
+      expect(errorMessage).not.toBe("invoice has expired")
+    })
 
-    //   const { valid, paymentType, errorMessage } = parsePaymentDestination({
-    //     destination: address,
-    //     network: "mainnet",
-    //     pubKey: "",
-    //   })
-    //   expect(valid).toBeTruthy()
-    //   expect(paymentType).toBe("lightning")
-    //   expect(errorMessage).not.toBe("invoice has expired")
-    // })
+    it("invalidates an expired opennode invoice", () => {
+      const { valid, paymentType, errorMessage } = parsePaymentDestination({
+        destination: expiredLNInvoice,
+        network: "mainnet",
+        pubKey: "",
+      })
+      expect(valid).toBeFalsy()
+      expect(paymentType).toBe("lightning")
+      expect(errorMessage).toBe("invoice has expired")
+    })
 
-    // it("invalidates an expired opennode invoice", () => {
-    //   const address =
-    //     "LNBC11245410N1P05Z2LTPP52W2GX57TZVLM09SWZ8M0CAWGQPVTL3KUWZA836H5LG6HK2N2PRYQDPHXYSV89EQYVMJQSNFW3PXCMMRDDZXJMNWV4EZQST4VA6HXAPQXGU8G6QCQZPGXQRRSSVS7S2WT4GX90MQC9CVMA8UYDSTX5P0FA68V03U96HQDPFCT9DGDQQSENNAAGAXND6664CTKV88GMQ689LS0J7FFAD4DRN6SPLXAXZ0CQYZAU9Q"
+    it("validates a lightning invoice with prefix", () => {
+      const address = `LIGHTNING:${lnInvoice}`
 
-    //   const { valid, paymentType, errorMessage } = parsePaymentDestination({
-    //     destination: address,
-    //     network: "mainnet",
-    //     pubKey: "",
-    //   })
-    //   expect(valid).toBeFalsy()
-    //   expect(paymentType).toBe("lightning")
-    //   expect(errorMessage).toBe("invoice has expired")
-    // })
+      const { valid, paymentType, errorMessage } = parsePaymentDestination({
+        destination: address,
+        network: "mainnet",
+        pubKey: "",
+      })
 
-    // it("validates a lightning invoice with prefix", () => {
-    //   const address =
-    //     "LIGHTNING:LNBC6864270N1P05ZVJJPP5FPEHVLV3DD2R76065R9V0L3N8QV9MFWU9RYHVPJ5XSZ3P4HY734QDZHXYSV89EQYVMZQSNFW3PXCMMRDDPX7MMDYPP8YATWVD5ZQMMWYPQH2EM4WD6ZQVESYQ5YYUN4DE3KSGZ0DEK8J2GCQZPGXQRRSS6LQA5JLLVUGLW5TPSUG4S2TMT5C8FNERR95FUH8HTCSYX52CP3WZSWJ32XJ5GEWYFN7MG293V6JLA9CZ8ZNDHWDHCNNKUL2QKF6PJLSPJ2NL3J"
-
-    //   const { valid, paymentType, errorMessage } = parsePaymentDestination({
-    //     destination: address,
-    //     network: "mainnet",
-    //     pubKey: "",
-    //   })
-
-    //   expect(valid).toBeTruthy()
-    //   expect(paymentType).toBe("lightning")
-    //   expect(errorMessage).not.toBe("invoice has expired")
-    // })
+      expect(valid).toBeTruthy()
+      expect(paymentType).toBe("lightning")
+      expect(errorMessage).not.toBe("invoice has expired")
+    })
   })
 
   describe("IntraLedger handles", () => {
