@@ -16,6 +16,7 @@ import contacts from "./queries/contacts"
 import getWalletCsvTransactions from "./queries/get-wallet-csv-transactions"
 import transactionListForContact from "./queries/transaction-list-for-contact"
 import transactionList from "./queries/transaction-list"
+import transactionListForDefaultAccount from "./queries/transaction-list-for-default-account"
 import usernameAvailable from "./queries/username-available"
 
 import { GaloyGQL, joinErrorsMessages } from "../index"
@@ -31,6 +32,7 @@ export const QUERIES = {
   getWalletCsvTransactions,
   transactionListForContact,
   transactionList,
+  transactionListForDefaultAccount,
   usernameAvailable,
 }
 
@@ -82,6 +84,18 @@ const transactionListQuery = (
   >("transactionList", config)
 }
 
+const transactionListForDefaultAccountQuery = (
+  config?: QueryHookOptions<
+    GaloyGQL.TransactionListForDefaultAccountQuery,
+    GaloyGQL.TransactionListForDefaultAccountQueryVariables
+  >,
+): QueryResult<GaloyGQL.TransactionListForDefaultAccountQuery> & QueryHelpers => {
+  return useQueryWrapper<
+    GaloyGQL.TransactionListForDefaultAccountQuery,
+    GaloyGQL.TransactionListForDefaultAccountQueryVariables
+  >("transactionListForDefaultAccount", config)
+}
+
 const contactsQuery = (
   config?: QueryHookOptions<GaloyGQL.ContactsQuery, GaloyGQL.ContactsQueryVariables>,
 ): QueryResult<GaloyGQL.ContactsQuery, GaloyGQL.ContactsQueryVariables> &
@@ -114,6 +128,7 @@ export const useQuery = {
   transactionList: transactionListQuery,
   contacts: contactsQuery,
   transactionListForContact: transactionListForContactQuery,
+  transactionListForDefaultAccount: transactionListForDefaultAccountQuery,
 }
 
 // ********** DELAYED QUERIES ********** //

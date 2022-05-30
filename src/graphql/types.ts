@@ -58,11 +58,20 @@ export namespace GaloyGQL {
     readonly csvTransactions: Scalars["String"]
     readonly defaultWalletId: Scalars["WalletId"]
     readonly id: Scalars["ID"]
+    readonly transactions?: Maybe<TransactionConnection>
     readonly wallets: ReadonlyArray<Wallet>
   }
 
   export type AccountCsvTransactionsArgs = {
     walletIds: ReadonlyArray<Scalars["WalletId"]>
+  }
+
+  export type AccountTransactionsArgs = {
+    after?: InputMaybe<Scalars["String"]>
+    before?: InputMaybe<Scalars["String"]>
+    first?: InputMaybe<Scalars["Int"]>
+    last?: InputMaybe<Scalars["Int"]>
+    walletIds?: InputMaybe<ReadonlyArray<InputMaybe<Scalars["WalletId"]>>>
   }
 
   export type AccountUpdateDefaultWalletIdInput = {
@@ -140,11 +149,21 @@ export namespace GaloyGQL {
     readonly csvTransactions: Scalars["String"]
     readonly defaultWalletId: Scalars["WalletId"]
     readonly id: Scalars["ID"]
+    /** A list of all transactions associated with walletIds optionally passed. */
+    readonly transactions?: Maybe<TransactionConnection>
     readonly wallets: ReadonlyArray<Wallet>
   }
 
   export type ConsumerAccountCsvTransactionsArgs = {
     walletIds: ReadonlyArray<Scalars["WalletId"]>
+  }
+
+  export type ConsumerAccountTransactionsArgs = {
+    after?: InputMaybe<Scalars["String"]>
+    before?: InputMaybe<Scalars["String"]>
+    first?: InputMaybe<Scalars["Int"]>
+    last?: InputMaybe<Scalars["Int"]>
+    walletIds?: InputMaybe<ReadonlyArray<InputMaybe<Scalars["WalletId"]>>>
   }
 
   export type Coordinates = {
@@ -871,6 +890,8 @@ export namespace GaloyGQL {
     readonly memo?: Maybe<Scalars["Memo"]>
     /** Amount of sats sent or received. */
     readonly settlementAmount: Scalars["SatAmount"]
+    /** Wallet currency for transaction. */
+    readonly settlementCurrency: WalletCurrency
     readonly settlementFee: Scalars["SatAmount"]
     /** Price in USDCENT/SATS at time of settlement. */
     readonly settlementPrice: Price
@@ -1127,6 +1148,7 @@ export namespace GaloyGQL {
                   readonly createdAt: number
                   readonly settlementAmount: number
                   readonly settlementFee: number
+                  readonly settlementCurrency: WalletCurrency
                   readonly settlementPrice: {
                     readonly __typename?: "Price"
                     readonly base: number
@@ -1192,6 +1214,7 @@ export namespace GaloyGQL {
                   readonly createdAt: number
                   readonly settlementAmount: number
                   readonly settlementFee: number
+                  readonly settlementCurrency: WalletCurrency
                   readonly settlementPrice: {
                     readonly __typename?: "Price"
                     readonly base: number
@@ -1256,6 +1279,7 @@ export namespace GaloyGQL {
         readonly createdAt: number
         readonly settlementAmount: number
         readonly settlementFee: number
+        readonly settlementCurrency: WalletCurrency
         readonly settlementPrice: {
           readonly __typename?: "Price"
           readonly base: number
@@ -1845,6 +1869,7 @@ export namespace GaloyGQL {
                     readonly createdAt: number
                     readonly settlementAmount: number
                     readonly settlementFee: number
+                    readonly settlementCurrency: WalletCurrency
                     readonly settlementPrice: {
                       readonly __typename?: "Price"
                       readonly base: number
@@ -1910,6 +1935,7 @@ export namespace GaloyGQL {
                     readonly createdAt: number
                     readonly settlementAmount: number
                     readonly settlementFee: number
+                    readonly settlementCurrency: WalletCurrency
                     readonly settlementPrice: {
                       readonly __typename?: "Price"
                       readonly base: number
@@ -2017,6 +2043,83 @@ export namespace GaloyGQL {
               readonly createdAt: number
               readonly settlementAmount: number
               readonly settlementFee: number
+              readonly settlementCurrency: WalletCurrency
+              readonly settlementPrice: {
+                readonly __typename?: "Price"
+                readonly base: number
+                readonly offset: number
+                readonly currencyUnit: ExchangeCurrencyUnit
+                readonly formattedAmount: string
+              }
+              readonly initiationVia:
+                | {
+                    readonly __typename: "InitiationViaIntraLedger"
+                    readonly counterPartyWalletId?: string | null
+                    readonly counterPartyUsername?: string | null
+                  }
+                | { readonly __typename: "InitiationViaLn"; readonly paymentHash: string }
+                | {
+                    readonly __typename: "InitiationViaOnChain"
+                    readonly address: string
+                  }
+              readonly settlementVia:
+                | {
+                    readonly __typename: "SettlementViaIntraLedger"
+                    readonly counterPartyWalletId?: string | null
+                    readonly counterPartyUsername?: string | null
+                  }
+                | {
+                    readonly __typename: "SettlementViaLn"
+                    readonly paymentSecret?: string | null
+                  }
+                | {
+                    readonly __typename: "SettlementViaOnChain"
+                    readonly transactionHash: string
+                  }
+            }
+          }> | null
+        } | null
+      }
+    } | null
+  }
+
+  export type TransactionListForDefaultAccountQueryVariables = Exact<{
+    first?: InputMaybe<Scalars["Int"]>
+    after?: InputMaybe<Scalars["String"]>
+    last?: InputMaybe<Scalars["Int"]>
+    before?: InputMaybe<Scalars["String"]>
+  }>
+
+  export type TransactionListForDefaultAccountQuery = {
+    readonly __typename?: "Query"
+    readonly me?: {
+      readonly __typename?: "User"
+      readonly id: string
+      readonly defaultAccount: {
+        readonly __typename?: "ConsumerAccount"
+        readonly id: string
+        readonly transactions?: {
+          readonly __typename?: "TransactionConnection"
+          readonly pageInfo: {
+            readonly __typename?: "PageInfo"
+            readonly hasNextPage: boolean
+            readonly hasPreviousPage: boolean
+            readonly startCursor?: string | null
+            readonly endCursor?: string | null
+          }
+          readonly edges?: ReadonlyArray<{
+            readonly __typename?: "TransactionEdge"
+            readonly cursor: string
+            readonly node: {
+              readonly __typename: "Transaction"
+              readonly id: string
+              readonly status: TxStatus
+              readonly direction: TxDirection
+              readonly memo?: string | null
+              readonly createdAt: number
+              readonly settlementAmount: number
+              readonly settlementFee: number
+              readonly settlementCurrency: WalletCurrency
               readonly settlementPrice: {
                 readonly __typename?: "Price"
                 readonly base: number
@@ -2096,6 +2199,7 @@ export namespace GaloyGQL {
                     readonly createdAt: number
                     readonly settlementAmount: number
                     readonly settlementFee: number
+                    readonly settlementCurrency: WalletCurrency
                     readonly settlementPrice: {
                       readonly __typename?: "Price"
                       readonly base: number
@@ -2159,6 +2263,7 @@ export namespace GaloyGQL {
                     readonly createdAt: number
                     readonly settlementAmount: number
                     readonly settlementFee: number
+                    readonly settlementCurrency: WalletCurrency
                     readonly settlementPrice: {
                       readonly __typename?: "Price"
                       readonly base: number
@@ -2270,6 +2375,7 @@ export namespace GaloyGQL {
                       readonly createdAt: number
                       readonly settlementAmount: number
                       readonly settlementFee: number
+                      readonly settlementCurrency: WalletCurrency
                       readonly settlementPrice: {
                         readonly __typename?: "Price"
                         readonly base: number
@@ -2335,6 +2441,7 @@ export namespace GaloyGQL {
                       readonly createdAt: number
                       readonly settlementAmount: number
                       readonly settlementFee: number
+                      readonly settlementCurrency: WalletCurrency
                       readonly settlementPrice: {
                         readonly __typename?: "Price"
                         readonly base: number
