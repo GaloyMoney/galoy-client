@@ -120,19 +120,18 @@ const getLNURLPayResponse = ({
 }
 
 const getLightningPayResponse = ({
-  protocol,
-  destinationText,
+  destination,
   network,
   pubKey,
 }: {
-  protocol: string
-  destinationText: string
+  destination: string
   network: Network
   pubKey: string
 }): ValidPaymentReponse => {
   const paymentType = "lightning"
+  const { protocol, destinationText } = getProtocolAndData(destination)
   const lnProtocol =
-    getLNParam(`${protocol}:${destinationText}`) ??
+    getLNParam(destination) ??
     (protocol.toLowerCase() === "lightning" ? destinationText : protocol).toLowerCase()
 
   if (
@@ -279,7 +278,7 @@ export const parsePaymentDestination = ({
     case "lnurl":
       return getLNURLPayResponse({ destinationText })
     case "lightning":
-      return getLightningPayResponse({ protocol, destinationText, network, pubKey })
+      return getLightningPayResponse({ destination, network, pubKey })
     case "onchain":
       return getOnChainPayResponse({ destinationText, network })
     case "intraledger":
