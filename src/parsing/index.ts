@@ -84,18 +84,6 @@ const getProtocolAndData = (
   return { protocol, destinationText }
 }
 
-const getDataToDecode = (inputData: string): string => {
-  const lnParam = getLNParam(inputData)
-  if (lnParam != null) {
-    return lnParam
-  }
-  const { protocol, destinationText } = getProtocolAndData(inputData)
-  // some apps encode lightning invoices in UPPERCASE
-  return (
-    protocol.toLowerCase() === "lightning" ? destinationText : protocol
-  ).toLowerCase()
-}
-
 const getPaymentType = ({
   protocol,
   destinationText,
@@ -132,17 +120,21 @@ const getLNURLPayResponse = ({
 }
 
 const getLightningPayResponse = ({
-  destination,
+  protocol,
+  destinationText,
   network,
   pubKey,
 }: {
-  destination: string
+  protocol: string
+  destinationText: string
   network: Network
   pubKey: string
 }): ValidPaymentReponse => {
   const paymentType = "lightning"
-  const { destinationText } = getProtocolAndData(destination)
-  const lnProtocol = getLNParam(destination) ?? destinationText
+  const lnProtocol =
+    getLNParam(`${protocol}:${destinationText}`) ??
+    (protocol.toLowerCase() === "lightning" ? destinationText : protocol).toLowerCase()
+
   if (
     (network === "mainnet" &&
       !(lnProtocol.match(/^lnbc/iu) && !lnProtocol.match(/^lnbcrt/iu))) ||
@@ -157,11 +149,9 @@ const getLightningPayResponse = ({
     }
   }
 
-  const dataToDecode = getDataToDecode(destinationText)
-
   let payReq: bolt11.PaymentRequestObject | undefined = undefined
   try {
-    payReq = bolt11.decode(dataToDecode)
+    payReq = bolt11.decode(lnProtocol)
   } catch (err) {
     return {
       valid: false,
@@ -289,7 +279,7 @@ export const parsePaymentDestination = ({
     case "lnurl":
       return getLNURLPayResponse({ destinationText })
     case "lightning":
-      return getLightningPayResponse({ destination, network, pubKey })
+      return getLightningPayResponse({ protocol, destinationText, network, pubKey })
     case "onchain":
       return getOnChainPayResponse({ destinationText, network })
     case "intraledger":
