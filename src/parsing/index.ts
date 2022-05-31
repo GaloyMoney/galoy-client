@@ -97,7 +97,7 @@ const getPaymentType = ({
   if (
     protocol === "lightning" ||
     destinationText.match(/^ln(bc|tb).{50,}/iu) ||
-    (destinationText && getLNParam(destinationText) != null)
+    (destinationText && getLNParam(destinationText) !== undefined)
   ) {
     return "lightning"
   }
