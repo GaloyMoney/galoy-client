@@ -194,8 +194,16 @@ const transactionListForContactDelayedQuery = () => {
   >("transactionListForContact")
 }
 
+const onChainTxFeeDelayedQuery = () => {
+  return useDelayedQueryWrapper<
+    GaloyGQL.OnChainTxFeeQuery,
+    GaloyGQL.OnChainTxFeeQueryVariables
+  >("onChainTxFee")
+}
+
 export const useDelayedQuery = {
   userDefaultWalletId: userDefaultWalletIdDelayedQuery,
   transactionList: transactionListDelayedQuery,
   transactionListForContact: transactionListForContactDelayedQuery,
+  onChainTxFee: onChainTxFeeDelayedQuery,
 }

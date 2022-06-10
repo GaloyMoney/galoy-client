@@ -104,6 +104,8 @@ const ES = {
   "Transaction List": undefined,
   "Transactions with %{contactUsername}": "Las transacciones con %{contactUsername}",
   "Update Invoice": "Actualizar Factura",
+  "Use a Bitcoin on-chain address": "Use una dirección en cadena de Bitcoin",
+  "Use a Lightning invoice": "Use una factura Lightning",
   "Username": "Nombre de usuario",
   "Verify Account": undefined,
   "Verify you are human": undefined,
