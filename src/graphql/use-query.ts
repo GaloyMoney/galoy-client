@@ -3,6 +3,7 @@ import {
   QueryHookOptions,
   useApolloClient,
   useQuery as useApolloQuery,
+  QueryOptions,
 } from "@apollo/client"
 import { useCallback, useState } from "react"
 
@@ -135,6 +136,7 @@ export const useQuery = {
 
 const useDelayedQueryWrapper = <TData = unknown, TVars = unknown>(
   queryName: keyof typeof QUERIES,
+  config?: QueryOptions<TData, TVars>,
 ): [(variables?: TVars) => QueryResult<TData> & QueryHelpers, { loading: boolean }] => {
   const client = useApolloClient()
   const [loading, setLoading] = useState<boolean>(false)
@@ -146,6 +148,7 @@ const useDelayedQueryWrapper = <TData = unknown, TVars = unknown>(
         const result = await client.query({
           query: QUERIES[queryName],
           variables,
+          ...config,
         })
         setLoading(false)
         const { data, error } = result
@@ -173,32 +176,49 @@ const useDelayedQueryWrapper = <TData = unknown, TVars = unknown>(
   ]
 }
 
-const userDefaultWalletIdDelayedQuery = () => {
+const userDefaultWalletIdDelayedQuery = (
+  config?: QueryOptions<
+    GaloyGQL.UserDefaultWalletIdQuery,
+    GaloyGQL.UserDefaultWalletIdQueryVariables
+  >,
+) => {
   return useDelayedQueryWrapper<
     GaloyGQL.UserDefaultWalletIdQuery,
     GaloyGQL.UserDefaultWalletIdQueryVariables
-  >("userDefaultWalletId")
+  >("userDefaultWalletId", config)
 }
 
-const transactionListDelayedQuery = () => {
+const transactionListDelayedQuery = (
+  config?: QueryOptions<
+    GaloyGQL.TransactionListQuery,
+    GaloyGQL.TransactionListQueryVariables
+  >,
+) => {
   return useDelayedQueryWrapper<
     GaloyGQL.TransactionListQuery,
     GaloyGQL.TransactionListQueryVariables
-  >("transactionList")
+  >("transactionList", config)
 }
 
-const transactionListForContactDelayedQuery = () => {
+const transactionListForContactDelayedQuery = (
+  config?: QueryOptions<
+    GaloyGQL.TransactionListForContactQuery,
+    GaloyGQL.TransactionListForContactQueryVariables
+  >,
+) => {
   return useDelayedQueryWrapper<
     GaloyGQL.TransactionListForContactQuery,
     GaloyGQL.TransactionListForContactQueryVariables
-  >("transactionListForContact")
+  >("transactionListForContact", config)
 }
 
-const onChainTxFeeDelayedQuery = () => {
+const onChainTxFeeDelayedQuery = (
+  config?: QueryOptions<GaloyGQL.OnChainTxFeeQuery, GaloyGQL.OnChainTxFeeQueryVariables>,
+) => {
   return useDelayedQueryWrapper<
     GaloyGQL.OnChainTxFeeQuery,
     GaloyGQL.OnChainTxFeeQueryVariables
-  >("onChainTxFee")
+  >("onChainTxFee", config)
 }
 
 export const useDelayedQuery = {
