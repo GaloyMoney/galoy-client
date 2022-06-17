@@ -1,5 +1,12 @@
-import { requestInvoice, requestPayServiceParams } from "lnurl-pay"
+import { requestInvoice, requestPayServiceParams, utils } from "lnurl-pay"
 import { LnUrlPayServiceArgs, LnUrlPayServiceResponse, LnUrlRequestInvoiceArgs, LnUrlRequestInvoiceResponse } from "lnurl-pay/dist/types/types"
+import { getDestination } from "../parsing"
+import bolt11 from "bolt11"
+
+type isLnurlPaymentSameNodeArgs = {
+    lnUrlOrAddress: string
+    ourNode: string
+}
 
 export const fetchLnurlPaymentParams = async ({
     lnUrlOrAddress,
@@ -25,4 +32,16 @@ onionAllowed
         fetchGet,
         onionAllowed
     })
+}
+
+export const isLnurlPaymentSameNode = async ({
+    lnUrlOrAddress,
+    ourNode
+}: isLnurlPaymentSameNodeArgs): Promise<boolean> => {
+ const { invoice } = await requestInvoice({
+    lnUrlOrAddress,
+    tokens: utils.toSats(1)
+ })
+ const decoded = bolt11.decode(invoice)
+ return ourNode === getDestination(decoded)
 }
