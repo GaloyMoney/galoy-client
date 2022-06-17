@@ -55,8 +55,8 @@ const parseAmount = (txt: string): number => {
   return Math.round(
     match[5]
       ? (parseInt(match[5], 16) +
-        (match[7] ? parseInt(match[7], 16) * Math.pow(16, -match[7].length) : 0)) *
-      (match[9] ? Math.pow(16, parseInt(match[9], 16)) : 0x10000)
+          (match[7] ? parseInt(match[7], 16) * Math.pow(16, -match[7].length) : 0)) *
+          (match[9] ? Math.pow(16, parseInt(match[9], 16)) : 0x10000)
       : Number(match[2]) * (match[4] ? Math.pow(10, Number(match[4])) : 1e8),
   )
 }
