@@ -1,6 +1,7 @@
 import bolt11 from "bolt11"
 import url from "url"
 import { networks, address } from "bitcoinjs-lib"
+import { utils } from "lnurl-pay"
 
 export const getDescription = (decoded: bolt11.PaymentRequestObject) => {
   const data = decoded.tags.find((value) => value.tagName === "description")?.data
@@ -54,8 +55,8 @@ const parseAmount = (txt: string): number => {
   return Math.round(
     match[5]
       ? (parseInt(match[5], 16) +
-          (match[7] ? parseInt(match[7], 16) * Math.pow(16, -match[7].length) : 0)) *
-          (match[9] ? Math.pow(16, parseInt(match[9], 16)) : 0x10000)
+        (match[7] ? parseInt(match[7], 16) * Math.pow(16, -match[7].length) : 0)) *
+      (match[9] ? Math.pow(16, parseInt(match[9], 16)) : 0x10000)
       : Number(match[2]) * (match[4] ? Math.pow(10, Number(match[4])) : 1e8),
   )
 }
@@ -91,7 +92,8 @@ const getPaymentType = ({
   protocol: string
   destinationText: string
 }): PaymentType => {
-  if (destinationText.match(/^lnurl/iu)) {
+  // As far as the client is concerned, lnurl is the same as lightning address
+  if (utils.isLnurl(destinationText) || utils.isLightningAddress(destinationText)) {
     return "lnurl"
   }
   if (
