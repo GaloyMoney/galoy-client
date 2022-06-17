@@ -569,6 +569,7 @@ export default {
     success: "Pagamento enviado com sucesso",
     title: "Enviar Bitcoin",
     usernameNotFound: "Um usuário correspondente ao nome de usuário digitado não pôde ser encontrado.",
+    failedToFetchLnurlParams: "Falha ao buscar parâmetros lnurl",
   },
   SettingsScreen: {
     activated: "Ativado",
