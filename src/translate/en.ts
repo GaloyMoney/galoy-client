@@ -576,6 +576,7 @@ export default {
     title: "Send Bitcoin",
     usernameNotFound: "A user matching the entered username could not be found.",
     failedToFetchLnurlParams: "Failed to fetch lnurl params",
+    failedToFetchLnurlInvoice: "Failed to fetch lnurl invoice"
   },
   SettingsScreen: {
     activated: "Activated",

@@ -576,6 +576,7 @@ export default {
     title: "Envoyer des bitcoins",
     usernameNotFound: "Un usager correspondant au nom saisi est introuvable.",
     failedToFetchLnurlParams: "Impossible de récupérer les paramètres lnurl",
+    failedToFetchLnurlInvoice: "Échec de la récupération de la facture lnurl"
   },
   SettingsScreen: {
     activated: "Activé",
