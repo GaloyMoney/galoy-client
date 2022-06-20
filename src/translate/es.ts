@@ -559,6 +559,7 @@ export default {
     title: "Enviar Bitcoin",
     usernameNotFound: "El usuario no fue encontrado.",
     failedToFetchLnurlParams: "No se pudieron recuperar los parámetros de lnurl",
+    failedToFetchLnurlInvoice: "Error al obtener la factura de lnurl"
   },
   SettingsScreen: {
     activated: "Activada",
