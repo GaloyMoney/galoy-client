@@ -739,10 +739,13 @@ export default {
     title: "Vous souhaitez recevoir des pourboires? Partagez votre lien de pourboires!",
     copied: "{{data}} sauvegardé dans votre presse-papier",
   },
-  whatsapp: {
-    contactUs: "Besoin d'aide? Parlez-nous sur WhatsApp!",
+  support: {
+    contactUs: "Besoin d'aide? Contactez-nous.",
+    whatsapp: "WhatsApp",
+    email: "E-mail",
+    phone: "Téléphoner",
+    defaultEmailSubject: "Bitcoin Beach Wallet - Soutien",
     defaultSupportMessage: "Salut! J'ai besoin d'aide avec Bitcoin Forest Wallet",
-    contactSupport: "Contactez le support technique",
   },
   lnurl: {
     overLimit: "Vous ne pouvez pas envoyer plus que le montant maximum",
