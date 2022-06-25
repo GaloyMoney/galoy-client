@@ -728,10 +728,13 @@ export default {
     title: "Quer receber gorjetas? Compartilhe seu link de gorjetas!",
     copied: "{{data}} salvo na área de transferência",
   },
-  whatsapp: {
-    contactUs: "Precisa de ajuda? Fale conosco no WhatsApp!",
+  support: {
+    contactUs: "Preciso de ajuda? Contate-Nos.",
+    whatsapp: "WhatsApp",
+    email: "E-mail",
+    phone: "Telefone",
+    defaultEmailSubject: "Bitcoin Beach Wallet - Suporte",
     defaultSupportMessage: "Ei! Preciso de ajuda com a Bitcoin Beach Wallet",
-    contactSupport: "Contatar Suporte",
   },
   lnurl: {
     overLimit: "Você não pode enviar mais do que o valor máximo",

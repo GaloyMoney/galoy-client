@@ -739,10 +739,13 @@ export default {
     title: "Want to receive tips? Share your tipping link!",
     copied: "{{data}} saved to clipboard",
   },
-  whatsapp: {
-    contactUs: "Need help? Talk to us on WhatsApp!",
+  support: {
+    contactUs: "Need help?  Contact us.",
+    whatsapp: "WhatsApp",
+    email: "Email",
+    phone: "Phone",
+    defaultEmailSubject: "Bitcoin Beach Wallet - Support",
     defaultSupportMessage: "Hey there! I need some help with Bitcoin Beach Wallet",
-    contactSupport: "Contact Support",
   },
   lnurl: {
     overLimit: "You can't send more than max amount",

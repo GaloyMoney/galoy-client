@@ -722,10 +722,13 @@ export default {
     title: "Comparte este link para recibir pagos o propinas de tus clientes o amigos",
     copied: "{{data}} se ha copiado en el portapapeles",
   },
-  whatsapp: {
-    contactUs: "¿Necesita ayuda? Contáctenos por WhatsApp",
+  support: {
+    contactUs: "¿Necesitas ayuda? Contáctenos.",
+    whatsapp: "WhatsApp",
+    email: "Correo electrónico",
+    phone: "Teléfono",
+    defaultEmailSubject: "Bitcoin Beach Wallet - Apoyo",
     defaultSupportMessage: "¡Hola! Necesito ayuda con Bitcoin Beach Wallet",
-    contactSupport: "Contactar a Soporte",
   },
   lnurl: {
     overLimit: "No se puede enviar más de la cantidad máxima",
