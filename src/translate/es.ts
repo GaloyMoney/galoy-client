@@ -667,7 +667,7 @@ export default {
     logout: "Cerrar sesion",
     minutes: "minutos",
     needWallet: "Valide su teléfono para abrir su billetera",
-    next: "Próximo",
+    next: "Siguiente",
     No: "No",
     note: "Nota ",
     notification: "Notificación",

@@ -52,7 +52,7 @@ const ES = {
   "Login to send": undefined,
   "Logout": "Cerrar sesión",
   "New Password": undefined,
-  "Next": "Próximo",
+  "Next": "Siguiente",
   "No Contacts": undefined,
   "No transactions": "No transacciones",
   "Note": undefined,
