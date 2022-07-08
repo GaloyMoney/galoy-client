@@ -505,6 +505,7 @@ export default {
     thisMonth: "Este mês",
     thisWeek: "Esta semana",
     thisYear: "Este ano",
+    lastFiveYears: "últimos cinco anos",
     today: "Hoje",
     yesterday: "Ontem",
   },
