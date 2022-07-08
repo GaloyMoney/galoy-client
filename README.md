@@ -42,6 +42,8 @@ yarn build
 
 ## Local development
 
+### using yarn
+
 Run:
 
 ```bash
@@ -62,4 +64,33 @@ yarn unlink @galoymoney/client
 
 # in galoymoney/client folder
 yarn unlink
+```
+
+### using yalc
+
+Run:
+
+```bash
+# in galoymoney/client folder
+yalc publish
+```
+
+in your test project run:
+
+```bash
+yalc add @galoymoney/client
+```
+
+If you want to remove the symlink, run:
+
+```bash
+# in your test project
+yalc remove @galoymoney/client
+```
+
+to update changes, you have to run <code>yalc publish</code> before run:
+
+```bash
+# in your test project
+yalc update
 ```
