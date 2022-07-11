@@ -136,7 +136,7 @@ export const useQuery = {
 
 const useDelayedQueryWrapper = <TData = unknown, TVars = unknown>(
   queryName: keyof typeof QUERIES,
-  config?: QueryOptions<TData, TVars>,
+  config?: Omit<QueryOptions<TVars, TData>, "query" | "variables">,
 ): [(variables?: TVars) => QueryResult<TData> & QueryHelpers, { loading: boolean }] => {
   const client = useApolloClient()
   const [loading, setLoading] = useState<boolean>(false)
