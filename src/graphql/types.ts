@@ -15,7 +15,7 @@ export namespace GaloyGQL {
     Boolean: boolean
     Int: number
     Float: number
-    /** An authentication code valid for a single use */
+    /** An JWT-formatted authentication token */
     AuthToken: string
     /** (Positive) Cent amount (1/100 of a dollar) */
     CentAmount: number
@@ -93,6 +93,7 @@ export namespace GaloyGQL {
   /** A wallet belonging to an account which contains a BTC balance and a list of transactions. */
   export type BtcWallet = Wallet & {
     readonly __typename?: "BTCWallet"
+    readonly accountId: Scalars["ID"]
     /** A balance stored in BTC. */
     readonly balance: Scalars["SignedAmount"]
     readonly id: Scalars["ID"]
@@ -888,12 +889,12 @@ export namespace GaloyGQL {
     /** From which protocol the payment has been initiated. */
     readonly initiationVia: InitiationVia
     readonly memo?: Maybe<Scalars["Memo"]>
-    /** Amount of sats sent or received. */
-    readonly settlementAmount: Scalars["SatAmount"]
+    /** Amount of the settlement currency sent or received. */
+    readonly settlementAmount: Scalars["SignedAmount"]
     /** Wallet currency for transaction. */
     readonly settlementCurrency: WalletCurrency
-    readonly settlementFee: Scalars["SatAmount"]
-    /** Price in USDCENT/SATS at time of settlement. */
+    readonly settlementFee: Scalars["SignedAmount"]
+    /** Price in USDCENT/SETTLEMENTUNIT at time of settlement. */
     readonly settlementPrice: Price
     /** To which protocol the payment has settled on. */
     readonly settlementVia: SettlementVia
@@ -954,6 +955,7 @@ export namespace GaloyGQL {
   /** A wallet belonging to an account which contains a USD balance and a list of transactions. */
   export type UsdWallet = Wallet & {
     readonly __typename?: "UsdWallet"
+    readonly accountId: Scalars["ID"]
     readonly balance: Scalars["SignedAmount"]
     readonly id: Scalars["ID"]
     readonly transactions?: Maybe<TransactionConnection>
@@ -1091,6 +1093,7 @@ export namespace GaloyGQL {
 
   /** A generic wallet which stores value in one of our supported currencies. */
   export type Wallet = {
+    readonly accountId: Scalars["ID"]
     readonly balance: Scalars["SignedAmount"]
     readonly id: Scalars["ID"]
     /**
