@@ -559,6 +559,7 @@ export default {
     title: "Confirm Payment",
     totalLabel: "Total:",
     totalExceed: "Total exceeds your balance of {{balance}}",
+    maxFeeSelected: "This is the maximum fee you will be charged for this transaction.  It may end up being less once the payment has been made."
   },
   SendBitcoinScreen: {
     amount: "Amount",
