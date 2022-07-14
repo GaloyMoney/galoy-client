@@ -520,6 +520,7 @@ export default {
     setNote: "definir uma nota",
     tapQrCodeCopy: "Toque em QR Code para Copiar",
     title: "Receber Bitcoin",
+    usdTitle: "Receber USD",
     error: "Falha ao gerar a fatura. Entre em contato com o suporte se o problema persistir.",
   },
   ScanningQRCodeScreen: {

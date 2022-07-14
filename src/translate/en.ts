@@ -521,6 +521,7 @@ export default {
     setNote: "set a note",
     tapQrCodeCopy: "Tap QR Code to Copy",
     title: "Receive Bitcoin",
+    usdTitle: "Receive USD",
     error: "Failed to generate invoice. Please contact support if this problem persists.",
     copyInvoice: "Copy Invoice",
     shareInvoice: "Share Invoice",

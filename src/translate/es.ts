@@ -504,6 +504,7 @@ export default {
     setNote: "ingrese una nota",
     tapQrCodeCopy: "Toque el código QR para copiar",
     title: "Recibir Bitcoin",
+    usdTitle: "Recibir USD",
     error: "Error al generar la factura. Póngase en contacto con el soporte técnico si este problema persiste.",
     copyInvoice: "Copiar factura",
     shareInvoice: "Compartir factura",
