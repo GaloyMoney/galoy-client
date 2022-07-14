@@ -521,6 +521,7 @@ export default {
     setNote: "Ajouter une note",
     tapQrCodeCopy: "Appuyer sur le code QR pour copier",
     title: "Recever des Bitcoins",
+    usdTitle: "Recever des USD",
     error: "Impossible de générer une facture. SVP contactez le support technique si le problème persiste.",
     copyInvoice: "Copier la facture",
     shareInvoice: "Partager la facture",
