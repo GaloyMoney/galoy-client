@@ -715,6 +715,7 @@ export default {
     username: "Nom d'usager",
     usernameRequired: "Un nom d'usager est requis",
     yes: "Oui",
+    pending: "en attendant",
   },
   errors: {
     generic: "Une erreur est survenue.\nSVP essayer plus tard.",
