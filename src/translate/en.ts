@@ -714,6 +714,7 @@ export default {
     username: "Username",
     usernameRequired: "Username is required",
     yes: "Yes",
+    pending: "pending",
   },
   errors: {
     generic: "There was an error.\nPlease try again later.",

@@ -697,6 +697,7 @@ export default {
     username: "Nombre de usuario",
     usernameRequired: "El nombre de usuario es requerido",
     yes: "Sí",
+    pending: "pendiente",
   },
   errors: {
     generic: "Hubo un error inesperado.\nPor favor intente más tarde",
