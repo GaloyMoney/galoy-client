@@ -188,6 +188,8 @@ export namespace GaloyGQL {
   export type Globals = {
     readonly __typename?: "Globals"
     readonly buildInformation: BuildInformation
+    /** The domain name for lightning addresses accepted by this Galoy instance */
+    readonly lightningAddressDomain: Scalars["String"]
     /**
      * A list of public keys for the running lightning nodes.
      * This can be used to know if an invoice belongs to one of our nodes.
@@ -1827,6 +1829,7 @@ export namespace GaloyGQL {
     readonly globals?: {
       readonly __typename?: "Globals"
       readonly nodesIds: ReadonlyArray<string>
+      readonly lightningAddressDomain: string
     } | null
     readonly btcPrice?: {
       readonly __typename?: "Price"

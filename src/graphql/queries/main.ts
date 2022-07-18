@@ -5,6 +5,7 @@ const main = gql`
   query main($isAuthenticated: Boolean!, $recentTransactions: Int) {
     globals {
       nodesIds
+      lightningAddressDomain
     }
     btcPrice {
       base
