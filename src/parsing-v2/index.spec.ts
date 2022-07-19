@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import {
   InvalidLightningDestinationReason,
   Network,
@@ -13,6 +14,7 @@ const p2pkh = "1KP2uzAZYoNF6U8BkMBRdivLNujwSjtAQV"
 const p2sh = "3J98t1WpEZ73CNmQviecrnyiWrnqRhWNLy"
 const bech32 = "bc1qdx09anw82zhujxzzsn56mruv8qvd33czzy9apt"
 const bech32Caps = "BC1QW508D6QEJXTDG4Y5R3ZARVARY0C5XW7KV8F3T4"
+const bech32m = "bc1pmzfrwwndsqmk5yh69yjr5lfgfg4ev8c0tsc06e"
 const p2pkhPrefix = "bitcoin:1KP2uzAZYoNF6U8BkMBRdivLNujwSjtAQV"
 const p2shPrefix = "bitcoin:3J98t1WpEZ73CNmQviecrnyiWrnqRhWNLy"
 const bech32Prefix = "bitcoin:bc1qdx09anw82zhujxzzsn56mruv8qvd33czzy9apt"
@@ -188,6 +190,7 @@ describe("parsePaymentDestination OnChain", () => {
     checkOnChain(p2shPrefix, "mainnet")
     checkOnChain(bech32Prefix, "mainnet")
     checkOnChain(bech32CapsPrefix, "mainnet")
+    checkOnChain(bech32m, "mainnet")
 
     checkOnChainFail(bech32Regtest, "mainnet")
     checkOnChainFail(bech32Signet, "mainnet")
@@ -241,6 +244,65 @@ describe("parsePaymentDestination OnChain", () => {
         paymentType: PaymentType.Onchain,
         valid: true,
         amount: undefined,
+      }),
+    )
+  })
+
+  it("validates an onchain destination with a label", () => {
+    const addressLabel = "bc1qdx09anw82zhujxzzsn56mruv8qvd33czzy9apt?label=test%20label"
+
+    const paymentDestination = parsePaymentDestination({
+      destination: addressLabel,
+      network: "mainnet",
+      pubKey: "",
+      lnAddressDomains: [],
+    })
+
+    expect(paymentDestination).toEqual(
+      expect.objectContaining({
+        paymentType: PaymentType.Onchain,
+        valid: true,
+        memo: "test label",
+      }),
+    )
+  })
+
+  it("validates an onchain destination with a message", () => {
+    const addressMessage =
+      "bc1qdx09anw82zhujxzzsn56mruv8qvd33czzy9apt?message=test%20message"
+
+    const paymentDestination = parsePaymentDestination({
+      destination: addressMessage,
+      network: "mainnet",
+      pubKey: "",
+      lnAddressDomains: [],
+    })
+
+    expect(paymentDestination).toEqual(
+      expect.objectContaining({
+        paymentType: PaymentType.Onchain,
+        valid: true,
+        memo: "test message",
+      }),
+    )
+  })
+
+  it("returns the label as the memo when label and message are both present", () => {
+    const addressLabelAndMessage =
+      "bc1qdx09anw82zhujxzzsn56mruv8qvd33czzy9apt?label=test%20label&message=test%20message"
+
+    const paymentDestination = parsePaymentDestination({
+      destination: addressLabelAndMessage,
+      network: "mainnet",
+      pubKey: "",
+      lnAddressDomains: [],
+    })
+
+    expect(paymentDestination).toEqual(
+      expect.objectContaining({
+        paymentType: PaymentType.Onchain,
+        valid: true,
+        memo: "test label",
       }),
     )
   })

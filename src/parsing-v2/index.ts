@@ -413,6 +413,9 @@ const getOnChainPayResponse = ({
       throw new Error("No address detected in decoded destination")
     }
 
+    const label: string | undefined = decodedData?.query?.label
+    const message: string | undefined = decodedData?.query?.message
+    const memo = label || message || undefined
     let amount: number | undefined = undefined
     try {
       amount = decodedData?.query?.amount
@@ -427,13 +430,20 @@ const getOnChainPayResponse = ({
       }
     }
 
-    // will throw if address is not valid
-    address.toOutputScript(path, parseBitcoinJsNetwork(network))
+    // FIXME "toOutputScript" will throw if address is not valid, however bitcoinjs-lib does not currently support
+    // taproot addresses so we must bypass this check if the address uese taproot
+    const isTaprootAddress = path.toLowerCase().startsWith("bc1p")
+    if (!isTaprootAddress) {
+      // will throw if address is not valid
+      address.toOutputScript(path, parseBitcoinJsNetwork(network))
+    }
+
     return {
       valid: true,
       paymentType,
       address: path,
       amount,
+      memo,
     }
   } catch (err) {
     console.debug("[Parse error: onchain]:", err)
