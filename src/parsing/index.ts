@@ -246,7 +246,7 @@ const getIntraLedgerPayResponse = ({
   destinationText: string
 }): ValidPaymentReponse => {
   const handle = protocol.match(/^(http|\/\/)/iu)
-    ? destinationText.split("/").at(-1)
+    ? destinationText.split("/")[destinationText.split("/").length - 1]
     : destinationText
 
   if (handle?.match(/(?!^(1|3|bc1|lnbc1))^[0-9a-z_]{3,50}$/iu)) {
