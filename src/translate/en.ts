@@ -24,6 +24,18 @@ export default {
   ContactDetailsScreen: {
     title: "Transactions with %{input}",
   },
+  ConversionDetailsScreen: {
+    title: "Convert",
+    percentageToConvert: "% to convert",
+  },
+  ConversionConfirmationScreen: {
+    title: "Review conversion",
+    youreConverting: "You're converting",
+    receivingAccount: "Receiving account"
+  },
+  ConversionSuccessScreen: {
+    message: "Conversion successful"
+  },
   EarnScreen: {
     earnSats: {
       one: "Earn 1 sat",
@@ -653,16 +665,20 @@ export default {
     sendAgain: "Send Again",
   },
   common: {
+    account: "Account",
     activateWallet: "Activate Wallet",
     amountRequired: "Amount is required",
     back: "Back",
+    backHome: "Back home",
     bank: "Bank",
     bankAccount: "Cash Account",
     bitcoin: "Bitcoin",
     bitcoinPrice: "Bitcoin Price",
+    btcAccount: "BTC Account",
     cancel: "Cancel",
     close: "Close",
     confirm: "Confirm",
+    convert: "Convert",
     csvExport: "Export transactions as CSV",
     date: "Date",
     description: "Description",
@@ -695,6 +711,7 @@ export default {
     ok: "OK",
     openWallet: "Open Wallet",
     phoneNumber: "Phone Number",
+    rate: "Rate",
     reauth: "Your session has expired. Please log in again.",
     restart: "Restart",
     sats: "sats",
@@ -713,8 +730,10 @@ export default {
     transactionsError: "Error loading transactions",
     tryAgain: "Try Again",
     type: "Type",
+    usdAccount: "USD Account",
     username: "Username",
     usernameRequired: "Username is required",
+    viewTransaction: "View transaction",
     yes: "Yes",
     pending: "pending",
   },
