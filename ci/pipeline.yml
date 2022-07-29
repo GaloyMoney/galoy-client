@@ -28,6 +28,7 @@
 jobs:
 - #@ nodejs_check_code()
 - #@ install_yarn_deps()
+- #@ nodejs_audit()
 
 - name: test
   serial: true
@@ -75,6 +76,7 @@ jobs:
       - check-code
       - test
       - build
+      - audit
     - get: bundled-deps
     - get: pipeline-tasks
     - get: version
