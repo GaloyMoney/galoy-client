@@ -24,7 +24,7 @@ export const getHashFromInvoice = (invoice: string): string | undefined => {
 
 export type Network = "mainnet" | "testnet" | "regtest"
 export type PaymentType = "lightning" | "onchain" | "intraledger" | "lnurl"
-export interface ValidPaymentReponse {
+export interface ValidPaymentResponse {
   valid: boolean
   errorMessage?: string | undefined
 
@@ -113,7 +113,7 @@ const getLNURLPayResponse = ({
   destinationText,
 }: {
   destinationText: string
-}): ValidPaymentReponse => {
+}): ValidPaymentResponse => {
   return {
     valid: true,
     paymentType: "lnurl",
@@ -129,7 +129,7 @@ const getLightningPayResponse = ({
   destination: string
   network: Network
   pubKey: string
-}): ValidPaymentReponse => {
+}): ValidPaymentResponse => {
   const paymentType = "lightning"
   const { protocol, destinationText } = getProtocolAndData(destination)
   const lnProtocol =
@@ -197,7 +197,7 @@ const getOnChainPayResponse = ({
 }: {
   destinationText: string
   network: Network
-}): ValidPaymentReponse => {
+}): ValidPaymentResponse => {
   try {
     const decodedData = inputDataToObject(destinationText)
 
@@ -244,7 +244,7 @@ const getIntraLedgerPayResponse = ({
 }: {
   protocol: string
   destinationText: string
-}): ValidPaymentReponse => {
+}): ValidPaymentResponse => {
   const handle = protocol.match(/^(http|\/\/)/iu)
     ? destinationText.split("/")[destinationText.split("/").length - 1]
     : destinationText
@@ -267,7 +267,7 @@ export const parsePaymentDestination = ({
   destination,
   network,
   pubKey,
-}: ParsePaymentDestinationArgs): ValidPaymentReponse => {
+}: ParsePaymentDestinationArgs): ValidPaymentResponse => {
   if (!destination) {
     return { valid: false }
   }
