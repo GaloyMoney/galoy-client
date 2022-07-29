@@ -30,9 +30,9 @@ export const translateUnknown: GaloyTranslateUnknown = (scope, options) => {
   return translation
 }
 
-export const setLocale = (langauge: string | undefined): void => {
-  if (langauge && langauge !== "DEFAULT" && i18n.locale !== langauge) {
-    i18n.locale = langauge
+export const setLocale = (language: string | undefined): void => {
+  if (language && language !== "DEFAULT" && i18n.locale !== language) {
+    i18n.locale = language
   }
 }
 
