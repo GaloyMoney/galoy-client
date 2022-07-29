@@ -1,47 +1,33 @@
 #@ load("@ytt:data", "data")
 
-#@ def pipeline_image():
-#@   return data.values.docker_registry + "/galoy-app-pipeline"
-#@ end
-
-#@ def release_pipeline_image():
-#@   return data.values.docker_registry + "/release-pipeline"
-#@ end
-
-#@ def task_image_config():
-type: registry-image
-source:
-  username: #@ data.values.docker_registry_user
-  password: #@ data.values.docker_registry_password
-  repository: #@ pipeline_image()
-#@ end
-
-#@ def release_task_image_config():
-type: registry-image
-source:
-  username: #@ data.values.docker_registry_user
-  password: #@ data.values.docker_registry_password
-  repository: #@ release_pipeline_image()
-#@ end
+#@ load("vendor/pipeline-fragments.lib.yml",
+#@   "nodejs_check_code",
+#@   "nodejs_audit",
+#@   "build_edge_image",
+#@   "release",
+#@   "repo_resource",
+#@   "nodejs_deps_resource",
+#@   "install_yarn_deps",
+#@   "open_charts_pr",
+#@   "deps_version_resource",
+#@   "bundled_deps_resource",
+#@   "gh_release_resource",
+#@   "charts_repo_bot_branch",
+#@   "version_resource",
+#@   "versioned_image_resource",
+#@   "charts_repo_resource",
+#@   "release_task_image_config",
+#@   "edge_image_resource",
+#@   "public_docker_registry",
+#@   "pipeline_tasks_resource",
+#@   "nodejs_task_image_config",
+#@   "slack_resource",
+#@   "gcr_resource_type",
+#@   "slack_resource_type")
 
 jobs:
-- name: check-code
-  serial: true
-  plan:
-  - in_parallel:
-    - { get: repo, trigger: true }
-    - { get: bundled-deps, trigger: true }
-    - { get: pipeline-tasks }
-  - task: test
-    config:
-      platform: linux
-      image_resource: #@ task_image_config()
-      inputs:
-      - name: bundled-deps
-      - name: pipeline-tasks
-      - name: repo
-      run:
-        path: pipeline-tasks/ci/tasks/check-code.sh
+- #@ nodejs_check_code()
+- #@ install_yarn_deps()
 
 - name: test
   serial: true
@@ -53,14 +39,13 @@ jobs:
   - task: test
     config:
       platform: linux
-      image_resource: #@ task_image_config()
+      image_resource: #@ nodejs_task_image_config()
       inputs:
       - name: bundled-deps
       - name: pipeline-tasks
       - name: repo
       run:
         path: pipeline-tasks/ci/tasks/test.sh
-
 - name: build
   serial: true
   plan:
@@ -71,7 +56,7 @@ jobs:
   - task: build
     config:
       platform: linux
-      image_resource: #@ task_image_config()
+      image_resource: #@ nodejs_task_image_config()
       inputs:
       - name: bundled-deps
       - name: pipeline-tasks
@@ -109,7 +94,7 @@ jobs:
   - task: build
     config:
       platform: linux
-      image_resource: #@ task_image_config()
+      image_resource: #@ nodejs_task_image_config()
       inputs:
       - name: bundled-deps
       - name: pipeline-tasks
@@ -121,7 +106,7 @@ jobs:
   - task: update-repo
     config:
       platform: linux
-      image_resource: #@ task_image_config()
+      image_resource: #@ nodejs_task_image_config()
       inputs:
       - name: pipeline-tasks
       - name: repo
@@ -149,57 +134,9 @@ jobs:
     params:
       file: version/version
 
-- name: install-deps
-  serial: true
-  plan:
-  - in_parallel:
-    - { get: deps, trigger: true }
-    - { get: pipeline-tasks }
-    - { get: deps-version, params: { bump: patch } }
-
-  - task: install-deps
-    config:
-      platform: linux
-      image_resource: #@ task_image_config()
-      inputs:
-      - name: pipeline-tasks
-      - name: deps
-      - name: deps-version
-      outputs:
-      - name: bundled-deps
-      run:
-        path: pipeline-tasks/ci/tasks/install-deps.sh
-
-  - put: bundled-deps
-    params:
-      file: bundled-deps/bundled-deps-*.tgz
 
 resources:
-- name: repo
-  type: git
-  source:
-    ignore_paths: ["ci/*[^md]"]
-    fetch_tags: true
-    uri: #@ data.values.git_uri
-    branch: #@ data.values.git_branch
-    private_key: #@ data.values.github_private_key
-
-- name: pipeline-tasks
-  type: git
-  source:
-    paths: [ci/tasks/*, Makefile]
-    uri: #@ data.values.git_uri
-    branch: #@ data.values.git_branch
-    private_key: #@ data.values.github_private_key
-
-- name: deps
-  type: git
-  source:
-    paths: [yarn.lock]
-    uri: #@ data.values.git_uri
-    branch: #@ data.values.git_branch
-    private_key: #@ data.values.github_private_key
-
+- #@ repo_resource()
 - name: repo-out
   type: git
   source:
@@ -207,22 +144,15 @@ resources:
     branch: #@ data.values.git_branch
     private_key: #@ data.values.github_private_key
 
-- name: version
-  type: semver
-  source:
-    initial_version: 0.0.0
-    driver: git
-    file: version
-    uri: #@ data.values.git_uri
-    branch: #@ data.values.git_version_branch
-    private_key: #@ data.values.github_private_key
+- #@ pipeline_tasks_resource()
+- #@ nodejs_deps_resource()
+- #@ deps_version_resource()
+- #@ bundled_deps_resource()
 
-- name: gh-release
-  type: github-release
-  source:
-    owner: #@ data.values.gh_org
-    repository: #@ data.values.gh_repository
-    access_token: #@ data.values.github_token
+- #@ version_resource()
+- #@ gh_release_resource()
+
+- #@ slack_resource()
 
 - name: npm-release
   type: npm
@@ -233,28 +163,8 @@ resources:
       uri: https://registry.npmjs.org/
       token: #@ data.values.npm_token
 
-- name: deps-version
-  type: semver
-  source:
-    initial_version: 0.1.0
-    driver: gcs
-    bucket: #@ data.values.artifacts_bucket_name
-    key: galoy-client-artifacts/versions/deps
-    json_key: #@ data.values.staging_inception_creds
-
-- name: bundled-deps
-  type: gcs-resource
-  source:
-    bucket: #@ data.values.artifacts_bucket_name
-    json_key: #@ data.values.staging_inception_creds
-    regexp: galoy-client-artifacts/deps/bundled-deps-v(.*)-.*.tgz
-
 resource_types:
-- name: gcs-resource
-  type: docker-image
-  source:
-    repository: frodenas/gcs-resource
-
+- #@ gcr_resource_type()
 - name: npm
   type: docker-image
   source:

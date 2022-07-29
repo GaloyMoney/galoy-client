@@ -16,4 +16,7 @@ git_version_branch: version
 gh_org: GaloyMoney
 gh_repository: galoy-client
 
+slack_channel: galoy-client-github
+slack_webhook_url: ((addons-slack.api_url))
+
 npm_token: ((npm.token))

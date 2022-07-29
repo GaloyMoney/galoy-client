@@ -2,7 +2,7 @@
 
 set -eu
 
-. pipeline-tasks/ci/tasks/helpers.sh
+. pipeline-tasks/ci/vendor/tasks/helpers.sh
 
 unpack_deps
 
