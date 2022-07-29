@@ -2,8 +2,8 @@ apiVersion: vendir.k14s.io/v1alpha1
 directories:
 - contents:
   - git:
-      commitTitle: 'feat: add rust-dependabot.yml'
-      sha: 8eefeec5d26ab37b59d128d3522f4563e05a2a9a
+      commitTitle: 'feat: add npm_resource_type'
+      sha: 38febc2008e907e7888085df52f0a00bb3c8ebb2
     path: .
   path: vendor
 kind: LockConfig
