@@ -92,7 +92,7 @@ jobs:
       - name: version
       - name: artifacts
       run:
-        path: pipeline-tasks/ci/tasks/vendor/prep-release-src.sh
+        path: pipeline-tasks/ci/vendor/tasks/prep-release-src.sh
   - task: build
     config:
       platform: linux
