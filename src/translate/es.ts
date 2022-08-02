@@ -24,20 +24,18 @@ export default {
   ContactDetailsScreen: {
     title: "Transacciones con %{input}",
   },
-  /// Fill in
   ConversionDetailsScreen: {
-    title: "Convert",
-    percentageToConvert: "% to convert",
+    title: "Convertir",
+    percentageToConvert: "% a convertir",
   },
   ConversionConfirmationScreen: {
-    title: "Review conversion",
-    youreConverting: "You're converting",
-    receivingAccount: "Receiving account"
+    title: "Confirmar conversión",
+    youreConverting: "Está convirtiendo",
+    receivingAccount: "Cuenta destino"
   },
   ConversionSuccessScreen: {
-    message: "Conversion successful"
+    message: "Conversión exitosa"
   },
-  /// Fill in end
   EarnScreen: {
     earnSats: {
       one: "Gana 1 Satoshi",
@@ -650,20 +648,20 @@ export default {
     sendAgain: "enviar de nuevo",
   },
   common: {
-    account: "Account", // Fill in
+    account: "Cuenta",
     activateWallet: "Activar billetera",
     amountRequired: "Se requiere una cantidad",
     back: "Atrás",
     bank: "Banco",
-    backHome: "Back home", // Fill in
+    backHome: "Inicio",
     bankAccount: "Cuenta de efectivo",
     bitcoin: "Bitcoin",
     bitcoinPrice: "Precio de Bitcoin",
-    btcAccount: "BTC Account", // Fill in
+    btcAccount: "Cuenta BTC",
     cancel: "Cancelar",
     close: "Cerrar ",
     confirm: "Confirmar",
-    convert: "Convert", // Fill in
+    convert: "Convertir",
     csvExport: "Exportar transacciones (CSV)",
     date: "Fecha ",
     description: "Descripción",
@@ -696,7 +694,7 @@ export default {
     ok: "OK",
     openWallet: "Abrir billetera",
     phoneNumber: "Número de teléfono",
-    rate: "Rate", // fill in
+    rate: "Tasa",
     reauth: "Su sesión ha expirado. Inicie sesión de nuevo.",
     restart: "Reiniciar",
     sats: "Satoshis",
@@ -715,10 +713,10 @@ export default {
     transactionsError: "Error al cargar las transacciones",
     tryAgain: "Inténtalo de Nuevo",
     type: "tipo",
-    usdAccount: "USD Account", // Fill in
+    usdAccount: "Cuenta USD",
     username: "Nombre de usuario",
     usernameRequired: "El nombre de usuario es requerido",
-    viewTransaction: "View transaction", // Fill in
+    viewTransaction: "Ver transacción",
     yes: "Sí",
     pending: "pendiente",
   },
