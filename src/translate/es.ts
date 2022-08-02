@@ -24,6 +24,18 @@ export default {
   ContactDetailsScreen: {
     title: "Transacciones con %{input}",
   },
+  ConversionDetailsScreen: {
+    title: "Convertir",
+    percentageToConvert: "% a convertir",
+  },
+  ConversionConfirmationScreen: {
+    title: "Confirmar conversión",
+    youreConverting: "Está convirtiendo",
+    receivingAccount: "Cuenta destino"
+  },
+  ConversionSuccessScreen: {
+    message: "Conversión exitosa"
+  },
   EarnScreen: {
     earnSats: {
       one: "Gana 1 Satoshi",
@@ -636,16 +648,20 @@ export default {
     sendAgain: "enviar de nuevo",
   },
   common: {
+    account: "Cuenta",
     activateWallet: "Activar billetera",
     amountRequired: "Se requiere una cantidad",
     back: "Atrás",
     bank: "Banco",
+    backHome: "Inicio",
     bankAccount: "Cuenta de efectivo",
     bitcoin: "Bitcoin",
     bitcoinPrice: "Precio de Bitcoin",
+    btcAccount: "Cuenta BTC",
     cancel: "Cancelar",
     close: "Cerrar ",
     confirm: "Confirmar",
+    convert: "Convertir",
     csvExport: "Exportar transacciones (CSV)",
     date: "Fecha ",
     description: "Descripción",
@@ -678,6 +694,7 @@ export default {
     ok: "OK",
     openWallet: "Abrir billetera",
     phoneNumber: "Número de teléfono",
+    rate: "Tasa",
     reauth: "Su sesión ha expirado. Inicie sesión de nuevo.",
     restart: "Reiniciar",
     sats: "Satoshis",
@@ -696,8 +713,10 @@ export default {
     transactionsError: "Error al cargar las transacciones",
     tryAgain: "Inténtalo de Nuevo",
     type: "tipo",
+    usdAccount: "Cuenta USD",
     username: "Nombre de usuario",
     usernameRequired: "El nombre de usuario es requerido",
+    viewTransaction: "Ver transacción",
     yes: "Sí",
     pending: "pendiente",
   },
