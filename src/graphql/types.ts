@@ -190,6 +190,7 @@ export namespace GaloyGQL {
     readonly buildInformation: BuildInformation
     /** The domain name for lightning addresses accepted by this Galoy instance */
     readonly lightningAddressDomain: Scalars["String"]
+    readonly lightningAddressDomainAliases: ReadonlyArray<Scalars["String"]>
     /**
      * A list of public keys for the running lightning nodes.
      * This can be used to know if an invoice belongs to one of our nodes.
