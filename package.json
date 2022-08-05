@@ -48,7 +48,7 @@
     "eslint": "^8.19.0",
     "eslint-plugin-import": "^2.26.0",
     "graphql": "^16.5.0",
-    "i18n-js": "^3.9.2",
+    "i18n-js": "^4.0.2",
     "jest": "^28.1.2",
     "lnurl-pay": "^1.0.1",
     "prettier": "^2.7.1",
