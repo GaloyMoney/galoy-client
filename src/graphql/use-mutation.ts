@@ -15,6 +15,7 @@ import deviceNotificationTokenCreate from "./mutations/device-notification-token
 import intraLedgerPaymentSend from "./mutations/intra-ledger-paymest-send"
 import intraLedgerUsdPaymentSend from "./mutations/intra-ledger-usd-payment-send"
 import lnInvoiceCreate from "./mutations/ln-invoice-create"
+import lnInvoiceCreateOnBehalfOfRecipient from "./mutations/ln-invoice-create-on-behalf-of-recipient"
 import lnInvoiceFeeProbe from "./mutations/ln-invoice-fee-probe"
 import lnInvoicePaymentSend from "./mutations/ln-invoice-payment-send"
 import lnNoAmountInvoiceCreate from "./mutations/ln-no-amount-invoice-create"
@@ -41,6 +42,7 @@ export const MUTATIONS = {
   intraLedgerPaymentSend,
   intraLedgerUsdPaymentSend,
   lnInvoiceCreate,
+  lnInvoiceCreateOnBehalfOfRecipient,
   lnInvoiceFeeProbe,
   lnInvoicePaymentSend,
   lnNoAmountInvoiceCreate,
@@ -137,6 +139,11 @@ const lnInvoiceCreateMutation = defineMutation<
   GaloyGQL.LnInvoiceCreateMutationVariables
 >("lnInvoiceCreate")
 
+const lnInvoiceCreateOnBehalfOfRecipientMutation = defineMutation<
+  GaloyGQL.LnInvoiceCreateOnBehalfOfRecipientMutation,
+  GaloyGQL.LnInvoiceCreateOnBehalfOfRecipientMutationVariables
+>("lnInvoiceCreateOnBehalfOfRecipient")
+
 const lnInvoiceFeeProbeMutation = defineMutation<
   GaloyGQL.LnInvoiceFeeProbeMutation,
   GaloyGQL.LnInvoiceFeeProbeMutationVariables
@@ -230,6 +237,7 @@ export const useMutation = {
   intraLedgerPaymentSend: intraLedgerPaymentSendMutation,
   intraLedgerUsdPaymentSend: intraLedgerUsdPaymentSendMutation,
   lnInvoiceCreate: lnInvoiceCreateMutation,
+  lnInvoiceCreateOnBehalfOfRecipient: lnInvoiceCreateOnBehalfOfRecipientMutation,
   lnInvoiceFeeProbe: lnInvoiceFeeProbeMutation,
   lnInvoicePaymentSend: lnInvoicePaymentSendMutation,
   lnNoAmountInvoiceCreate: lnNoAmountInvoiceCreateMutation,

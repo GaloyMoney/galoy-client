@@ -1423,6 +1423,28 @@ export namespace GaloyGQL {
     }
   }
 
+  export type LnInvoiceCreateOnBehalfOfRecipientMutationVariables = Exact<{
+    input: LnInvoiceCreateOnBehalfOfRecipientInput
+  }>
+
+  export type LnInvoiceCreateOnBehalfOfRecipientMutation = {
+    readonly __typename?: "Mutation"
+    readonly lnInvoiceCreateOnBehalfOfRecipient: {
+      readonly __typename?: "LnInvoicePayload"
+      readonly errors: ReadonlyArray<
+        | { readonly __typename: "InputError"; readonly message: string }
+        | { readonly __typename: "PaymentError"; readonly message: string }
+      >
+      readonly invoice?: {
+        readonly __typename: "LnInvoice"
+        readonly paymentHash: string
+        readonly paymentRequest: string
+        readonly paymentSecret: string
+        readonly satoshis?: number | null
+      } | null
+    }
+  }
+
   export type LnInvoiceCreateMutationVariables = Exact<{
     input: LnInvoiceCreateInput
   }>
