@@ -7,33 +7,35 @@ import {
 } from "@apollo/client"
 import { useCallback, useState } from "react"
 
-import main from "./queries/main"
-import onChainTxFee from "./queries/on-chain-tx-fee"
-import userDefaultWalletId from "./queries/user-default-wallet-id"
+import accountDefaultWallet from "./queries/account-default-wallet"
 import btcPriceList from "./queries/btc-price-list"
 import businessMapMarkers from "./queries/business-map-markers"
-import quizQuestions from "./queries/quiz-questions"
 import contacts from "./queries/contacts"
 import getWalletCsvTransactions from "./queries/get-wallet-csv-transactions"
-import transactionListForContact from "./queries/transaction-list-for-contact"
+import main from "./queries/main"
+import onChainTxFee from "./queries/on-chain-tx-fee"
+import quizQuestions from "./queries/quiz-questions"
 import transactionList from "./queries/transaction-list"
+import transactionListForContact from "./queries/transaction-list-for-contact"
 import transactionListForDefaultAccount from "./queries/transaction-list-for-default-account"
+import userDefaultWalletId from "./queries/user-default-wallet-id"
 import usernameAvailable from "./queries/username-available"
 
 import { GaloyGQL, joinErrorsMessages } from "../index"
 
 export const QUERIES = {
-  main,
-  onChainTxFee,
-  userDefaultWalletId,
+  accountDefaultWallet,
   btcPriceList,
   businessMapMarkers,
-  quizQuestions,
   contacts,
   getWalletCsvTransactions,
-  transactionListForContact,
+  main,
+  onChainTxFee,
+  quizQuestions,
   transactionList,
+  transactionListForContact,
   transactionListForDefaultAccount,
+  userDefaultWalletId,
   usernameAvailable,
 }
 
@@ -71,6 +73,22 @@ const mainQuery = (
   config?: QueryHookOptions<GaloyGQL.MainQuery, GaloyGQL.MainQueryVariables>,
 ): QueryResult<GaloyGQL.MainQuery, GaloyGQL.MainQueryVariables> & QueryHelpers => {
   return useQueryWrapper<GaloyGQL.MainQuery, GaloyGQL.MainQueryVariables>("main", config)
+}
+
+const accountDefaultWalletQuery = (
+  config?: QueryHookOptions<
+    GaloyGQL.AccountDefaultWalletQuery,
+    GaloyGQL.AccountDefaultWalletQueryVariables
+  >,
+): QueryResult<
+  GaloyGQL.AccountDefaultWalletQuery,
+  GaloyGQL.AccountDefaultWalletQueryVariables
+> &
+  QueryHelpers => {
+  return useQueryWrapper<
+    GaloyGQL.AccountDefaultWalletQuery,
+    GaloyGQL.AccountDefaultWalletQueryVariables
+  >("accountDefaultWallet", config)
 }
 
 const transactionListQuery = (
@@ -124,10 +142,11 @@ const transactionListForContactQuery = (
 }
 
 export const useQuery = {
+  accountDefaultWallet: accountDefaultWalletQuery,
+  contacts: contactsQuery,
   main: mainQuery,
   onChainTxFee: onChainTxFeeQuery,
   transactionList: transactionListQuery,
-  contacts: contactsQuery,
   transactionListForContact: transactionListForContactQuery,
   transactionListForDefaultAccount: transactionListForDefaultAccountQuery,
 }
@@ -188,6 +207,18 @@ const userDefaultWalletIdDelayedQuery = (
   >("userDefaultWalletId", config)
 }
 
+const accountDefaultWalletDelayedQuery = (
+  config?: QueryOptions<
+    GaloyGQL.AccountDefaultWalletQuery,
+    GaloyGQL.AccountDefaultWalletQueryVariables
+  >,
+) => {
+  return useDelayedQueryWrapper<
+    GaloyGQL.AccountDefaultWalletQuery,
+    GaloyGQL.AccountDefaultWalletQueryVariables
+  >("accountDefaultWallet", config)
+}
+
 const transactionListDelayedQuery = (
   config?: QueryOptions<
     GaloyGQL.TransactionListQuery,
@@ -222,8 +253,9 @@ const onChainTxFeeDelayedQuery = (
 }
 
 export const useDelayedQuery = {
-  userDefaultWalletId: userDefaultWalletIdDelayedQuery,
+  accountDefaultWallet: accountDefaultWalletDelayedQuery,
+  onChainTxFee: onChainTxFeeDelayedQuery,
   transactionList: transactionListDelayedQuery,
   transactionListForContact: transactionListForContactDelayedQuery,
-  onChainTxFee: onChainTxFeeDelayedQuery,
+  userDefaultWalletId: userDefaultWalletIdDelayedQuery,
 }
