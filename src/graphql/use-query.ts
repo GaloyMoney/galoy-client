@@ -19,6 +19,7 @@ import transactionListForContact from "./queries/transaction-list-for-contact"
 import transactionList from "./queries/transaction-list"
 import transactionListForDefaultAccount from "./queries/transaction-list-for-default-account"
 import usernameAvailable from "./queries/username-available"
+import accountDefaultWallet from "./queries/account-default-wallet"
 
 import { GaloyGQL, joinErrorsMessages } from "../index"
 
@@ -35,6 +36,7 @@ export const QUERIES = {
   transactionList,
   transactionListForDefaultAccount,
   usernameAvailable,
+  accountDefaultWallet,
 }
 
 type QueryHelpers = {
@@ -71,6 +73,18 @@ const mainQuery = (
   config?: QueryHookOptions<GaloyGQL.MainQuery, GaloyGQL.MainQueryVariables>,
 ): QueryResult<GaloyGQL.MainQuery, GaloyGQL.MainQueryVariables> & QueryHelpers => {
   return useQueryWrapper<GaloyGQL.MainQuery, GaloyGQL.MainQueryVariables>("main", config)
+}
+
+const accountDefaultWalletQuery = (
+  config?: QueryHookOptions<
+    GaloyGQL.AccountDefaultWalletQuery,
+    GaloyGQL.AccountDefaultWalletQueryVariables
+  >,
+): QueryResult<GaloyGQL.AccountDefaultWalletQuery> & QueryHelpers => {
+  return useQueryWrapper<
+    GaloyGQL.AccountDefaultWalletQuery,
+    GaloyGQL.AccountDefaultWalletQueryVariables
+  >("accountDefaultWallet", config)
 }
 
 const transactionListQuery = (
@@ -130,6 +144,7 @@ export const useQuery = {
   contacts: contactsQuery,
   transactionListForContact: transactionListForContactQuery,
   transactionListForDefaultAccount: transactionListForDefaultAccountQuery,
+  accountDefaultWallet: accountDefaultWalletQuery,
 }
 
 // ********** DELAYED QUERIES ********** //

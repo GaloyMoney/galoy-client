@@ -1771,6 +1771,19 @@ export namespace GaloyGQL {
     }
   }
 
+  export type AccountDefaultWalletQueryVariables = Exact<{
+    username: Scalars["Username"]
+  }>
+
+  export type AccountDefaultWalletQuery = {
+    readonly __typename?: "Query"
+    readonly accountDefaultWallet: {
+      readonly __typename?: "PublicWallet"
+      readonly id: string
+      readonly walletCurrency: WalletCurrency
+    }
+  }
+
   export type BtcPriceListQueryVariables = Exact<{
     range: PriceGraphRange
   }>
