@@ -2368,6 +2368,22 @@ export namespace GaloyGQL {
     readonly usernameAvailable?: boolean | null
   }
 
+  export type LnInvoicePaymentStatusSubscriptionVariables = Exact<{
+    input: LnInvoicePaymentStatusInput
+  }>
+
+  export type LnInvoicePaymentStatusSubscription = {
+    readonly __typename?: "Subscription"
+    readonly lnInvoicePaymentStatus: {
+      readonly __typename: "LnInvoicePaymentStatusPayload"
+      readonly status?: InvoicePaymentStatus | null
+      readonly errors: ReadonlyArray<
+        | { readonly __typename?: "InputError"; readonly message: string }
+        | { readonly __typename?: "PaymentError"; readonly message: string }
+      >
+    }
+  }
+
   export type MyUpdatesSubscriptionVariables = Exact<{
     recentTransactions?: InputMaybe<Scalars["Int"]>
   }>
