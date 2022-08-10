@@ -7,9 +7,11 @@ import {
 import { GaloyGQL, joinErrorsMessages } from "../index"
 
 import myUpdates from "./subscriptions/my-updates"
+import lnInvoicePaymentStatus from "./subscriptions/ln-invoice-payment-status"
 
 export const SUBSCRIPTIONS = {
   myUpdates,
+  lnInvoicePaymentStatus,
 }
 
 type SubscriptionHelpers = {
@@ -44,6 +46,20 @@ const myUpdatesSubscription = (
   >("myUpdates", config)
 }
 
+const lnInvoicePaymentStatusSubscription = (
+  config?: SubscriptionHookOptions<
+    GaloyGQL.LnInvoicePaymentStatusSubscription,
+    GaloyGQL.LnInvoicePaymentStatusSubscriptionVariables
+  >,
+): SubscriptionResult<GaloyGQL.LnInvoicePaymentStatusSubscription> &
+  SubscriptionHelpers => {
+  return useSubscriptionWrapper<
+    GaloyGQL.LnInvoicePaymentStatusSubscription,
+    GaloyGQL.LnInvoicePaymentStatusSubscriptionVariables
+  >("lnInvoicePaymentStatus", config)
+}
+
 export const useSubscription = {
   myUpdates: myUpdatesSubscription,
+  lnInvoicePaymentStatus: lnInvoicePaymentStatusSubscription,
 }
