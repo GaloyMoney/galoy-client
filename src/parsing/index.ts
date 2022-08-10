@@ -45,6 +45,16 @@ export const lightningInvoiceHasExpired = (
   return Boolean(payReq?.timeExpireDate && payReq.timeExpireDate < Date.now() / 1000)
 }
 
+export const getLightningInvoiceExpiryTime = (
+  payReq: bolt11.PaymentRequestObject,
+): number => {
+  return payReq?.timeExpireDate || NaN
+}
+
+export const decodeInvoiceString = (invoice: string): bolt11.PaymentRequestObject => {
+  return bolt11.decode(invoice)
+} 
+
 // from https://github.com/bitcoin/bips/blob/master/bip-0020.mediawiki#Transfer%20amount/size
 const reAmount = /^(([\d.]+)(X(\d+))?|x([\da-f]*)(\.([\da-f]*))?(X([\da-f]+))?)$/iu
 const parseAmount = (txt: string): number => {
