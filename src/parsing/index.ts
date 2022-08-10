@@ -53,7 +53,7 @@ export const getLightningInvoiceExpiryTime = (
 
 export const decodeInvoiceString = (invoice: string): bolt11.PaymentRequestObject => {
   return bolt11.decode(invoice)
-} 
+}
 
 // from https://github.com/bitcoin/bips/blob/master/bip-0020.mediawiki#Transfer%20amount/size
 const reAmount = /^(([\d.]+)(X(\d+))?|x([\da-f]*)(\.([\da-f]*))?(X([\da-f]+))?)$/iu
