@@ -520,7 +520,8 @@ export default {
     error: "Error al generar la factura. Póngase en contacto con el soporte técnico si este problema persiste.",
     copyInvoice: "Copiar factura",
     shareInvoice: "Compartir factura",
-    addAmount: "Solicitar Monto Específico"
+    addAmount: "Solicitar Monto Específico",
+    expired: "Factura vencida",
   },
   ScanningQRCodeScreen: {
     invalidContent: "Encontramos lo siguiente:\n\n{{found}}\n\nEsto no es una dirección Bitcoin o factura Lightning válida",
