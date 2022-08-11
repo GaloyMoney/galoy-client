@@ -537,7 +537,9 @@ export default {
     error: "Failed to generate invoice. Please contact support if this problem persists.",
     copyInvoice: "Copy Invoice",
     shareInvoice: "Share Invoice",
-    addAmount: "Request Specific Amount"
+    addAmount: "Request Specific Amount",
+    expired: "The invoice has expired",
+    expiresIn: "Expires in",
   },
   ScanningQRCodeScreen: {
     invalidContent: "We found:\n\n{{found}}\n\nThis is not a valid Bitcoin address or Lightning invoice",
