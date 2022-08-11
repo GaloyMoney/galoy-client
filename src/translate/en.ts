@@ -538,7 +538,8 @@ export default {
     copyInvoice: "Copy Invoice",
     shareInvoice: "Share Invoice",
     addAmount: "Request Specific Amount",
-    expired: "Invoice expired",
+    expired: "The invoice has expired",
+    expiresIn: "Expires in",
   },
   ScanningQRCodeScreen: {
     invalidContent: "We found:\n\n{{found}}\n\nThis is not a valid Bitcoin address or Lightning invoice",

@@ -521,7 +521,8 @@ export default {
     copyInvoice: "Copiar factura",
     shareInvoice: "Compartir factura",
     addAmount: "Solicitar Monto Específico",
-    expired: "Factura vencida",
+    expired: "La factura ha expirado",
+    expiresIn: "Expira en",
   },
   ScanningQRCodeScreen: {
     invalidContent: "Encontramos lo siguiente:\n\n{{found}}\n\nEsto no es una dirección Bitcoin o factura Lightning válida",
