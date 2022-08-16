@@ -121,6 +121,26 @@ const ES = {
   "You successfully recovered your account. Please change your password.": undefined,
   "Your account verification is still pending": undefined,
   "Your email address has been verified": undefined,
+
+  // GTEMP
+  'By selecting "Next" you agree to our Terms and Conditions and Privacy Policy': 'Al seleccionar "Siguiente" estas de acuerdo con nuestros Terminos y Condiciones y Política de Privacidad',
+  "Account Name": "Nombre de Cuenta",
+  "Account No.": "No. de Cuenta",
+  "Account type": "Tipo de Cuenta",
+  "Bank": "Banco",
+  "Copied": "Copiado",
+  "Copy": "Copiar",
+  "Excellent!": "¡Excelente!",
+  "Guatt's Bank Details": "Datos Bancarios de Guatt",
+  "I understand": "Entendido",
+  "IMPORTANT: include your unique identification code in the description/memo of the transfer": "IMPORTANTE: incluye tu código único de identificación en la descripción/memo de la transferencia.",
+  "Open your online banking and add our bank account details so you can buy your BTC": "Abre tu banca en línea y agrega los datos de nuestra cuenta bancaria para que puedas comprar tus BTC.",
+  "Regular": "Corriente",
+  "This should only take a few seconds and is encrypted to protect your data.": "Esto solo debe de tomar unos segundos y está encriptado para proteger to data",
+  "Unique Identification Code": "Código único de identificación",
+  "We need to verify your identity": "Necesitamos verificar tu identidad",
+  "When we receive your transfer in our account, you will see your Bitcoin reflected in your wallet": "En el momento que mandes la transferencia y la recibamos en nuestra cuenta de guatt verás reflejado tu Bitcoin en tu billetera.",
+  "Depending on what day and time we receive your transfer, the deposit can be instantaneous or take up to 24 hours (usually less than that)": "Dependiendo de variables como hora a que hora envías la transferencia, si la envias en dias laborales o fin de semana, o el banco que utilices, el deposito puede ser instantanéo o demorar hasta 24 horas (usualmente será menos que eso).",
 } as const
 
 export type TranslationKey = keyof typeof ES
