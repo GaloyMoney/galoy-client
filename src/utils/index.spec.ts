@@ -1,7 +1,6 @@
 import { isThisMonth } from ".."
 import {
-  formatRelativeTime,
-  formatTime,
+  formatForLocale,
   formatUsd,
   initialsDisplay,
   isToday,
@@ -9,6 +8,8 @@ import {
   satsToBTC,
   truncatedDisplay,
 } from "./index"
+
+const { formatRelativeTime, formatTime } = formatForLocale("en")
 
 describe("formatUsd", () => {
   it("works", () => {

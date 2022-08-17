@@ -1,5 +1,3 @@
-import i18n from "i18n-js"
-
 const DIVISIONS: Array<{ amount: number; name: Intl.RelativeTimeFormatUnit }> = [
   { amount: 60, name: "seconds" },
   { amount: 60, name: "minutes" },
@@ -12,31 +10,38 @@ const DIVISIONS: Array<{ amount: number; name: Intl.RelativeTimeFormatUnit }> = 
 
 let formatter: Intl.RelativeTimeFormat | undefined = undefined
 
-export const formatRelativeTime = (timestamp: number) => {
-  formatter =
-    formatter ??
-    new Intl.RelativeTimeFormat(i18n.locale, {
-      numeric: "auto",
-    })
-  let duration = (1000 * timestamp - new Date().getTime()) / 1000
+export const formatForLocale = (locale: string) => {
+  const formatRelativeTime = (timestamp: number) => {
+    formatter =
+      formatter ??
+      new Intl.RelativeTimeFormat(locale, {
+        numeric: "auto",
+      })
+    let duration = (1000 * timestamp - new Date().getTime()) / 1000
 
-  for (const division of DIVISIONS) {
-    if (Math.abs(duration) < division.amount) {
-      return formatter.format(Math.round(duration), division.name)
+    for (const division of DIVISIONS) {
+      if (Math.abs(duration) < division.amount) {
+        return formatter.format(Math.round(duration), division.name)
+      }
+      duration /= division.amount
     }
-    duration /= division.amount
   }
-}
 
-export const formatTime = (timestamp: number) => {
-  return new Date(1000 * timestamp).toLocaleString(i18n.locale, {
-    weekday: "short",
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-    hour: "numeric",
-    minute: "numeric",
-  })
+  const formatTime = (timestamp: number) => {
+    return new Date(1000 * timestamp).toLocaleString(locale, {
+      weekday: "short",
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+    })
+  }
+
+  return {
+    formatRelativeTime,
+    formatTime,
+  }
 }
 
 const samePastDay = (d1: number, d2: number | Date): boolean => {
