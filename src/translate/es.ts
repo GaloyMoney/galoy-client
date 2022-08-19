@@ -557,7 +557,8 @@ export default {
     title: "Confirmar pago",
     totalLabel: "Total:",
     totalExceed: "El total excede su saldo de {{balance}}",
-    maxFeeSelected: "Tarifa máxima que se cobrará por esta transacción. Podría ser menor una vez se realice el pago."
+    maxFeeSelected: "Tarifa máxima que se cobrará por esta transacción. Podría ser menor una vez se realice el pago.",
+    feeError: "Error al calcular la tarifa",
   },
   SendBitcoinScreen: {
     amount: "Cantidad",
