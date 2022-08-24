@@ -551,7 +551,7 @@ export default {
   SecurityScreen: {
     biometricDescription: "Desbloqueie com impressão digital ou reconhecimento facial.",
     biometricSubtitle: "Ativar autenticação biométrica",
-    biometricTitle: "Biometric",
+    biometricTitle: "Biometria",
     biometryNotAvailable: "O sensor biométrico não está disponível.",
     biometryNotEnrolled: "Por favor, registre pelo menos um sensor biométrico para usar a autenticação baseada em biometria.",
     hideBalanceDescription: "Oculta seu saldo na tela inicial por padrão, para que você não o revele a ninguém olhando para sua tela.",
