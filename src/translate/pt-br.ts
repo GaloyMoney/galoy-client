@@ -672,7 +672,7 @@ export default {
     activateWallet: "Ativar Carteira",
     amountRequired: "O valor é obrigatório",
     back: "Voltar",
-    backHome: "Voltar para o início",
+    backHome: "Voltar para a tela inicial"
     bank: "Banco",
     bankAccount: "Conta de Dinheiro",
     bitcoin: "Bitcoin",
