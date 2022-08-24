@@ -631,7 +631,7 @@ export default {
   },
   TransferScreen: {
     title: "Transferir",
-    percentageToConvert: "Converter %",
+    percentageToConvert: "Total a converter %",
   },
   UsernameScreen: {
     "3CharactersMinimum": "são necessários pelo menos 3 caracteres",
