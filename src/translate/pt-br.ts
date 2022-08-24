@@ -26,7 +26,7 @@ export default {
   },
   ConversionDetailsScreen: {
     title: "Converter",
-    percentageToConvert: "Converter %",
+    percentageToConvert: "Total a converter %",
   },
   ConversionConfirmationScreen: {
     title: "Revisar conversão",
