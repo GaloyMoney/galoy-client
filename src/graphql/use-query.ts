@@ -18,7 +18,6 @@ import quizQuestions from "./queries/quiz-questions"
 import transactionList from "./queries/transaction-list"
 import transactionListForContact from "./queries/transaction-list-for-contact"
 import transactionListForDefaultAccount from "./queries/transaction-list-for-default-account"
-import userDefaultWalletId from "./queries/user-default-wallet-id"
 import usernameAvailable from "./queries/username-available"
 
 import { GaloyGQL, joinErrorsMessages } from "../index"
@@ -35,7 +34,6 @@ export const QUERIES = {
   transactionList,
   transactionListForContact,
   transactionListForDefaultAccount,
-  userDefaultWalletId,
   usernameAvailable,
 }
 
@@ -195,18 +193,6 @@ const useDelayedQueryWrapper = <TData = unknown, TVars = unknown>(
   ]
 }
 
-const userDefaultWalletIdDelayedQuery = (
-  config?: QueryOptions<
-    GaloyGQL.UserDefaultWalletIdQuery,
-    GaloyGQL.UserDefaultWalletIdQueryVariables
-  >,
-) => {
-  return useDelayedQueryWrapper<
-    GaloyGQL.UserDefaultWalletIdQuery,
-    GaloyGQL.UserDefaultWalletIdQueryVariables
-  >("userDefaultWalletId", config)
-}
-
 const accountDefaultWalletDelayedQuery = (
   config?: QueryOptions<
     GaloyGQL.AccountDefaultWalletQuery,
@@ -257,5 +243,4 @@ export const useDelayedQuery = {
   onChainTxFee: onChainTxFeeDelayedQuery,
   transactionList: transactionListDelayedQuery,
   transactionListForContact: transactionListForContactDelayedQuery,
-  userDefaultWalletId: userDefaultWalletIdDelayedQuery,
 }
