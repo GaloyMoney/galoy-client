@@ -17,5 +17,6 @@
     "declaration": true,
     "noErrorTruncation": true
   },
-  "include": ["src"]
+  "include": ["src", "./**/*.graphql"],
+  "files": ["./src/graphql.types.d.ts"]
 }

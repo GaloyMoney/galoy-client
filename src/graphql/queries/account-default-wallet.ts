@@ -1,12 +1,3 @@
-import { gql } from "@apollo/client"
+import accountDefaultWallet from "./account-default-wallet.graphql"
 
-const accountDefaultWallet = gql`
-  query accountDefaultWallet($username: Username!) {
-    accountDefaultWallet(username: $username) {
-      __typename
-      id
-      walletCurrency
-    }
-  }
-`
 export default accountDefaultWallet
