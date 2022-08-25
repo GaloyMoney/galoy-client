@@ -33,7 +33,7 @@ const ES = {
   "History": "Historial",
   "Home": "Inicio",
   "How much would you like to send?": undefined,
-  "Invaild email or password": undefined,
+  "Invalid email or password": undefined,
   "Invalid QR Code": undefined,
   "Invalid verification. Please try again": undefined,
   "Invite": undefined,
