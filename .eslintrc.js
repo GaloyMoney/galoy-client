@@ -32,6 +32,7 @@ module.exports = {
     ],
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-shadow": "error",
     "@typescript-eslint/prefer-for-of": "error",
     "@typescript-eslint/unified-signatures": "error",
 
@@ -115,7 +116,6 @@ module.exports = {
     "no-script-url": "error",
     "no-self-compare": "error",
     "no-sequences": "error",
-    "no-shadow": "error",
     "no-template-curly-in-string": "error",
     "no-throw-literal": "error",
     "no-unmodified-loop-condition": "error",

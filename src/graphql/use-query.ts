@@ -156,7 +156,10 @@ export const useQuery = {
 const useDelayedQueryWrapper = <TData = unknown, TVars = unknown>(
   queryName: keyof typeof QUERIES,
   config?: Omit<QueryOptions<TVars, TData>, "query" | "variables">,
-): [(variables?: TVars) => QueryResult<TData> & QueryHelpers, { loading: boolean }] => {
+): [
+  (variables?: TVars) => Promise<QueryResult<TData> & QueryHelpers>,
+  { loading: boolean },
+] => {
   const client = useApolloClient()
   const [loading, setLoading] = useState<boolean>(false)
 
@@ -190,7 +193,9 @@ const useDelayedQueryWrapper = <TData = unknown, TVars = unknown>(
   )
 
   return [
-    sendQuery as unknown as (variables?: TVars) => QueryResult<TData> & QueryHelpers,
+    sendQuery as unknown as (
+      variables?: TVars,
+    ) => Promise<QueryResult<TData> & QueryHelpers>,
     { loading },
   ]
 }
@@ -217,6 +222,15 @@ const accountDefaultWalletDelayedQuery = (
     GaloyGQL.AccountDefaultWalletQuery,
     GaloyGQL.AccountDefaultWalletQueryVariables
   >("accountDefaultWallet", config)
+}
+
+const contactsDelayedQuery = (
+  config?: QueryOptions<GaloyGQL.ContactsQuery, GaloyGQL.ContactsQueryVariables>,
+) => {
+  return useDelayedQueryWrapper<GaloyGQL.ContactsQuery, GaloyGQL.ContactsQueryVariables>(
+    "contacts",
+    config,
+  )
 }
 
 const transactionListDelayedQuery = (
@@ -258,4 +272,5 @@ export const useDelayedQuery = {
   transactionList: transactionListDelayedQuery,
   transactionListForContact: transactionListForContactDelayedQuery,
   userDefaultWalletId: userDefaultWalletIdDelayedQuery,
+  contacts: contactsDelayedQuery,
 }
