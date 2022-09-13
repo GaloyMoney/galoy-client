@@ -167,6 +167,7 @@ resources:
 
 resource_types:
 - #@ gcr_resource_type()
+- #@ slack_resource_type()
 - name: npm
   type: docker-image
   source:
