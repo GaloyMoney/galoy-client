@@ -10,13 +10,13 @@ const meFragment = gql`
     defaultAccount {
       id
       defaultWalletId
+      transactions(first: $recentTransactions) {
+        ...TransactionList
+      }
       wallets {
         id
         balance
         walletCurrency
-        transactions(first: $recentTransactions) {
-          ...TransactionList
-        }
       }
     }
   }
