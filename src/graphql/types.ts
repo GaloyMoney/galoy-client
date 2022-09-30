@@ -97,13 +97,25 @@ export namespace GaloyGQL {
     /** A balance stored in BTC. */
     readonly balance: Scalars["SignedAmount"]
     readonly id: Scalars["ID"]
+    /** An unconfirmed incoming onchain balance. */
+    readonly pendingIncomingBalance: Scalars["SignedAmount"]
     /** A list of BTC transactions associated with this wallet. */
     readonly transactions?: Maybe<TransactionConnection>
+    readonly transactionsByAddress?: Maybe<TransactionConnection>
     readonly walletCurrency: WalletCurrency
   }
 
   /** A wallet belonging to an account which contains a BTC balance and a list of transactions. */
   export type BtcWalletTransactionsArgs = {
+    after?: InputMaybe<Scalars["String"]>
+    before?: InputMaybe<Scalars["String"]>
+    first?: InputMaybe<Scalars["Int"]>
+    last?: InputMaybe<Scalars["Int"]>
+  }
+
+  /** A wallet belonging to an account which contains a BTC balance and a list of transactions. */
+  export type BtcWalletTransactionsByAddressArgs = {
+    address: Scalars["OnChainAddress"]
     after?: InputMaybe<Scalars["String"]>
     before?: InputMaybe<Scalars["String"]>
     first?: InputMaybe<Scalars["Int"]>
@@ -786,6 +798,7 @@ export namespace GaloyGQL {
     readonly btcPriceList?: Maybe<ReadonlyArray<Maybe<PricePoint>>>
     readonly businessMapMarkers?: Maybe<ReadonlyArray<Maybe<MapMarker>>>
     readonly globals?: Maybe<Globals>
+    readonly lnInvoicePaymentStatus: LnInvoicePaymentStatusPayload
     readonly me?: Maybe<User>
     readonly mobileVersions?: Maybe<ReadonlyArray<Maybe<MobileVersions>>>
     readonly onChainTxFee: OnChainTxFee
@@ -802,6 +815,10 @@ export namespace GaloyGQL {
 
   export type QueryBtcPriceListArgs = {
     range: PriceGraphRange
+  }
+
+  export type QueryLnInvoicePaymentStatusArgs = {
+    input: LnInvoicePaymentStatusInput
   }
 
   export type QueryOnChainTxFeeArgs = {
@@ -961,12 +978,24 @@ export namespace GaloyGQL {
     readonly accountId: Scalars["ID"]
     readonly balance: Scalars["SignedAmount"]
     readonly id: Scalars["ID"]
+    /** An unconfirmed incoming onchain balance. */
+    readonly pendingIncomingBalance: Scalars["SignedAmount"]
     readonly transactions?: Maybe<TransactionConnection>
+    readonly transactionsByAddress?: Maybe<TransactionConnection>
     readonly walletCurrency: WalletCurrency
   }
 
   /** A wallet belonging to an account which contains a USD balance and a list of transactions. */
   export type UsdWalletTransactionsArgs = {
+    after?: InputMaybe<Scalars["String"]>
+    before?: InputMaybe<Scalars["String"]>
+    first?: InputMaybe<Scalars["Int"]>
+    last?: InputMaybe<Scalars["Int"]>
+  }
+
+  /** A wallet belonging to an account which contains a USD balance and a list of transactions. */
+  export type UsdWalletTransactionsByAddressArgs = {
+    address: Scalars["OnChainAddress"]
     after?: InputMaybe<Scalars["String"]>
     before?: InputMaybe<Scalars["String"]>
     first?: InputMaybe<Scalars["Int"]>
@@ -1099,16 +1128,31 @@ export namespace GaloyGQL {
     readonly accountId: Scalars["ID"]
     readonly balance: Scalars["SignedAmount"]
     readonly id: Scalars["ID"]
+    readonly pendingIncomingBalance: Scalars["SignedAmount"]
     /**
      * Transactions are ordered anti-chronologically,
      * ie: the newest transaction will be first
      */
     readonly transactions?: Maybe<TransactionConnection>
+    /**
+     * Transactions are ordered anti-chronologically,
+     * ie: the newest transaction will be first
+     */
+    readonly transactionsByAddress?: Maybe<TransactionConnection>
     readonly walletCurrency: WalletCurrency
   }
 
   /** A generic wallet which stores value in one of our supported currencies. */
   export type WalletTransactionsArgs = {
+    after?: InputMaybe<Scalars["String"]>
+    before?: InputMaybe<Scalars["String"]>
+    first?: InputMaybe<Scalars["Int"]>
+    last?: InputMaybe<Scalars["Int"]>
+  }
+
+  /** A generic wallet which stores value in one of our supported currencies. */
+  export type WalletTransactionsByAddressArgs = {
+    address: Scalars["OnChainAddress"]
     after?: InputMaybe<Scalars["String"]>
     before?: InputMaybe<Scalars["String"]>
     first?: InputMaybe<Scalars["Int"]>
@@ -1127,138 +1171,72 @@ export namespace GaloyGQL {
       readonly __typename?: "ConsumerAccount"
       readonly id: string
       readonly defaultWalletId: string
+      readonly transactions?: {
+        readonly __typename?: "TransactionConnection"
+        readonly pageInfo: {
+          readonly __typename?: "PageInfo"
+          readonly hasNextPage: boolean
+          readonly hasPreviousPage: boolean
+          readonly startCursor?: string | null
+          readonly endCursor?: string | null
+        }
+        readonly edges?: ReadonlyArray<{
+          readonly __typename?: "TransactionEdge"
+          readonly cursor: string
+          readonly node: {
+            readonly __typename: "Transaction"
+            readonly id: string
+            readonly status: TxStatus
+            readonly direction: TxDirection
+            readonly memo?: string | null
+            readonly createdAt: number
+            readonly settlementAmount: number
+            readonly settlementFee: number
+            readonly settlementCurrency: WalletCurrency
+            readonly settlementPrice: {
+              readonly __typename?: "Price"
+              readonly base: number
+              readonly offset: number
+              readonly currencyUnit: ExchangeCurrencyUnit
+              readonly formattedAmount: string
+            }
+            readonly initiationVia:
+              | {
+                  readonly __typename: "InitiationViaIntraLedger"
+                  readonly counterPartyWalletId?: string | null
+                  readonly counterPartyUsername?: string | null
+                }
+              | { readonly __typename: "InitiationViaLn"; readonly paymentHash: string }
+              | { readonly __typename: "InitiationViaOnChain"; readonly address: string }
+            readonly settlementVia:
+              | {
+                  readonly __typename: "SettlementViaIntraLedger"
+                  readonly counterPartyWalletId?: string | null
+                  readonly counterPartyUsername?: string | null
+                }
+              | {
+                  readonly __typename: "SettlementViaLn"
+                  readonly paymentSecret?: string | null
+                }
+              | {
+                  readonly __typename: "SettlementViaOnChain"
+                  readonly transactionHash: string
+                }
+          }
+        }> | null
+      } | null
       readonly wallets: ReadonlyArray<
         | {
             readonly __typename?: "BTCWallet"
             readonly id: string
             readonly balance: number
             readonly walletCurrency: WalletCurrency
-            readonly transactions?: {
-              readonly __typename?: "TransactionConnection"
-              readonly pageInfo: {
-                readonly __typename?: "PageInfo"
-                readonly hasNextPage: boolean
-                readonly hasPreviousPage: boolean
-                readonly startCursor?: string | null
-                readonly endCursor?: string | null
-              }
-              readonly edges?: ReadonlyArray<{
-                readonly __typename?: "TransactionEdge"
-                readonly cursor: string
-                readonly node: {
-                  readonly __typename: "Transaction"
-                  readonly id: string
-                  readonly status: TxStatus
-                  readonly direction: TxDirection
-                  readonly memo?: string | null
-                  readonly createdAt: number
-                  readonly settlementAmount: number
-                  readonly settlementFee: number
-                  readonly settlementCurrency: WalletCurrency
-                  readonly settlementPrice: {
-                    readonly __typename?: "Price"
-                    readonly base: number
-                    readonly offset: number
-                    readonly currencyUnit: ExchangeCurrencyUnit
-                    readonly formattedAmount: string
-                  }
-                  readonly initiationVia:
-                    | {
-                        readonly __typename: "InitiationViaIntraLedger"
-                        readonly counterPartyWalletId?: string | null
-                        readonly counterPartyUsername?: string | null
-                      }
-                    | {
-                        readonly __typename: "InitiationViaLn"
-                        readonly paymentHash: string
-                      }
-                    | {
-                        readonly __typename: "InitiationViaOnChain"
-                        readonly address: string
-                      }
-                  readonly settlementVia:
-                    | {
-                        readonly __typename: "SettlementViaIntraLedger"
-                        readonly counterPartyWalletId?: string | null
-                        readonly counterPartyUsername?: string | null
-                      }
-                    | {
-                        readonly __typename: "SettlementViaLn"
-                        readonly paymentSecret?: string | null
-                      }
-                    | {
-                        readonly __typename: "SettlementViaOnChain"
-                        readonly transactionHash: string
-                      }
-                }
-              }> | null
-            } | null
           }
         | {
             readonly __typename?: "UsdWallet"
             readonly id: string
             readonly balance: number
             readonly walletCurrency: WalletCurrency
-            readonly transactions?: {
-              readonly __typename?: "TransactionConnection"
-              readonly pageInfo: {
-                readonly __typename?: "PageInfo"
-                readonly hasNextPage: boolean
-                readonly hasPreviousPage: boolean
-                readonly startCursor?: string | null
-                readonly endCursor?: string | null
-              }
-              readonly edges?: ReadonlyArray<{
-                readonly __typename?: "TransactionEdge"
-                readonly cursor: string
-                readonly node: {
-                  readonly __typename: "Transaction"
-                  readonly id: string
-                  readonly status: TxStatus
-                  readonly direction: TxDirection
-                  readonly memo?: string | null
-                  readonly createdAt: number
-                  readonly settlementAmount: number
-                  readonly settlementFee: number
-                  readonly settlementCurrency: WalletCurrency
-                  readonly settlementPrice: {
-                    readonly __typename?: "Price"
-                    readonly base: number
-                    readonly offset: number
-                    readonly currencyUnit: ExchangeCurrencyUnit
-                    readonly formattedAmount: string
-                  }
-                  readonly initiationVia:
-                    | {
-                        readonly __typename: "InitiationViaIntraLedger"
-                        readonly counterPartyWalletId?: string | null
-                        readonly counterPartyUsername?: string | null
-                      }
-                    | {
-                        readonly __typename: "InitiationViaLn"
-                        readonly paymentHash: string
-                      }
-                    | {
-                        readonly __typename: "InitiationViaOnChain"
-                        readonly address: string
-                      }
-                  readonly settlementVia:
-                    | {
-                        readonly __typename: "SettlementViaIntraLedger"
-                        readonly counterPartyWalletId?: string | null
-                        readonly counterPartyUsername?: string | null
-                      }
-                    | {
-                        readonly __typename: "SettlementViaLn"
-                        readonly paymentSecret?: string | null
-                      }
-                    | {
-                        readonly __typename: "SettlementViaOnChain"
-                        readonly transactionHash: string
-                      }
-                }
-              }> | null
-            } | null
           }
       >
     }
@@ -1778,7 +1756,7 @@ export namespace GaloyGQL {
   export type AccountDefaultWalletQuery = {
     readonly __typename?: "Query"
     readonly accountDefaultWallet: {
-      readonly __typename?: "PublicWallet"
+      readonly __typename: "PublicWallet"
       readonly id: string
       readonly walletCurrency: WalletCurrency
     }
@@ -1884,138 +1862,75 @@ export namespace GaloyGQL {
         readonly __typename?: "ConsumerAccount"
         readonly id: string
         readonly defaultWalletId: string
+        readonly transactions?: {
+          readonly __typename?: "TransactionConnection"
+          readonly pageInfo: {
+            readonly __typename?: "PageInfo"
+            readonly hasNextPage: boolean
+            readonly hasPreviousPage: boolean
+            readonly startCursor?: string | null
+            readonly endCursor?: string | null
+          }
+          readonly edges?: ReadonlyArray<{
+            readonly __typename?: "TransactionEdge"
+            readonly cursor: string
+            readonly node: {
+              readonly __typename: "Transaction"
+              readonly id: string
+              readonly status: TxStatus
+              readonly direction: TxDirection
+              readonly memo?: string | null
+              readonly createdAt: number
+              readonly settlementAmount: number
+              readonly settlementFee: number
+              readonly settlementCurrency: WalletCurrency
+              readonly settlementPrice: {
+                readonly __typename?: "Price"
+                readonly base: number
+                readonly offset: number
+                readonly currencyUnit: ExchangeCurrencyUnit
+                readonly formattedAmount: string
+              }
+              readonly initiationVia:
+                | {
+                    readonly __typename: "InitiationViaIntraLedger"
+                    readonly counterPartyWalletId?: string | null
+                    readonly counterPartyUsername?: string | null
+                  }
+                | { readonly __typename: "InitiationViaLn"; readonly paymentHash: string }
+                | {
+                    readonly __typename: "InitiationViaOnChain"
+                    readonly address: string
+                  }
+              readonly settlementVia:
+                | {
+                    readonly __typename: "SettlementViaIntraLedger"
+                    readonly counterPartyWalletId?: string | null
+                    readonly counterPartyUsername?: string | null
+                  }
+                | {
+                    readonly __typename: "SettlementViaLn"
+                    readonly paymentSecret?: string | null
+                  }
+                | {
+                    readonly __typename: "SettlementViaOnChain"
+                    readonly transactionHash: string
+                  }
+            }
+          }> | null
+        } | null
         readonly wallets: ReadonlyArray<
           | {
               readonly __typename?: "BTCWallet"
               readonly id: string
               readonly balance: number
               readonly walletCurrency: WalletCurrency
-              readonly transactions?: {
-                readonly __typename?: "TransactionConnection"
-                readonly pageInfo: {
-                  readonly __typename?: "PageInfo"
-                  readonly hasNextPage: boolean
-                  readonly hasPreviousPage: boolean
-                  readonly startCursor?: string | null
-                  readonly endCursor?: string | null
-                }
-                readonly edges?: ReadonlyArray<{
-                  readonly __typename?: "TransactionEdge"
-                  readonly cursor: string
-                  readonly node: {
-                    readonly __typename: "Transaction"
-                    readonly id: string
-                    readonly status: TxStatus
-                    readonly direction: TxDirection
-                    readonly memo?: string | null
-                    readonly createdAt: number
-                    readonly settlementAmount: number
-                    readonly settlementFee: number
-                    readonly settlementCurrency: WalletCurrency
-                    readonly settlementPrice: {
-                      readonly __typename?: "Price"
-                      readonly base: number
-                      readonly offset: number
-                      readonly currencyUnit: ExchangeCurrencyUnit
-                      readonly formattedAmount: string
-                    }
-                    readonly initiationVia:
-                      | {
-                          readonly __typename: "InitiationViaIntraLedger"
-                          readonly counterPartyWalletId?: string | null
-                          readonly counterPartyUsername?: string | null
-                        }
-                      | {
-                          readonly __typename: "InitiationViaLn"
-                          readonly paymentHash: string
-                        }
-                      | {
-                          readonly __typename: "InitiationViaOnChain"
-                          readonly address: string
-                        }
-                    readonly settlementVia:
-                      | {
-                          readonly __typename: "SettlementViaIntraLedger"
-                          readonly counterPartyWalletId?: string | null
-                          readonly counterPartyUsername?: string | null
-                        }
-                      | {
-                          readonly __typename: "SettlementViaLn"
-                          readonly paymentSecret?: string | null
-                        }
-                      | {
-                          readonly __typename: "SettlementViaOnChain"
-                          readonly transactionHash: string
-                        }
-                  }
-                }> | null
-              } | null
             }
           | {
               readonly __typename?: "UsdWallet"
               readonly id: string
               readonly balance: number
               readonly walletCurrency: WalletCurrency
-              readonly transactions?: {
-                readonly __typename?: "TransactionConnection"
-                readonly pageInfo: {
-                  readonly __typename?: "PageInfo"
-                  readonly hasNextPage: boolean
-                  readonly hasPreviousPage: boolean
-                  readonly startCursor?: string | null
-                  readonly endCursor?: string | null
-                }
-                readonly edges?: ReadonlyArray<{
-                  readonly __typename?: "TransactionEdge"
-                  readonly cursor: string
-                  readonly node: {
-                    readonly __typename: "Transaction"
-                    readonly id: string
-                    readonly status: TxStatus
-                    readonly direction: TxDirection
-                    readonly memo?: string | null
-                    readonly createdAt: number
-                    readonly settlementAmount: number
-                    readonly settlementFee: number
-                    readonly settlementCurrency: WalletCurrency
-                    readonly settlementPrice: {
-                      readonly __typename?: "Price"
-                      readonly base: number
-                      readonly offset: number
-                      readonly currencyUnit: ExchangeCurrencyUnit
-                      readonly formattedAmount: string
-                    }
-                    readonly initiationVia:
-                      | {
-                          readonly __typename: "InitiationViaIntraLedger"
-                          readonly counterPartyWalletId?: string | null
-                          readonly counterPartyUsername?: string | null
-                        }
-                      | {
-                          readonly __typename: "InitiationViaLn"
-                          readonly paymentHash: string
-                        }
-                      | {
-                          readonly __typename: "InitiationViaOnChain"
-                          readonly address: string
-                        }
-                    readonly settlementVia:
-                      | {
-                          readonly __typename: "SettlementViaIntraLedger"
-                          readonly counterPartyWalletId?: string | null
-                          readonly counterPartyUsername?: string | null
-                        }
-                      | {
-                          readonly __typename: "SettlementViaLn"
-                          readonly paymentSecret?: string | null
-                        }
-                      | {
-                          readonly __typename: "SettlementViaOnChain"
-                          readonly transactionHash: string
-                        }
-                  }
-                }> | null
-              } | null
             }
         >
       }
@@ -2406,138 +2321,78 @@ export namespace GaloyGQL {
           readonly __typename?: "ConsumerAccount"
           readonly id: string
           readonly defaultWalletId: string
+          readonly transactions?: {
+            readonly __typename?: "TransactionConnection"
+            readonly pageInfo: {
+              readonly __typename?: "PageInfo"
+              readonly hasNextPage: boolean
+              readonly hasPreviousPage: boolean
+              readonly startCursor?: string | null
+              readonly endCursor?: string | null
+            }
+            readonly edges?: ReadonlyArray<{
+              readonly __typename?: "TransactionEdge"
+              readonly cursor: string
+              readonly node: {
+                readonly __typename: "Transaction"
+                readonly id: string
+                readonly status: TxStatus
+                readonly direction: TxDirection
+                readonly memo?: string | null
+                readonly createdAt: number
+                readonly settlementAmount: number
+                readonly settlementFee: number
+                readonly settlementCurrency: WalletCurrency
+                readonly settlementPrice: {
+                  readonly __typename?: "Price"
+                  readonly base: number
+                  readonly offset: number
+                  readonly currencyUnit: ExchangeCurrencyUnit
+                  readonly formattedAmount: string
+                }
+                readonly initiationVia:
+                  | {
+                      readonly __typename: "InitiationViaIntraLedger"
+                      readonly counterPartyWalletId?: string | null
+                      readonly counterPartyUsername?: string | null
+                    }
+                  | {
+                      readonly __typename: "InitiationViaLn"
+                      readonly paymentHash: string
+                    }
+                  | {
+                      readonly __typename: "InitiationViaOnChain"
+                      readonly address: string
+                    }
+                readonly settlementVia:
+                  | {
+                      readonly __typename: "SettlementViaIntraLedger"
+                      readonly counterPartyWalletId?: string | null
+                      readonly counterPartyUsername?: string | null
+                    }
+                  | {
+                      readonly __typename: "SettlementViaLn"
+                      readonly paymentSecret?: string | null
+                    }
+                  | {
+                      readonly __typename: "SettlementViaOnChain"
+                      readonly transactionHash: string
+                    }
+              }
+            }> | null
+          } | null
           readonly wallets: ReadonlyArray<
             | {
                 readonly __typename?: "BTCWallet"
                 readonly id: string
                 readonly balance: number
                 readonly walletCurrency: WalletCurrency
-                readonly transactions?: {
-                  readonly __typename?: "TransactionConnection"
-                  readonly pageInfo: {
-                    readonly __typename?: "PageInfo"
-                    readonly hasNextPage: boolean
-                    readonly hasPreviousPage: boolean
-                    readonly startCursor?: string | null
-                    readonly endCursor?: string | null
-                  }
-                  readonly edges?: ReadonlyArray<{
-                    readonly __typename?: "TransactionEdge"
-                    readonly cursor: string
-                    readonly node: {
-                      readonly __typename: "Transaction"
-                      readonly id: string
-                      readonly status: TxStatus
-                      readonly direction: TxDirection
-                      readonly memo?: string | null
-                      readonly createdAt: number
-                      readonly settlementAmount: number
-                      readonly settlementFee: number
-                      readonly settlementCurrency: WalletCurrency
-                      readonly settlementPrice: {
-                        readonly __typename?: "Price"
-                        readonly base: number
-                        readonly offset: number
-                        readonly currencyUnit: ExchangeCurrencyUnit
-                        readonly formattedAmount: string
-                      }
-                      readonly initiationVia:
-                        | {
-                            readonly __typename: "InitiationViaIntraLedger"
-                            readonly counterPartyWalletId?: string | null
-                            readonly counterPartyUsername?: string | null
-                          }
-                        | {
-                            readonly __typename: "InitiationViaLn"
-                            readonly paymentHash: string
-                          }
-                        | {
-                            readonly __typename: "InitiationViaOnChain"
-                            readonly address: string
-                          }
-                      readonly settlementVia:
-                        | {
-                            readonly __typename: "SettlementViaIntraLedger"
-                            readonly counterPartyWalletId?: string | null
-                            readonly counterPartyUsername?: string | null
-                          }
-                        | {
-                            readonly __typename: "SettlementViaLn"
-                            readonly paymentSecret?: string | null
-                          }
-                        | {
-                            readonly __typename: "SettlementViaOnChain"
-                            readonly transactionHash: string
-                          }
-                    }
-                  }> | null
-                } | null
               }
             | {
                 readonly __typename?: "UsdWallet"
                 readonly id: string
                 readonly balance: number
                 readonly walletCurrency: WalletCurrency
-                readonly transactions?: {
-                  readonly __typename?: "TransactionConnection"
-                  readonly pageInfo: {
-                    readonly __typename?: "PageInfo"
-                    readonly hasNextPage: boolean
-                    readonly hasPreviousPage: boolean
-                    readonly startCursor?: string | null
-                    readonly endCursor?: string | null
-                  }
-                  readonly edges?: ReadonlyArray<{
-                    readonly __typename?: "TransactionEdge"
-                    readonly cursor: string
-                    readonly node: {
-                      readonly __typename: "Transaction"
-                      readonly id: string
-                      readonly status: TxStatus
-                      readonly direction: TxDirection
-                      readonly memo?: string | null
-                      readonly createdAt: number
-                      readonly settlementAmount: number
-                      readonly settlementFee: number
-                      readonly settlementCurrency: WalletCurrency
-                      readonly settlementPrice: {
-                        readonly __typename?: "Price"
-                        readonly base: number
-                        readonly offset: number
-                        readonly currencyUnit: ExchangeCurrencyUnit
-                        readonly formattedAmount: string
-                      }
-                      readonly initiationVia:
-                        | {
-                            readonly __typename: "InitiationViaIntraLedger"
-                            readonly counterPartyWalletId?: string | null
-                            readonly counterPartyUsername?: string | null
-                          }
-                        | {
-                            readonly __typename: "InitiationViaLn"
-                            readonly paymentHash: string
-                          }
-                        | {
-                            readonly __typename: "InitiationViaOnChain"
-                            readonly address: string
-                          }
-                      readonly settlementVia:
-                        | {
-                            readonly __typename: "SettlementViaIntraLedger"
-                            readonly counterPartyWalletId?: string | null
-                            readonly counterPartyUsername?: string | null
-                          }
-                        | {
-                            readonly __typename: "SettlementViaLn"
-                            readonly paymentSecret?: string | null
-                          }
-                        | {
-                            readonly __typename: "SettlementViaOnChain"
-                            readonly transactionHash: string
-                          }
-                    }
-                  }> | null
-                } | null
               }
           >
         }
