@@ -133,6 +133,7 @@ const ES = {
   "You're converting": "Está convirtiendo",
   "Your account verification is still pending": undefined,
   "Your email address has been verified": undefined,
+  "Destination": "Destino",
 } as const
 
 export type TranslationKey = keyof typeof ES
