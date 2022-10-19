@@ -103,6 +103,7 @@ const ES = {
   "Set a note for the sender here (optional)": undefined,
   "Set a note/label": "Agregar una nota",
   "Set Amount": undefined,
+  "Set amount/note": undefined,
   "Set invoice value in %{currency}": undefined,
   "Set Lightning Address": undefined,
   "Set value to send in %{currency}": undefined,
