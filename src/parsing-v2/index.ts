@@ -246,7 +246,7 @@ const getLNURLPayResponse = ({
   if (lnAddress) {
     const { username, domain } = lnAddress
 
-    if (lnAddressDomains.find((lnAddress) => lnAddress === domain)) {
+    if (lnAddressDomains.find((lnAddressDomain) => lnAddressDomain === domain)) {
       return getIntraLedgerPayResponse({
         protocol: "",
         destinationWithoutProtocol: username,
