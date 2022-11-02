@@ -23,6 +23,8 @@ const bech32Testnet = "tb1q0g444vcyy53pza03zsel3tcwdejt9z5kq3w385aqgazpfxjhsr0qh
 
 const lnUrlInvoice =
   "lnurl1dp68gurn8ghj7mrw9e3xjarrda5kucn9v93kstnrdakj7tnhv4kxctttdehhwm30d3h82unvwqhhxctdv4eqztzfux"
+const lnUrlInvoiceWithFallback = `https://fallback.com?lightning=${lnUrlInvoice}`
+const lnUrlInvoiceWithProtocol = `lightning:${lnUrlInvoice}`
 const internalLnAddress = "username@pay.bbw.sv"
 const externalLnAddress = "username@external.com"
 
@@ -83,6 +85,38 @@ describe("parsePaymentDestination validations", () => {
   it("validates an lnurl destination", () => {
     const result = parsePaymentDestination({
       destination: lnUrlInvoice,
+      network: "mainnet",
+      pubKey: "",
+      lnAddressDomains: [],
+    })
+    expect(result).toEqual(
+      expect.objectContaining({
+        paymentType: PaymentType.Lnurl,
+        valid: true,
+        lnurl: lnUrlInvoice,
+      }),
+    )
+  })
+
+  it("validates an lnurl destination with fallback url", () => {
+    const result = parsePaymentDestination({
+      destination: lnUrlInvoiceWithFallback,
+      network: "mainnet",
+      pubKey: "",
+      lnAddressDomains: [],
+    })
+    expect(result).toEqual(
+      expect.objectContaining({
+        paymentType: PaymentType.Lnurl,
+        valid: true,
+        lnurl: lnUrlInvoice,
+      }),
+    )
+  })
+
+  it("validates an lnurl destination with a protocol", () => {
+    const result = parsePaymentDestination({
+      destination: lnUrlInvoiceWithProtocol,
       network: "mainnet",
       pubKey: "",
       lnAddressDomains: [],

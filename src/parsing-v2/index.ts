@@ -153,39 +153,48 @@ const getLNParam = (data: string): string | undefined => {
 
 const getProtocolAndData = (
   destination: string,
-): { protocol: string; destinationText: string } => {
+): { protocol: string; destinationWithoutProtocol: string } => {
   // input might start with 'lightning:', 'bitcoin:'
   const split = destination.split(":")
   const protocol = split[1] ? split[0].toLocaleLowerCase() : ""
-  const destinationText = split[1] ?? split[0]
-  return { protocol, destinationText }
+  const destinationWithoutProtocol = split[1] ?? split[0]
+  return { protocol, destinationWithoutProtocol }
 }
 
 const getPaymentType = ({
   protocol,
-  destinationText,
+  destinationWithoutProtocol,
+  rawDestination,
 }: {
   protocol: string
-  destinationText: string
+  destinationWithoutProtocol: string
+  rawDestination: string
 }): PaymentType => {
   // As far as the client is concerned, lnurl is the same as lightning address
-  if (utils.isLnurl(destinationText) || utils.isLightningAddress(destinationText)) {
+  if (utils.parseLnUrl(rawDestination) || utils.parseLightningAddress(rawDestination)) {
     return PaymentType.Lnurl
   }
+
   if (
     protocol === "lightning" ||
-    destinationText.match(/^ln(bc|tb).{50,}/iu) ||
-    (destinationText && getLNParam(destinationText) !== undefined)
+    destinationWithoutProtocol.match(/^ln(bc|tb).{50,}/iu) ||
+    (destinationWithoutProtocol && getLNParam(destinationWithoutProtocol) !== undefined)
   ) {
     return PaymentType.Lightning
   }
-  if (protocol === "onchain" || destinationText.match(/^(1|3|bc1|tb1|bcrt1)/iu)) {
+
+  if (
+    protocol === "onchain" ||
+    destinationWithoutProtocol.match(/^(1|3|bc1|tb1|bcrt1)/iu)
+  ) {
     return PaymentType.Onchain
   }
 
   const handle = protocol.match(/^(http|\/\/)/iu)
-    ? destinationText.split("/")[destinationText.split("/").length - 1]
-    : destinationText
+    ? destinationWithoutProtocol.split("/")[
+        destinationWithoutProtocol.split("/").length - 1
+      ]
+    : destinationWithoutProtocol
 
   if (handle?.match(/(?!^(1|3|bc1|lnbc1))^[0-9a-z_]{3,50}$/iu)) {
     return PaymentType.Intraledger
@@ -196,16 +205,18 @@ const getPaymentType = ({
 
 const getIntraLedgerPayResponse = ({
   protocol,
-  destinationText,
+  destinationWithoutProtocol,
 }: {
   protocol: string
-  destinationText: string
+  destinationWithoutProtocol: string
 }): IntraledgerPaymentDestination | UnknownPaymentDestination => {
   const paymentType = PaymentType.Intraledger
 
   const handle = protocol.match(/^(http|\/\/)/iu)
-    ? destinationText.split("/")[destinationText.split("/").length - 1]
-    : destinationText
+    ? destinationWithoutProtocol.split("/")[
+        destinationWithoutProtocol.split("/").length - 1
+      ]
+    : destinationWithoutProtocol
 
   if (handle?.match(/(?!^(1|3|bc1|lnbc1))^[0-9a-z_]{3,50}$/iu)) {
     return {
@@ -220,30 +231,48 @@ const getIntraLedgerPayResponse = ({
 }
 
 const getLNURLPayResponse = ({
-  destinationText,
   lnAddressDomains,
+  rawDestination,
 }: {
-  destinationText: string
   lnAddressDomains: string[]
+  rawDestination: string
 }):
   | LnurlPaymentDestination
   | IntraledgerPaymentDestination
   | UnknownPaymentDestination => {
   // handle internal lightning addresses
-  for (const domain of lnAddressDomains) {
-    if (destinationText.includes(domain)) {
-      const handle = destinationText.split("@")[0]
+
+  const lnAddress = utils.parseLightningAddress(rawDestination)
+  if (lnAddress) {
+    const { username, domain } = lnAddress
+
+    if (lnAddressDomains.find((lnAddress) => lnAddress === domain)) {
       return getIntraLedgerPayResponse({
         protocol: "",
-        destinationText: handle,
+        destinationWithoutProtocol: username,
       })
+    }
+
+    return {
+      valid: true,
+      paymentType: PaymentType.Lnurl,
+      lnurl: `${username}@${domain}`,
+    }
+  }
+
+  const lnurl = utils.parseLnUrl(rawDestination)
+
+  if (lnurl) {
+    return {
+      valid: true,
+      paymentType: PaymentType.Lnurl,
+      lnurl,
     }
   }
 
   return {
-    valid: true,
-    paymentType: PaymentType.Lnurl,
-    lnurl: destinationText,
+    valid: false,
+    paymentType: PaymentType.Unknown,
   }
 }
 
@@ -257,9 +286,9 @@ const getLightningPayResponse = ({
   pubKey: string
 }): LightningPaymentDestination => {
   const paymentType = PaymentType.Lightning
-  const { destinationText } = getProtocolAndData(destination)
+  const { destinationWithoutProtocol } = getProtocolAndData(destination)
   const lnProtocol =
-    getLNParam(destination)?.toLowerCase() || destinationText.toLowerCase()
+    getLNParam(destination)?.toLowerCase() || destinationWithoutProtocol.toLowerCase()
 
   if (
     (network === "mainnet" &&
@@ -312,15 +341,15 @@ const getLightningPayResponse = ({
 }
 
 const getOnChainPayResponse = ({
-  destinationText,
+  destinationWithoutProtocol,
   network,
 }: {
-  destinationText: string
+  destinationWithoutProtocol: string
   network: Network
 }): OnchainPaymentDestination => {
   const paymentType = PaymentType.Onchain
   try {
-    const decodedData = inputDataToObject(destinationText)
+    const decodedData = inputDataToObject(destinationWithoutProtocol)
 
     // some apps encode addresses in UPPERCASE
     const path = decodedData?.pathname as string
@@ -370,19 +399,26 @@ export const parsePaymentDestination = ({
     return { paymentType: PaymentType.Unknown }
   }
 
-  const { protocol, destinationText } = getProtocolAndData(destination)
+  const { protocol, destinationWithoutProtocol } = getProtocolAndData(destination)
 
-  const paymentType = getPaymentType({ protocol, destinationText })
+  const paymentType = getPaymentType({
+    protocol,
+    destinationWithoutProtocol,
+    rawDestination: destination,
+  })
 
   switch (paymentType) {
     case PaymentType.Lnurl:
-      return getLNURLPayResponse({ destinationText, lnAddressDomains })
+      return getLNURLPayResponse({
+        lnAddressDomains,
+        rawDestination: destination,
+      })
     case PaymentType.Lightning:
       return getLightningPayResponse({ destination, network, pubKey })
     case PaymentType.Onchain:
-      return getOnChainPayResponse({ destinationText, network })
+      return getOnChainPayResponse({ destinationWithoutProtocol, network })
     case PaymentType.Intraledger:
-      return getIntraLedgerPayResponse({ protocol, destinationText })
+      return getIntraLedgerPayResponse({ protocol, destinationWithoutProtocol })
     case PaymentType.Unknown:
       return { paymentType: PaymentType.Unknown }
   }
