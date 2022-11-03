@@ -4,11 +4,11 @@ import { networks, address } from "bitcoinjs-lib"
 import { utils } from "lnurl-pay"
 
 const parseNetwork = (network: string): networks.Network => {
-  if(network === "mainnet") {
+  if (network === "mainnet") {
     return networks.bitcoin
-  } else if(network === "signet") {
+  } else if (network === "signet") {
     return networks.testnet
-  } else if(network === "regtest") {
+  } else if (network === "regtest") {
     return networks.regtest
   }
   return networks.bitcoin
