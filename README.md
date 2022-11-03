@@ -19,7 +19,7 @@ import { parsePaymentDestination } from "@galoymoney/client"
 
 const { valid, paymentType, amount } = parsePaymentDestination({
   destination: "username or invoice or bitcoin address",
-  network: "mainnet", // or testnet or regtest
+  network: "mainnet", // or signet or regtest
   pubKey: "nodePubKey",
 })
 ```

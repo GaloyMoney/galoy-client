@@ -19,7 +19,7 @@ const bech32Prefix = "bitcoin:bc1qdx09anw82zhujxzzsn56mruv8qvd33czzy9apt"
 const bech32CapsPrefix = "bitcoin:BC1QW508D6QEJXTDG4Y5R3ZARVARY0C5XW7KV8F3T4"
 
 const bech32Regtest = "bcrt1qam64av6cyhjsgdwajjpe0l9z8ju4w7rjryecf3"
-const bech32Testnet = "tb1q0g444vcyy53pza03zsel3tcwdejt9z5kq3w385aqgazpfxjhsr0qhds7p5"
+const bech32Signet = "tb1q0g444vcyy53pza03zsel3tcwdejt9z5kq3w385aqgazpfxjhsr0qhds7p5"
 
 const lnUrlInvoice =
   "lnurl1dp68gurn8ghj7mrw9e3xjarrda5kucn9v93kstnrdakj7tnhv4kxctttdehhwm30d3h82unvwqhhxctdv4eqztzfux"
@@ -174,21 +174,21 @@ describe("parsePaymentDestination OnChain", () => {
     checkOnChain(bech32CapsPrefix, "mainnet")
 
     checkOnChainFail(bech32Regtest, "mainnet")
-    checkOnChainFail(bech32Testnet, "mainnet")
+    checkOnChainFail(bech32Signet, "mainnet")
   })
 
-  it("validates bitcoin address testnet", () => {
-    checkOnChain(bech32Testnet, "testnet")
+  it("validates bitcoin address signet", () => {
+    checkOnChain(bech32Signet, "signet")
 
-    checkOnChainFail(bech32Regtest, "testnet")
-    checkOnChainFail(bech32, "testnet")
+    checkOnChainFail(bech32Regtest, "signet")
+    checkOnChainFail(bech32, "signet")
   })
 
   it("validates bitcoin address regtest", () => {
     checkOnChain(bech32Regtest, "regtest")
 
     checkOnChainFail(p2pkh, "regtest")
-    checkOnChainFail(bech32Testnet, "regtest")
+    checkOnChainFail(bech32Signet, "regtest")
   })
 
   it("validates an onchain destination with amount ", () => {
@@ -251,11 +251,11 @@ describe("parsePaymentDestination OnChain", () => {
 })
 
 describe("parsePaymentDestination Lightning", () => {
-  it("invalidates a mainnet invoice on testnet", () => {
+  it("invalidates a mainnet invoice on signet", () => {
     const paymentDestination = parsePaymentDestination({
       // lnInovice is a mainnet invoice
       destination: lnInvoice,
-      network: "testnet",
+      network: "signet",
       pubKey: "",
       lnAddressDomains: [],
     })
@@ -269,11 +269,11 @@ describe("parsePaymentDestination Lightning", () => {
     )
   })
 
-  it("invalidates a regtest invoice on testnet", () => {
+  it("invalidates a regtest invoice on signet", () => {
     const paymentDestination = parsePaymentDestination({
       // lnInovice is a regtest invoice
       destination: lnbcrtInvoice,
-      network: "testnet",
+      network: "signet",
       pubKey: "",
       lnAddressDomains: [],
     })
@@ -287,8 +287,8 @@ describe("parsePaymentDestination Lightning", () => {
     )
   })
 
-  it("invalidates a testnet invoice on mainnet", () => {
-    // lntbInovice is a testnet invoice
+  it("invalidates a signet invoice on mainnet", () => {
+    // lntbInovice is a signet invoice
     const paymentDestination = parsePaymentDestination({
       destination: lntbInvoice,
       network: "mainnet",
@@ -323,8 +323,8 @@ describe("parsePaymentDestination Lightning", () => {
     )
   })
 
-  it("invalidates a testnet invoice on regtest", () => {
-    // lntbInovice is a testnet invoice
+  it("invalidates a signet invoice on regtest", () => {
+    // lntbInovice is a signet invoice
     const paymentDestination = parsePaymentDestination({
       destination: lntbInvoice,
       network: "regtest",

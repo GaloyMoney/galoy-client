@@ -3,6 +3,17 @@ import url from "url"
 import { networks, address } from "bitcoinjs-lib"
 import { utils } from "lnurl-pay"
 
+const parseNetwork = (network: string): networks.Network => {
+  if(network === "mainnet") {
+    return networks.bitcoin
+  } else if(network === "signet") {
+    return networks.testnet
+  } else if(network === "regtest") {
+    return networks.regtest
+  }
+  return networks.bitcoin
+}
+
 export const getDescription = (decoded: bolt11.PaymentRequestObject) => {
   const data = decoded.tags.find((value) => value.tagName === "description")?.data
   if (data) {
@@ -22,7 +33,7 @@ export const getHashFromInvoice = (invoice: string): string | undefined => {
   }
 }
 
-export type Network = "mainnet" | "testnet" | "regtest"
+export type Network = "mainnet" | "signet" | "regtest"
 export type PaymentType = "lightning" | "onchain" | "intraledger" | "lnurl"
 export interface ValidPaymentResponse {
   valid: boolean
@@ -149,7 +160,7 @@ const getLightningPayResponse = ({
   if (
     (network === "mainnet" &&
       !(lnProtocol.match(/^lnbc/iu) && !lnProtocol.match(/^lnbcrt/iu))) ||
-    (network === "testnet" && !lnProtocol.match(/^lntb/iu)) ||
+    (network === "signet" && !lnProtocol.match(/^lntb/iu)) ||
     (network === "regtest" && !lnProtocol.match(/^lnbcrt/iu))
   ) {
     return {
@@ -232,7 +243,7 @@ const getOnChainPayResponse = ({
     }
 
     // will throw if address is not valid
-    address.toOutputScript(path, networks[network === "mainnet" ? "bitcoin" : network])
+    address.toOutputScript(path, parseNetwork(network))
     return {
       valid: true,
       paymentType: "onchain",
