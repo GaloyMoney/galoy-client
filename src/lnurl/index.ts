@@ -42,7 +42,7 @@ export const fetchLnurlInvoice = async ({
 export const isLnurlPaymentSameNode = async ({
   lnUrlOrAddress,
   ourNode,
-  network
+  network,
 }: isLnurlPaymentSameNodeArgs): Promise<boolean> => {
   const { invoice } = await requestInvoice({
     lnUrlOrAddress,

@@ -18,34 +18,34 @@ const parseBitcoinJsNetwork = (network: string): networks.Network => {
 // This is a hack to get around the fact that bolt11 doesn't support signet
 export const parseBolt11Network = (network: string): bolt11.Network => {
   if (network === "mainnet") {
-        return {
-          bech32: 'bc',
-          pubKeyHash: 0x00,
-          scriptHash: 0x05,
-          validWitnessVersions: [0, 1]
+    return {
+      bech32: "bc",
+      pubKeyHash: 0x00,
+      scriptHash: 0x05,
+      validWitnessVersions: [0, 1],
     }
   } else if (network === "signet") {
-        return {
-      bech32: 'tb',
+    return {
+      bech32: "tb",
       pubKeyHash: 0x6f,
       scriptHash: 0xc4,
-      validWitnessVersions: [0, 1]
+      validWitnessVersions: [0, 1],
     }
   } else if (network === "regtest") {
     return {
-  bech32: 'bcrt',
-  pubKeyHash: 0x6f,
-  scriptHash: 0xc4,
-  validWitnessVersions: [0, 1]
-}
+      bech32: "bcrt",
+      pubKeyHash: 0x6f,
+      scriptHash: 0xc4,
+      validWitnessVersions: [0, 1],
+    }
   }
   return {
-          // default network is bitcoin
-          bech32: 'bc',
-          pubKeyHash: 0x00,
-          scriptHash: 0x05,
-          validWitnessVersions: [0, 1]
-    }
+    // default network is bitcoin
+    bech32: "bc",
+    pubKeyHash: 0x00,
+    scriptHash: 0x05,
+    validWitnessVersions: [0, 1],
+  }
 }
 
 export const getDescription = (decoded: bolt11.PaymentRequestObject) => {
@@ -59,14 +59,16 @@ export const getDestination = (
   decoded: bolt11.PaymentRequestObject,
 ): string | undefined => decoded.payeeNodeKey
 
-export const getHashFromInvoice = (invoice: string, network: Network): string | undefined => {
+export const getHashFromInvoice = (
+  invoice: string,
+  network: Network,
+): string | undefined => {
   const decoded = bolt11.decode(invoice, parseBolt11Network(network))
   const data = decoded.tags.find((value) => value.tagName === "payment_hash")?.data
   if (data) {
     return data as string
   }
 }
-
 
 export enum PaymentType {
   Lightning = "lightning",
@@ -161,7 +163,10 @@ export const getLightningInvoiceExpiryTime = (
   return payReq?.timeExpireDate || NaN
 }
 
-export const decodeInvoiceString = (invoice: string, network: Network): bolt11.PaymentRequestObject => {
+export const decodeInvoiceString = (
+  invoice: string,
+  network: Network,
+): bolt11.PaymentRequestObject => {
   return bolt11.decode(invoice, parseBolt11Network(network))
 }
 
