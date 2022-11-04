@@ -3,7 +3,9 @@ import url from "url"
 import { networks, address } from "bitcoinjs-lib"
 import { utils } from "lnurl-pay"
 
-const parseNetwork = (network: string): networks.Network => {
+export type Network = "mainnet" | "signet" | "regtest"
+
+const parseBitcoinJsNetwork = (network: string): networks.Network => {
   if (network === "mainnet") {
     return networks.bitcoin
   } else if (network === "signet") {
@@ -12,6 +14,38 @@ const parseNetwork = (network: string): networks.Network => {
     return networks.regtest
   }
   return networks.bitcoin
+}
+// This is a hack to get around the fact that bolt11 doesn't support signet
+export const parseBolt11Network = (network: string): bolt11.Network => {
+  if (network === "mainnet") {
+    return {
+      bech32: "bc",
+      pubKeyHash: 0x00,
+      scriptHash: 0x05,
+      validWitnessVersions: [0, 1],
+    }
+  } else if (network === "signet") {
+    return {
+      bech32: "tb",
+      pubKeyHash: 0x6f,
+      scriptHash: 0xc4,
+      validWitnessVersions: [0, 1],
+    }
+  } else if (network === "regtest") {
+    return {
+      bech32: "bcrt",
+      pubKeyHash: 0x6f,
+      scriptHash: 0xc4,
+      validWitnessVersions: [0, 1],
+    }
+  }
+  return {
+    // default network is bitcoin
+    bech32: "bc",
+    pubKeyHash: 0x00,
+    scriptHash: 0x05,
+    validWitnessVersions: [0, 1],
+  }
 }
 
 export const getDescription = (decoded: bolt11.PaymentRequestObject) => {
@@ -25,15 +59,17 @@ export const getDestination = (
   decoded: bolt11.PaymentRequestObject,
 ): string | undefined => decoded.payeeNodeKey
 
-export const getHashFromInvoice = (invoice: string): string | undefined => {
-  const decoded = bolt11.decode(invoice)
+export const getHashFromInvoice = (
+  invoice: string,
+  network: Network,
+): string | undefined => {
+  const decoded = bolt11.decode(invoice, parseBolt11Network(network))
   const data = decoded.tags.find((value) => value.tagName === "payment_hash")?.data
   if (data) {
     return data as string
   }
 }
 
-export type Network = "mainnet" | "signet" | "regtest"
 export enum PaymentType {
   Lightning = "lightning",
   Intraledger = "intraledger",
@@ -127,8 +163,11 @@ export const getLightningInvoiceExpiryTime = (
   return payReq?.timeExpireDate || NaN
 }
 
-export const decodeInvoiceString = (invoice: string): bolt11.PaymentRequestObject => {
-  return bolt11.decode(invoice)
+export const decodeInvoiceString = (
+  invoice: string,
+  network: Network,
+): bolt11.PaymentRequestObject => {
+  return bolt11.decode(invoice, parseBolt11Network(network))
 }
 
 // from https://github.com/bitcoin/bips/blob/master/bip-0020.mediawiki#Transfer%20amount/size
@@ -316,7 +355,7 @@ const getLightningPayResponse = ({
 
   let payReq: bolt11.PaymentRequestObject | undefined = undefined
   try {
-    payReq = bolt11.decode(lnProtocol)
+    payReq = bolt11.decode(lnProtocol, parseBolt11Network(network))
   } catch (err) {
     return {
       valid: false,
@@ -383,7 +422,7 @@ const getOnChainPayResponse = ({
     }
 
     // will throw if address is not valid
-    address.toOutputScript(path, parseNetwork(network))
+    address.toOutputScript(path, parseBitcoinJsNetwork(network))
     return {
       valid: true,
       paymentType,

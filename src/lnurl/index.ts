@@ -7,10 +7,12 @@ import {
 } from "lnurl-pay/dist/types/types"
 import { getDestination } from "../parsing"
 import bolt11 from "bolt11"
+import { Network, parseBolt11Network } from "../parsing-v2"
 
 type isLnurlPaymentSameNodeArgs = {
   lnUrlOrAddress: string
   ourNode: string
+  network: Network
 }
 
 export const fetchLnurlPaymentParams = async ({
@@ -40,11 +42,12 @@ export const fetchLnurlInvoice = async ({
 export const isLnurlPaymentSameNode = async ({
   lnUrlOrAddress,
   ourNode,
+  network,
 }: isLnurlPaymentSameNodeArgs): Promise<boolean> => {
   const { invoice } = await requestInvoice({
     lnUrlOrAddress,
     tokens: utils.toSats(1),
   })
-  const decoded = bolt11.decode(invoice)
+  const decoded = bolt11.decode(invoice, parseBolt11Network(network))
   return ourNode === getDestination(decoded)
 }
