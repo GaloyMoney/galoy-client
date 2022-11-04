@@ -26,7 +26,7 @@ export const parseBolt11Network = (network: string): bolt11.Network => {
     }
   } else if (network === "signet") {
     return {
-      bech32: "tb",
+      bech32: "tbs",
       pubKeyHash: 0x6f,
       scriptHash: 0xc4,
       validWitnessVersions: [0, 1],
