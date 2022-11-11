@@ -221,12 +221,18 @@ const getPaymentType = ({
   rawDestination: string
 }): PaymentType => {
   // As far as the client is concerned, lnurl is the same as lightning address
-  if (utils.parseLnUrl(rawDestination) || utils.parseLightningAddress(rawDestination)) {
+  if (
+    utils.parseLnUrl(
+      protocol === "lightning" ? destinationWithoutProtocol : rawDestination,
+    ) ||
+    utils.parseLightningAddress(
+      protocol === "lightning" ? destinationWithoutProtocol : rawDestination,
+    )
+  ) {
     return PaymentType.Lnurl
   }
 
   if (
-    protocol === "lightning" ||
     destinationWithoutProtocol.match(/^ln(bc|tb).{50,}/iu) ||
     (destinationWithoutProtocol && getLNParam(destinationWithoutProtocol) !== undefined)
   ) {
@@ -282,17 +288,17 @@ const getIntraLedgerPayResponse = ({
 
 const getLNURLPayResponse = ({
   lnAddressDomains,
-  rawDestination,
+  destination,
 }: {
   lnAddressDomains: string[]
-  rawDestination: string
+  destination: string
 }):
   | LnurlPaymentDestination
   | IntraledgerPaymentDestination
   | UnknownPaymentDestination => {
   // handle internal lightning addresses
 
-  const lnAddress = utils.parseLightningAddress(rawDestination)
+  const lnAddress = utils.parseLightningAddress(destination)
   if (lnAddress) {
     const { username, domain } = lnAddress
 
@@ -310,7 +316,7 @@ const getLNURLPayResponse = ({
     }
   }
 
-  const lnurl = utils.parseLnUrl(rawDestination)
+  const lnurl = utils.parseLnUrl(destination)
 
   if (lnurl) {
     return {
@@ -461,7 +467,7 @@ export const parsePaymentDestination = ({
     case PaymentType.Lnurl:
       return getLNURLPayResponse({
         lnAddressDomains,
-        rawDestination: destination,
+        destination: protocol === "lightning" ? destinationWithoutProtocol : destination,
       })
     case PaymentType.Lightning:
       return getLightningPayResponse({ destination, network, pubKey })
