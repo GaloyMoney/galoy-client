@@ -160,6 +160,22 @@ describe("parsePaymentDestination validations", () => {
       }),
     )
   })
+
+  it("validates a lightning address with protocol", () => {
+    const result = parsePaymentDestination({
+      destination: `lightning:${externalLnAddress}`,
+      network: "mainnet",
+      pubKey: "",
+      lnAddressDomains: ["pay.bbw.sv"],
+    })
+    expect(result).toEqual(
+      expect.objectContaining({
+        paymentType: PaymentType.Lnurl,
+        valid: true,
+        lnurl: externalLnAddress,
+      }),
+    )
+  })
 })
 
 describe("parsePaymentDestination OnChain", () => {
