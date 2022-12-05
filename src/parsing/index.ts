@@ -285,12 +285,8 @@ const getOnChainPayResponse = ({
       }
     }
 
-    const isTaprootAddress = path.toLowerCase().startsWith("bc1p")
-    // FIXME "toOutputScript" will throw if address is not valid, however bitcoinjs-lib does not currently support
-    // taproot addresses so we must bypass this check if the address uese taproot
-    if (!isTaprootAddress) {
-      address.toOutputScript(path, parseBitcoinJsNetwork(network))
-    }
+    address.toOutputScript(path, parseBitcoinJsNetwork(network))
+
     return {
       valid: true,
       paymentType: "onchain",
