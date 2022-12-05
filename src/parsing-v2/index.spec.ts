@@ -14,7 +14,7 @@ const p2pkh = "1KP2uzAZYoNF6U8BkMBRdivLNujwSjtAQV"
 const p2sh = "3J98t1WpEZ73CNmQviecrnyiWrnqRhWNLy"
 const bech32 = "bc1qdx09anw82zhujxzzsn56mruv8qvd33czzy9apt"
 const bech32Caps = "BC1QW508D6QEJXTDG4Y5R3ZARVARY0C5XW7KV8F3T4"
-const bech32m = "bc1pmzfrwwndsqmk5yh69yjr5lfgfg4ev8c0tsc06e"
+const p2tr = "bc1p7whyata0zqnq7zss8ystshjyneegevjcvd4vcrtgzpzcz5ldvemsnxlatd"
 const p2pkhPrefix = "bitcoin:1KP2uzAZYoNF6U8BkMBRdivLNujwSjtAQV"
 const p2shPrefix = "bitcoin:3J98t1WpEZ73CNmQviecrnyiWrnqRhWNLy"
 const bech32Prefix = "bitcoin:bc1qdx09anw82zhujxzzsn56mruv8qvd33czzy9apt"
@@ -190,7 +190,7 @@ describe("parsePaymentDestination OnChain", () => {
     checkOnChain(p2shPrefix, "mainnet")
     checkOnChain(bech32Prefix, "mainnet")
     checkOnChain(bech32CapsPrefix, "mainnet")
-    checkOnChain(bech32m, "mainnet")
+    checkOnChain(p2tr, "mainnet")
 
     checkOnChainFail(bech32Regtest, "mainnet")
     checkOnChainFail(bech32Signet, "mainnet")
