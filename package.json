@@ -33,7 +33,7 @@
     "@graphql-codegen/add": "^3.2.0",
     "@graphql-codegen/cli": "2.8.0",
     "@graphql-codegen/typescript": "2.7.1",
-    "@graphql-codegen/typescript-operations": "^2.5.1",
+    "@graphql-codegen/typescript-operations": "^2.5.10",
     "@types/jest": "^28.1.4",
     "@types/react": "^18.0.15",
     "@typescript-eslint/eslint-plugin": "^5.30.6",
