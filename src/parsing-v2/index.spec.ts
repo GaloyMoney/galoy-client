@@ -2,6 +2,7 @@
 import {
   InvalidLightningDestinationReason,
   Network,
+  OnchainPaymentDestination,
   parsePaymentDestination,
   PaymentType,
 } from "."
@@ -453,6 +454,24 @@ describe("parsePaymentDestination Lightning", () => {
         paymentRequest:
           "lnbc10u1p3pj257pp5yztkwjcz5ftl5laxkav23zmzekaw37zk6kmv80pk4xaev5qhtz7qdpdwd3xger9wd5kwm36yprx7u3qd36kucmgyp282etnv3shjcqzpgxqyz5vqsp5usyc4lk9chsfp53kvcnvq456ganh60d89reykdngsmtj6yw3nhvq9qyyssqjcewm5cjwz4a6rfjx77c490yced6pemk0upkxhy89cmm7sct66k8gneanwykzgdrwrfje69h9u5u0w57rrcsysas7gadwmzxc8c6t0spjazup6",
         paymentType: PaymentType.Lightning,
+      }),
+    )
+  })
+
+  it("fallbacks to on chain address if the lightning param has expired", () => {
+    const address = `bitcoin:${bech32}?amount=0.00001&label=sbddesign%3A%20For%20lunch%20Tuesday&message=For%20lunch%20Tuesday&lightning=${expiredLNInvoice}`
+    const paymentDestination = parsePaymentDestination({
+      destination: address,
+      network: "mainnet",
+      pubKey: "",
+      lnAddressDomains: [],
+    })
+
+    expect(paymentDestination).toEqual<OnchainPaymentDestination>(
+      expect.objectContaining<OnchainPaymentDestination>({
+        valid: true,
+        paymentType: PaymentType.Onchain,
+        address: bech32,
       }),
     )
   })
