@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import bolt11 from "bolt11"
 import url from "url"
 import { networks, address } from "bitcoinjs-lib"
@@ -75,6 +76,7 @@ export enum PaymentType {
   Intraledger = "intraledger",
   Onchain = "onchain",
   Lnurl = "lnurl",
+  Unified = "unified",
   Unknown = "unknown",
 }
 
@@ -232,11 +234,12 @@ const getPaymentType = ({
     return PaymentType.Lnurl
   }
 
-  if (
-    destinationWithoutProtocol.match(/^ln(bc|tb).{50,}/iu) ||
-    (destinationWithoutProtocol && getLNParam(destinationWithoutProtocol) !== undefined)
-  ) {
+  if (destinationWithoutProtocol.match(/^ln(bc|tb).{50,}/iu)) {
     return PaymentType.Lightning
+  }
+
+  if (destinationWithoutProtocol && getLNParam(destinationWithoutProtocol)) {
+    return PaymentType.Unified
   }
 
   if (
@@ -449,6 +452,30 @@ const getOnChainPayResponse = ({
   }
 }
 
+const getUnifiedPayResponse = ({
+  destination,
+  destinationWithoutProtocol,
+  network,
+  pubKey,
+}: {
+  destination: string
+  destinationWithoutProtocol: string
+  network: Network
+  pubKey: string
+}): OnchainPaymentDestination | LightningPaymentDestination => {
+  const lightningPaymentResponse = getLightningPayResponse({
+    destination,
+    network,
+    pubKey,
+  })
+
+  if (lightningPaymentResponse.valid) {
+    return lightningPaymentResponse
+  }
+
+  return getOnChainPayResponse({ destinationWithoutProtocol, network })
+}
+
 export const parsePaymentDestination = ({
   destination,
   network,
@@ -479,6 +506,13 @@ export const parsePaymentDestination = ({
       return getOnChainPayResponse({ destinationWithoutProtocol, network })
     case PaymentType.Intraledger:
       return getIntraLedgerPayResponse({ protocol, destinationWithoutProtocol })
+    case PaymentType.Unified:
+      return getUnifiedPayResponse({
+        destination,
+        destinationWithoutProtocol,
+        network,
+        pubKey,
+      })
     case PaymentType.Unknown:
       return { paymentType: PaymentType.Unknown }
   }
