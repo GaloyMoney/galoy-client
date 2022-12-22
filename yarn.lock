@@ -4275,10 +4275,10 @@ listr2@^4.0.5:
     through "^2.3.8"
     wrap-ansi "^7.0.0"
 
-lnurl-pay@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/lnurl-pay/-/lnurl-pay-2.0.1.tgz#29ddf6be0ed33e4f6a175351dad0037f9dd967ab"
-  integrity sha512-DE5xQx2oWFo3gGbrykSSsWJPCFv6d/r82FGvlNNQo9Fpzgqvz+ouaFCsahHGTeW0+a4D7HnuTaI+A7V7pzFzLQ==
+lnurl-pay@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/lnurl-pay/-/lnurl-pay-2.0.2.tgz#b32a23a74458ce38afa52f4b7285cd9d6fa43782"
+  integrity sha512-EzSiOvD35qSZqhdT+aP7o/sfHNQ238vsN6Sn29e7SyQk597MZ0A/y3NdgfcZgb7UCCHWz+YWTVxcJLyUD+ZgKw==
   dependencies:
     "@aws-crypto/sha256-js" "^2.0.2"
     aes-js "^3.1.2"
