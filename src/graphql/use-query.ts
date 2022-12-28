@@ -38,7 +38,7 @@ export const QUERIES = {
   transactionListForDefaultAccount,
   userDefaultWalletId,
   usernameAvailable,
-  currencyList
+  currencyList,
 }
 
 type QueryHelpers = {
