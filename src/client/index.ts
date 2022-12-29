@@ -3,6 +3,7 @@ import "cross-fetch/polyfill" // The Apollo client depends on fetch
 import {
   ApolloClient,
   InMemoryCache,
+  ApolloLink,
   from,
   HttpLink,
   split,
@@ -98,9 +99,19 @@ export type CreateGaloyClientFunction = (argW: {
 
 export const createGaloyClient: CreateGaloyClientFunction =
   ({ config, initData }) =>
-  ({ onError: onErrorCallback } = {}) => {
+  ({ authToken, onError: onErrorCallback } = {}) => {
     const cache = initData ? new InMemoryCache().restore(initData) : new InMemoryCache()
     const errorLink = onError(onErrorCallback ?? defaultErrorCallback)
+
+    const authLink = new ApolloLink((operation, forward) => {
+      operation.setContext(({ headers }: { headers: Record<string, string> }) => ({
+        headers: {
+          authorization: authToken ? `Bearer ${authToken}` : "",
+          ...headers,
+        },
+      }))
+      return forward(operation)
+    })
 
     const httpLink = new HttpLink({ uri: config.graphqlUrl, credentials: "include" })
 
@@ -113,6 +124,7 @@ export const createGaloyClient: CreateGaloyClientFunction =
         connectionParams: async () => {
           return {
             credentials: "include",
+            authorization: authToken ? `Bearer ${authToken}` : "",
           }
         },
       },
@@ -127,7 +139,7 @@ export const createGaloyClient: CreateGaloyClientFunction =
         )
       },
       wsLink,
-      from([errorLink, httpLink]),
+      from([errorLink, authLink, httpLink]),
     )
 
     return new ApolloClient({
