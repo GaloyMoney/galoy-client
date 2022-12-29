@@ -15,7 +15,7 @@ export namespace GaloyGQL {
     Boolean: boolean
     Int: number
     Float: number
-    /** An JWT-formatted authentication token */
+    /** An Opaque Bearer token */
     AuthToken: string
     /** (Positive) Cent amount (1/100 of a dollar) */
     CentAmount: number
@@ -42,6 +42,8 @@ export namespace GaloyGQL {
     SafeInt: number
     /** (Positive) Satoshi amount */
     SatAmount: number
+    /** (Positive) amount of seconds */
+    Seconds: number
     /** An amount (of a currency) that can be negative (e.g. in a transaction) */
     SignedAmount: number
     /** (Positive) Number of blocks in which the transaction is expected to be confirmed */
@@ -58,6 +60,7 @@ export namespace GaloyGQL {
     readonly csvTransactions: Scalars["String"]
     readonly defaultWalletId: Scalars["WalletId"]
     readonly id: Scalars["ID"]
+    readonly limits: AccountLimits
     readonly transactions?: Maybe<TransactionConnection>
     readonly wallets: ReadonlyArray<Wallet>
   }
@@ -72,6 +75,25 @@ export namespace GaloyGQL {
     first?: InputMaybe<Scalars["Int"]>
     last?: InputMaybe<Scalars["Int"]>
     walletIds?: InputMaybe<ReadonlyArray<InputMaybe<Scalars["WalletId"]>>>
+  }
+
+  export type AccountLimit = {
+    /** The rolling time interval in seconds that the limits would apply for. */
+    readonly interval?: Maybe<Scalars["Seconds"]>
+    /** The amount of cents remaining below the limit for the current 24 hour period. */
+    readonly remainingLimit?: Maybe<Scalars["CentAmount"]>
+    /** The current maximum limit for a given 24 hour period. */
+    readonly totalLimit: Scalars["CentAmount"]
+  }
+
+  export type AccountLimits = {
+    readonly __typename?: "AccountLimits"
+    /** Limits for converting between currencies among a account's own wallets. */
+    readonly convert: ReadonlyArray<AccountLimit>
+    /** Limits for sending to other internal accounts. */
+    readonly internalSend: ReadonlyArray<AccountLimit>
+    /** Limits for withdrawing to external onchain or lightning destinations. */
+    readonly withdrawal: ReadonlyArray<AccountLimit>
   }
 
   export type AccountUpdateDefaultWalletIdInput = {
@@ -145,6 +167,7 @@ export namespace GaloyGQL {
 
   export type CaptchaRequestAuthCodeInput = {
     readonly challengeCode: Scalars["String"]
+    readonly channel?: InputMaybe<PhoneCodeChannelType>
     readonly phone: Scalars["Phone"]
     readonly secCode: Scalars["String"]
     readonly validationCode: Scalars["String"]
@@ -162,6 +185,7 @@ export namespace GaloyGQL {
     readonly csvTransactions: Scalars["String"]
     readonly defaultWalletId: Scalars["WalletId"]
     readonly id: Scalars["ID"]
+    readonly limits: AccountLimits
     /** A list of all transactions associated with walletIds optionally passed. */
     readonly transactions?: Maybe<TransactionConnection>
     readonly wallets: ReadonlyArray<Wallet>
@@ -185,11 +209,20 @@ export namespace GaloyGQL {
     readonly longitude: Scalars["Float"]
   }
 
+  export type Currency = {
+    readonly __typename?: "Currency"
+    readonly code: Scalars["String"]
+    readonly flag: Scalars["String"]
+    readonly name: Scalars["String"]
+    readonly symbol: Scalars["String"]
+  }
+
   export type DeviceNotificationTokenCreateInput = {
     readonly deviceToken: Scalars["String"]
   }
 
   export type Error = {
+    readonly code?: Maybe<Scalars["String"]>
     readonly message: Scalars["String"]
     readonly path?: Maybe<ReadonlyArray<Maybe<Scalars["String"]>>>
   }
@@ -203,11 +236,20 @@ export namespace GaloyGQL {
     /** The domain name for lightning addresses accepted by this Galoy instance */
     readonly lightningAddressDomain: Scalars["String"]
     readonly lightningAddressDomainAliases: ReadonlyArray<Scalars["String"]>
+    /** Which network (mainnet, testnet, regtest, signet) this instance is running on. */
+    readonly network: Network
     /**
      * A list of public keys for the running lightning nodes.
      * This can be used to know if an invoice belongs to one of our nodes.
      */
     readonly nodesIds: ReadonlyArray<Scalars["String"]>
+  }
+
+  export type GraphQlApplicationError = Error & {
+    readonly __typename?: "GraphQLApplicationError"
+    readonly code?: Maybe<Scalars["String"]>
+    readonly message: Scalars["String"]
+    readonly path?: Maybe<ReadonlyArray<Maybe<Scalars["String"]>>>
   }
 
   export type InitiationVia =
@@ -230,19 +272,6 @@ export namespace GaloyGQL {
     readonly __typename?: "InitiationViaOnChain"
     readonly address: Scalars["OnChainAddress"]
   }
-
-  export type InputError = Error & {
-    readonly __typename?: "InputError"
-    readonly code: InputErrorCode
-    readonly message: Scalars["String"]
-    readonly path?: Maybe<ReadonlyArray<Maybe<Scalars["String"]>>>
-  }
-
-  export type InputErrorCode =
-    | "INVALID_INPUT"
-    | "VALUE_NOT_ALLOWED"
-    | "VALUE_TOO_LONG"
-    | "VALUE_TOO_SHORT"
 
   export type IntraLedgerPaymentSendInput = {
     /** Amount in satoshis. */
@@ -526,16 +555,13 @@ export namespace GaloyGQL {
     readonly onChainAddressCurrent: OnChainAddressPayload
     readonly onChainPaymentSend: PaymentSendPayload
     readonly onChainPaymentSendAll: PaymentSendPayload
-    readonly twoFADelete: SuccessPayload
-    readonly twoFAGenerate: TwoFaGeneratePayload
-    readonly twoFASave: SuccessPayload
     /** @deprecated will be moved to AccountContact */
     readonly userContactUpdateAlias: UserContactUpdateAliasPayload
     readonly userLogin: AuthTokenPayload
     readonly userQuizQuestionUpdateCompleted: UserQuizQuestionUpdateCompletedPayload
     readonly userRequestAuthCode: SuccessPayload
     readonly userUpdateLanguage: UserUpdateLanguagePayload
-    /** @deprecated Username will be moved to @Handle in Accounts. Also SetUsername should be used instead of UpdateUsername to reflect the idempotency of Handles */
+    /** @deprecated Username will be moved to @Handle in Accounts. Also SetUsername naming should be used instead of UpdateUsername to reflect the idempotency of Handles */
     readonly userUpdateUsername: UserUpdateUsernamePayload
   }
 
@@ -627,14 +653,6 @@ export namespace GaloyGQL {
     input: OnChainPaymentSendAllInput
   }
 
-  export type MutationTwoFaDeleteArgs = {
-    input: TwoFaDeleteInput
-  }
-
-  export type MutationTwoFaSaveArgs = {
-    input: TwoFaSaveInput
-  }
-
   export type MutationUserContactUpdateAliasArgs = {
     input: UserContactUpdateAliasInput
   }
@@ -665,6 +683,8 @@ export namespace GaloyGQL {
     readonly me?: Maybe<User>
     readonly update?: Maybe<UserUpdate>
   }
+
+  export type Network = "mainnet" | "regtest" | "signet" | "testnet"
 
   export type OnChainAddressCreateInput = {
     readonly walletId: Scalars["WalletId"]
@@ -712,6 +732,16 @@ export namespace GaloyGQL {
     readonly walletId: Scalars["WalletId"]
   }
 
+  export type OneDayAccountLimit = AccountLimit & {
+    readonly __typename?: "OneDayAccountLimit"
+    /** The rolling time interval value in seconds for the current 24 hour period. */
+    readonly interval?: Maybe<Scalars["Seconds"]>
+    /** The amount of cents remaining below the limit for the current 24 hour period. */
+    readonly remainingLimit?: Maybe<Scalars["CentAmount"]>
+    /** The current maximum limit for a given 24 hour period. */
+    readonly totalLimit: Scalars["CentAmount"]
+  }
+
   /** Information about pagination in a connection. */
   export type PageInfo = {
     readonly __typename?: "PageInfo"
@@ -725,21 +755,6 @@ export namespace GaloyGQL {
     readonly startCursor?: Maybe<Scalars["String"]>
   }
 
-  export type PaymentError = Error & {
-    readonly __typename?: "PaymentError"
-    readonly code: PaymentErrorCode
-    readonly message: Scalars["String"]
-    readonly path?: Maybe<ReadonlyArray<Maybe<Scalars["String"]>>>
-  }
-
-  export type PaymentErrorCode =
-    | "ACCOUNT_LOCKED"
-    | "INSUFFICIENT_BALANCE"
-    | "INVOICE_PAID"
-    | "LIMIT_EXCEEDED"
-    | "NO_LIQUIDITY"
-    | "NO_ROUTE"
-
   export type PaymentSendPayload = {
     readonly __typename?: "PaymentSendPayload"
     readonly errors: ReadonlyArray<Error>
@@ -747,6 +762,8 @@ export namespace GaloyGQL {
   }
 
   export type PaymentSendResult = "ALREADY_PAID" | "FAILURE" | "PENDING" | "SUCCESS"
+
+  export type PhoneCodeChannelType = "SMS" | "WHATSAPP"
 
   /** Price amount expressed in base/offset. To calculate, use: `base / 10^offset` */
   export type Price = {
@@ -797,6 +814,7 @@ export namespace GaloyGQL {
     readonly btcPrice?: Maybe<Price>
     readonly btcPriceList?: Maybe<ReadonlyArray<Maybe<PricePoint>>>
     readonly businessMapMarkers?: Maybe<ReadonlyArray<Maybe<MapMarker>>>
+    readonly currencyList?: Maybe<ReadonlyArray<Maybe<Currency>>>
     readonly globals?: Maybe<Globals>
     readonly lnInvoicePaymentStatus: LnInvoicePaymentStatusPayload
     readonly me?: Maybe<User>
@@ -939,27 +957,6 @@ export namespace GaloyGQL {
     readonly node: Transaction
   }
 
-  export type TwoFaDeleteInput = {
-    readonly token: Scalars["String"]
-  }
-
-  export type TwoFaGeneratePayload = {
-    readonly __typename?: "TwoFAGeneratePayload"
-    readonly errors: ReadonlyArray<Error>
-    readonly twoFASecret?: Maybe<TwoFaSecret>
-  }
-
-  export type TwoFaSaveInput = {
-    readonly secret: Scalars["String"]
-    readonly token: Scalars["String"]
-  }
-
-  export type TwoFaSecret = {
-    readonly __typename?: "TwoFASecret"
-    readonly secret: Scalars["String"]
-    readonly uri: Scalars["String"]
-  }
-
   export type TxDirection = "RECEIVE" | "SEND"
 
   export type TxNotificationType =
@@ -1031,7 +1028,6 @@ export namespace GaloyGQL {
      * @deprecated will be moved to Accounts
      */
     readonly quizQuestions: ReadonlyArray<UserQuizQuestion>
-    readonly twoFAEnabled?: Maybe<Scalars["Boolean"]>
     /**
      * Optional immutable user friendly identifier.
      * @deprecated will be moved to @Handle in Account and Wallet
@@ -1098,6 +1094,7 @@ export namespace GaloyGQL {
   }
 
   export type UserRequestAuthCodeInput = {
+    readonly channel?: InputMaybe<PhoneCodeChannelType>
     readonly phone: Scalars["Phone"]
   }
 
@@ -1305,10 +1302,10 @@ export namespace GaloyGQL {
     readonly __typename?: "Mutation"
     readonly accountUpdateDefaultWalletId: {
       readonly __typename?: "AccountUpdateDefaultWalletIdPayload"
-      readonly errors: ReadonlyArray<
-        | { readonly __typename: "InputError"; readonly message: string }
-        | { readonly __typename: "PaymentError"; readonly message: string }
-      >
+      readonly errors: ReadonlyArray<{
+        readonly __typename: "GraphQLApplicationError"
+        readonly message: string
+      }>
       readonly account?: {
         readonly __typename: "ConsumerAccount"
         readonly id: string
@@ -1323,10 +1320,10 @@ export namespace GaloyGQL {
     readonly __typename?: "Mutation"
     readonly captchaCreateChallenge: {
       readonly __typename?: "CaptchaCreateChallengePayload"
-      readonly errors: ReadonlyArray<
-        | { readonly __typename: "InputError"; readonly message: string }
-        | { readonly __typename: "PaymentError"; readonly message: string }
-      >
+      readonly errors: ReadonlyArray<{
+        readonly __typename: "GraphQLApplicationError"
+        readonly message: string
+      }>
       readonly result?: {
         readonly __typename: "CaptchaCreateChallengeResult"
         readonly id: string
@@ -1346,10 +1343,10 @@ export namespace GaloyGQL {
     readonly captchaRequestAuthCode: {
       readonly __typename?: "SuccessPayload"
       readonly success?: boolean | null
-      readonly errors: ReadonlyArray<
-        | { readonly __typename: "InputError"; readonly message: string }
-        | { readonly __typename: "PaymentError"; readonly message: string }
-      >
+      readonly errors: ReadonlyArray<{
+        readonly __typename: "GraphQLApplicationError"
+        readonly message: string
+      }>
     }
   }
 
@@ -1362,10 +1359,10 @@ export namespace GaloyGQL {
     readonly deviceNotificationTokenCreate: {
       readonly __typename?: "SuccessPayload"
       readonly success?: boolean | null
-      readonly errors: ReadonlyArray<
-        | { readonly __typename: "InputError"; readonly message: string }
-        | { readonly __typename: "PaymentError"; readonly message: string }
-      >
+      readonly errors: ReadonlyArray<{
+        readonly __typename: "GraphQLApplicationError"
+        readonly message: string
+      }>
     }
   }
 
@@ -1378,10 +1375,10 @@ export namespace GaloyGQL {
     readonly intraLedgerPaymentSend: {
       readonly __typename?: "PaymentSendPayload"
       readonly status?: PaymentSendResult | null
-      readonly errors: ReadonlyArray<
-        | { readonly __typename: "InputError"; readonly message: string }
-        | { readonly __typename: "PaymentError"; readonly message: string }
-      >
+      readonly errors: ReadonlyArray<{
+        readonly __typename: "GraphQLApplicationError"
+        readonly message: string
+      }>
     }
   }
 
@@ -1394,10 +1391,10 @@ export namespace GaloyGQL {
     readonly intraLedgerUsdPaymentSend: {
       readonly __typename?: "PaymentSendPayload"
       readonly status?: PaymentSendResult | null
-      readonly errors: ReadonlyArray<
-        | { readonly __typename: "InputError"; readonly message: string }
-        | { readonly __typename: "PaymentError"; readonly message: string }
-      >
+      readonly errors: ReadonlyArray<{
+        readonly __typename: "GraphQLApplicationError"
+        readonly message: string
+      }>
     }
   }
 
@@ -1409,10 +1406,10 @@ export namespace GaloyGQL {
     readonly __typename?: "Mutation"
     readonly lnInvoiceCreateOnBehalfOfRecipient: {
       readonly __typename?: "LnInvoicePayload"
-      readonly errors: ReadonlyArray<
-        | { readonly __typename: "InputError"; readonly message: string }
-        | { readonly __typename: "PaymentError"; readonly message: string }
-      >
+      readonly errors: ReadonlyArray<{
+        readonly __typename: "GraphQLApplicationError"
+        readonly message: string
+      }>
       readonly invoice?: {
         readonly __typename: "LnInvoice"
         readonly paymentHash: string
@@ -1431,10 +1428,10 @@ export namespace GaloyGQL {
     readonly __typename?: "Mutation"
     readonly lnInvoiceCreate: {
       readonly __typename?: "LnInvoicePayload"
-      readonly errors: ReadonlyArray<
-        | { readonly __typename: "InputError"; readonly message: string }
-        | { readonly __typename: "PaymentError"; readonly message: string }
-      >
+      readonly errors: ReadonlyArray<{
+        readonly __typename: "GraphQLApplicationError"
+        readonly message: string
+      }>
       readonly invoice?: {
         readonly __typename: "LnInvoice"
         readonly paymentHash: string
@@ -1454,10 +1451,10 @@ export namespace GaloyGQL {
     readonly lnInvoiceFeeProbe: {
       readonly __typename?: "SatAmountPayload"
       readonly amount?: number | null
-      readonly errors: ReadonlyArray<
-        | { readonly __typename: "InputError"; readonly message: string }
-        | { readonly __typename: "PaymentError"; readonly message: string }
-      >
+      readonly errors: ReadonlyArray<{
+        readonly __typename: "GraphQLApplicationError"
+        readonly message: string
+      }>
     }
   }
 
@@ -1470,10 +1467,10 @@ export namespace GaloyGQL {
     readonly lnInvoicePaymentSend: {
       readonly __typename?: "PaymentSendPayload"
       readonly status?: PaymentSendResult | null
-      readonly errors: ReadonlyArray<
-        | { readonly __typename: "InputError"; readonly message: string }
-        | { readonly __typename: "PaymentError"; readonly message: string }
-      >
+      readonly errors: ReadonlyArray<{
+        readonly __typename: "GraphQLApplicationError"
+        readonly message: string
+      }>
     }
   }
 
@@ -1485,10 +1482,10 @@ export namespace GaloyGQL {
     readonly __typename?: "Mutation"
     readonly lnNoAmountInvoiceCreate: {
       readonly __typename?: "LnNoAmountInvoicePayload"
-      readonly errors: ReadonlyArray<
-        | { readonly __typename: "InputError"; readonly message: string }
-        | { readonly __typename: "PaymentError"; readonly message: string }
-      >
+      readonly errors: ReadonlyArray<{
+        readonly __typename: "GraphQLApplicationError"
+        readonly message: string
+      }>
       readonly invoice?: {
         readonly __typename: "LnNoAmountInvoice"
         readonly paymentHash: string
@@ -1507,10 +1504,10 @@ export namespace GaloyGQL {
     readonly lnNoAmountInvoiceFeeProbe: {
       readonly __typename?: "SatAmountPayload"
       readonly amount?: number | null
-      readonly errors: ReadonlyArray<
-        | { readonly __typename: "InputError"; readonly message: string }
-        | { readonly __typename: "PaymentError"; readonly message: string }
-      >
+      readonly errors: ReadonlyArray<{
+        readonly __typename: "GraphQLApplicationError"
+        readonly message: string
+      }>
     }
   }
 
@@ -1523,10 +1520,10 @@ export namespace GaloyGQL {
     readonly lnNoAmountInvoicePaymentSend: {
       readonly __typename?: "PaymentSendPayload"
       readonly status?: PaymentSendResult | null
-      readonly errors: ReadonlyArray<
-        | { readonly __typename: "InputError"; readonly message: string }
-        | { readonly __typename: "PaymentError"; readonly message: string }
-      >
+      readonly errors: ReadonlyArray<{
+        readonly __typename: "GraphQLApplicationError"
+        readonly message: string
+      }>
     }
   }
 
@@ -1539,10 +1536,10 @@ export namespace GaloyGQL {
     readonly lnNoAmountUsdInvoiceFeeProbe: {
       readonly __typename?: "CentAmountPayload"
       readonly amount?: number | null
-      readonly errors: ReadonlyArray<
-        | { readonly __typename: "InputError"; readonly message: string }
-        | { readonly __typename: "PaymentError"; readonly message: string }
-      >
+      readonly errors: ReadonlyArray<{
+        readonly __typename: "GraphQLApplicationError"
+        readonly message: string
+      }>
     }
   }
 
@@ -1555,10 +1552,10 @@ export namespace GaloyGQL {
     readonly lnNoAmountUsdInvoicePaymentSend: {
       readonly __typename?: "PaymentSendPayload"
       readonly status?: PaymentSendResult | null
-      readonly errors: ReadonlyArray<
-        | { readonly __typename: "InputError"; readonly message: string }
-        | { readonly __typename: "PaymentError"; readonly message: string }
-      >
+      readonly errors: ReadonlyArray<{
+        readonly __typename: "GraphQLApplicationError"
+        readonly message: string
+      }>
     }
   }
 
@@ -1570,10 +1567,10 @@ export namespace GaloyGQL {
     readonly __typename?: "Mutation"
     readonly lnUsdInvoiceCreateOnBehalfOfRecipient: {
       readonly __typename?: "LnInvoicePayload"
-      readonly errors: ReadonlyArray<
-        | { readonly __typename: "InputError"; readonly message: string }
-        | { readonly __typename: "PaymentError"; readonly message: string }
-      >
+      readonly errors: ReadonlyArray<{
+        readonly __typename: "GraphQLApplicationError"
+        readonly message: string
+      }>
       readonly invoice?: {
         readonly __typename: "LnInvoice"
         readonly paymentHash: string
@@ -1592,10 +1589,10 @@ export namespace GaloyGQL {
     readonly __typename?: "Mutation"
     readonly lnUsdInvoiceCreate: {
       readonly __typename?: "LnInvoicePayload"
-      readonly errors: ReadonlyArray<
-        | { readonly __typename: "InputError"; readonly message: string }
-        | { readonly __typename: "PaymentError"; readonly message: string }
-      >
+      readonly errors: ReadonlyArray<{
+        readonly __typename: "GraphQLApplicationError"
+        readonly message: string
+      }>
       readonly invoice?: {
         readonly __typename: "LnInvoice"
         readonly paymentHash: string
@@ -1615,10 +1612,10 @@ export namespace GaloyGQL {
     readonly lnUsdInvoiceFeeProbe: {
       readonly __typename?: "SatAmountPayload"
       readonly amount?: number | null
-      readonly errors: ReadonlyArray<
-        | { readonly __typename: "InputError"; readonly message: string }
-        | { readonly __typename: "PaymentError"; readonly message: string }
-      >
+      readonly errors: ReadonlyArray<{
+        readonly __typename: "GraphQLApplicationError"
+        readonly message: string
+      }>
     }
   }
 
@@ -1631,10 +1628,10 @@ export namespace GaloyGQL {
     readonly onChainAddressCurrent: {
       readonly __typename?: "OnChainAddressPayload"
       readonly address?: string | null
-      readonly errors: ReadonlyArray<
-        | { readonly __typename: "InputError"; readonly message: string }
-        | { readonly __typename: "PaymentError"; readonly message: string }
-      >
+      readonly errors: ReadonlyArray<{
+        readonly __typename: "GraphQLApplicationError"
+        readonly message: string
+      }>
     }
   }
 
@@ -1647,10 +1644,10 @@ export namespace GaloyGQL {
     readonly onChainPaymentSend: {
       readonly __typename?: "PaymentSendPayload"
       readonly status?: PaymentSendResult | null
-      readonly errors: ReadonlyArray<
-        | { readonly __typename: "InputError"; readonly message: string }
-        | { readonly __typename: "PaymentError"; readonly message: string }
-      >
+      readonly errors: ReadonlyArray<{
+        readonly __typename: "GraphQLApplicationError"
+        readonly message: string
+      }>
     }
   }
 
@@ -1662,10 +1659,10 @@ export namespace GaloyGQL {
     readonly __typename?: "Mutation"
     readonly userContactUpdateAlias: {
       readonly __typename?: "UserContactUpdateAliasPayload"
-      readonly errors: ReadonlyArray<
-        | { readonly __typename: "InputError"; readonly message: string }
-        | { readonly __typename: "PaymentError"; readonly message: string }
-      >
+      readonly errors: ReadonlyArray<{
+        readonly __typename: "GraphQLApplicationError"
+        readonly message: string
+      }>
     }
   }
 
@@ -1678,10 +1675,10 @@ export namespace GaloyGQL {
     readonly userLogin: {
       readonly __typename?: "AuthTokenPayload"
       readonly authToken?: string | null
-      readonly errors: ReadonlyArray<
-        | { readonly __typename: "InputError"; readonly message: string }
-        | { readonly __typename: "PaymentError"; readonly message: string }
-      >
+      readonly errors: ReadonlyArray<{
+        readonly __typename: "GraphQLApplicationError"
+        readonly message: string
+      }>
     }
   }
 
@@ -1693,10 +1690,10 @@ export namespace GaloyGQL {
     readonly __typename?: "Mutation"
     readonly userQuizQuestionUpdateCompleted: {
       readonly __typename?: "UserQuizQuestionUpdateCompletedPayload"
-      readonly errors: ReadonlyArray<
-        | { readonly __typename: "InputError"; readonly message: string }
-        | { readonly __typename: "PaymentError"; readonly message: string }
-      >
+      readonly errors: ReadonlyArray<{
+        readonly __typename: "GraphQLApplicationError"
+        readonly message: string
+      }>
       readonly userQuizQuestion?: {
         readonly __typename?: "UserQuizQuestion"
         readonly completed: boolean
@@ -1717,10 +1714,10 @@ export namespace GaloyGQL {
     readonly __typename?: "Mutation"
     readonly userUpdateLanguage: {
       readonly __typename?: "UserUpdateLanguagePayload"
-      readonly errors: ReadonlyArray<
-        | { readonly __typename: "InputError"; readonly message: string }
-        | { readonly __typename: "PaymentError"; readonly message: string }
-      >
+      readonly errors: ReadonlyArray<{
+        readonly __typename: "GraphQLApplicationError"
+        readonly message: string
+      }>
       readonly user?: {
         readonly __typename: "User"
         readonly id: string
@@ -1737,10 +1734,10 @@ export namespace GaloyGQL {
     readonly __typename?: "Mutation"
     readonly userUpdateUsername: {
       readonly __typename?: "UserUpdateUsernamePayload"
-      readonly errors: ReadonlyArray<
-        | { readonly __typename: "InputError"; readonly message: string }
-        | { readonly __typename: "PaymentError"; readonly message: string }
-      >
+      readonly errors: ReadonlyArray<{
+        readonly __typename: "GraphQLApplicationError"
+        readonly message: string
+      }>
       readonly user?: {
         readonly __typename: "User"
         readonly id: string
@@ -2292,10 +2289,10 @@ export namespace GaloyGQL {
     readonly lnInvoicePaymentStatus: {
       readonly __typename: "LnInvoicePaymentStatusPayload"
       readonly status?: InvoicePaymentStatus | null
-      readonly errors: ReadonlyArray<
-        | { readonly __typename?: "InputError"; readonly message: string }
-        | { readonly __typename?: "PaymentError"; readonly message: string }
-      >
+      readonly errors: ReadonlyArray<{
+        readonly __typename?: "GraphQLApplicationError"
+        readonly message: string
+      }>
     }
   }
 
@@ -2307,10 +2304,10 @@ export namespace GaloyGQL {
     readonly __typename?: "Subscription"
     readonly myUpdates: {
       readonly __typename?: "MyUpdatesPayload"
-      readonly errors: ReadonlyArray<
-        | { readonly __typename?: "InputError"; readonly message: string }
-        | { readonly __typename?: "PaymentError"; readonly message: string }
-      >
+      readonly errors: ReadonlyArray<{
+        readonly __typename?: "GraphQLApplicationError"
+        readonly message: string
+      }>
       readonly me?: {
         readonly __typename?: "User"
         readonly id: string

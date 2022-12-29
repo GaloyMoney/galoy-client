@@ -30,6 +30,7 @@ generates:
         Timestamp: "number"
         Username: "string"
         WalletId: "string"
+        Seconds: "number"
     plugins:
       - add:
           content: "export namespace GaloyGQL {"

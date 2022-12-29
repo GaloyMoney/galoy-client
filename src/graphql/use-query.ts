@@ -20,6 +20,7 @@ import transactionListForContact from "./queries/transaction-list-for-contact"
 import transactionListForDefaultAccount from "./queries/transaction-list-for-default-account"
 import userDefaultWalletId from "./queries/user-default-wallet-id"
 import usernameAvailable from "./queries/username-available"
+import currencyList from "./queries/currency-list"
 
 import { GaloyGQL, joinErrorsMessages } from "../index"
 
@@ -37,6 +38,7 @@ export const QUERIES = {
   transactionListForDefaultAccount,
   userDefaultWalletId,
   usernameAvailable,
+  currencyList,
 }
 
 type QueryHelpers = {
