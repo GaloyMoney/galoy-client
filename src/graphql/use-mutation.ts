@@ -8,7 +8,13 @@ import { useCallback } from "react"
 
 import { GaloyGQL, joinErrorsMessages } from "../index"
 
-import accountUpdateDefaultWalletId from "./mutations/account-update-default-wallet-id"
+import { loadFilesSync } from "@graphql-tools/load-files"
+
+import path from "path"
+
+const accountUpdateDefaultWalletId = loadFilesSync(
+  path.join(__dirname, "./mutations/account-update-default-wallet-id.gql"),
+)[0]
 import captchaCreateChallenge from "./mutations/captcha-create-challenge"
 import captchaRequestAuthCode from "./mutations/captcha-request-auth-code"
 import deviceNotificationTokenCreate from "./mutations/device-notification-token-create"
