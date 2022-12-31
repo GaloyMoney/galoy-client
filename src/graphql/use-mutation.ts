@@ -8,7 +8,16 @@ import { useCallback } from "react"
 
 import { GaloyGQL, joinErrorsMessages } from "../index"
 
-import accountUpdateDefaultWalletId from "./mutations/account-update-default-wallet-id"
+import { loadFilesSync } from "@graphql-tools/load-files"
+
+const accountUpdateDefaultWalletId = loadFilesSync(
+  "./mutations/account-update-default-wallet-id.gql",
+)[0]
+const userLoginUpgrade = loadFilesSync("./mutations/user-login-upgrade.gql")[0]
+const userDeviceAccountCreate = loadFilesSync(
+  "./mutations/user-device-account-create.gql",
+)[0]
+
 import captchaCreateChallenge from "./mutations/captcha-create-challenge"
 import captchaRequestAuthCode from "./mutations/captcha-request-auth-code"
 import deviceNotificationTokenCreate from "./mutations/device-notification-token-create"
@@ -36,6 +45,8 @@ import userUpdateUsername from "./mutations/user-update-username"
 
 export const MUTATIONS = {
   accountUpdateDefaultWalletId,
+  userLoginUpgrade,
+  userDeviceAccountCreate,
   captchaCreateChallenge,
   captchaRequestAuthCode,
   deviceNotificationTokenCreate,
@@ -108,6 +119,16 @@ const accountUpdateDefaultWalletIdMutation = defineMutation<
   GaloyGQL.AccountUpdateDefaultWalletIdMutation,
   GaloyGQL.AccountUpdateDefaultWalletIdMutationVariables
 >("accountUpdateDefaultWalletId")
+
+const userLoginUpgradeMutation = defineMutation<
+  GaloyGQL.UserLoginUpgradeMutation,
+  GaloyGQL.UserLoginUpgradeMutationVariables
+>("userLoginUpgrade")
+
+const userDeviceAccountCreateMutation = defineMutation<
+  GaloyGQL.UserDeviceAccountCreateMutation,
+  GaloyGQL.UserDeviceAccountCreateMutationVariables
+>("userDeviceAccountCreate")
 
 const captchaCreateChallengeMutation = defineMutation<
   GaloyGQL.CaptchaCreateChallengeMutation,
@@ -231,6 +252,8 @@ const userUpdateUsernameMutation = defineMutation<
 
 export const useMutation = {
   accountUpdateDefaultWalletId: accountUpdateDefaultWalletIdMutation,
+  userLoginUpgrade: userLoginUpgradeMutation,
+  userDeviceAccountCreate: userDeviceAccountCreateMutation,
   captchaCreateChallenge: captchaCreateChallengeMutation,
   captchaRequestAuthCode: captchaRequestAuthCodeMutation,
   deviceNotificationTokenCreate: deviceNotificationTokenCreateMutation,

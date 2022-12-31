@@ -1,6 +1,9 @@
 overwrite: true
-schema: "https://raw.githubusercontent.com/GaloyMoney/galoy/main/src/graphql/main/schema.graphql"
-documents: "src/graphql/*/*.ts"
+# schema: "https://raw.githubusercontent.com/GaloyMoney/galoy/main/src/graphql/main/schema.graphql"
+schema: "https://raw.githubusercontent.com/GaloyMoney/galoy/feb351eb62943bef80f8694868a0bf27596b4951/src/graphql/main/schema.graphql"
+documents: 
+  - "src/graphql/*/*.ts"
+  - "src/graphql/*/*.gql"
 generates:
   src/graphql/types.ts:
     config:

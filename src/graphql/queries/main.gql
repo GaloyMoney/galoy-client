@@ -1,0 +1,15 @@
+query main($isAuthenticated: Boolean!, $recentTransactions: Int) {
+  globals {
+    nodesIds
+    lightningAddressDomain
+  }
+  btcPrice {
+    base
+    offset
+    currencyUnit
+    formattedAmount
+  }
+  me @include(if: $isAuthenticated) {
+    ...Me
+  }
+}
