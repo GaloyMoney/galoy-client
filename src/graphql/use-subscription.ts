@@ -5,9 +5,10 @@ import {
 } from "@apollo/client"
 
 import { GaloyGQL, joinErrorsMessages } from "../index"
+import { loadFilesSync } from "@graphql-tools/load-files"
 
-import myUpdates from "./subscriptions/my-updates"
-import lnInvoicePaymentStatus from "./subscriptions/ln-invoice-payment-status"
+const myUpdates = loadFilesSync("./subscriptions/my-updates.gql")[0]
+const lnInvoicePaymentStatus = loadFilesSync("./subscriptions/my-updates.gql")[0]
 
 export const SUBSCRIPTIONS = {
   myUpdates,

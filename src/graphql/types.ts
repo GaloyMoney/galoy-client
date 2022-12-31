@@ -573,7 +573,9 @@ export namespace GaloyGQL {
     readonly onChainUsdPaymentSend: PaymentSendPayload
     /** @deprecated will be moved to AccountContact */
     readonly userContactUpdateAlias: UserContactUpdateAliasPayload
+    readonly userDeviceAccountCreate: AuthTokenPayload
     readonly userLogin: AuthTokenPayload
+    readonly userLoginUpgrade: AuthTokenPayload
     readonly userLogout: AuthTokenPayload
     readonly userQuizQuestionUpdateCompleted: UserQuizQuestionUpdateCompletedPayload
     readonly userRequestAuthCode: SuccessPayload
@@ -682,8 +684,16 @@ export namespace GaloyGQL {
     input: UserContactUpdateAliasInput
   }
 
+  export type MutationUserDeviceAccountCreateArgs = {
+    input: UserDeviceAccountCreateInput
+  }
+
   export type MutationUserLoginArgs = {
     input: UserLoginInput
+  }
+
+  export type MutationUserLoginUpgradeArgs = {
+    input: UserLoginUpgrade
   }
 
   export type MutationUserLogoutArgs = {
@@ -1123,7 +1133,16 @@ export namespace GaloyGQL {
     readonly errors: ReadonlyArray<Error>
   }
 
+  export type UserDeviceAccountCreateInput = {
+    readonly deviceId: Scalars["String"]
+  }
+
   export type UserLoginInput = {
+    readonly code: Scalars["OneTimeAuthCode"]
+    readonly phone: Scalars["Phone"]
+  }
+
+  export type UserLoginUpgrade = {
     readonly code: Scalars["OneTimeAuthCode"]
     readonly phone: Scalars["Phone"]
   }
@@ -1716,6 +1735,38 @@ export namespace GaloyGQL {
       readonly __typename?: "UserContactUpdateAliasPayload"
       readonly errors: ReadonlyArray<{
         readonly __typename: "GraphQLApplicationError"
+        readonly message: string
+      }>
+    }
+  }
+
+  export type UserDeviceAccountCreateMutationVariables = Exact<{
+    input: UserDeviceAccountCreateInput
+  }>
+
+  export type UserDeviceAccountCreateMutation = {
+    readonly __typename?: "Mutation"
+    readonly userDeviceAccountCreate: {
+      readonly __typename?: "AuthTokenPayload"
+      readonly authToken?: string | null
+      readonly errors: ReadonlyArray<{
+        readonly __typename?: "GraphQLApplicationError"
+        readonly message: string
+      }>
+    }
+  }
+
+  export type UserLoginUpgradeMutationVariables = Exact<{
+    input: UserLoginUpgrade
+  }>
+
+  export type UserLoginUpgradeMutation = {
+    readonly __typename?: "Mutation"
+    readonly userLoginUpgrade: {
+      readonly __typename?: "AuthTokenPayload"
+      readonly authToken?: string | null
+      readonly errors: ReadonlyArray<{
+        readonly __typename?: "GraphQLApplicationError"
         readonly message: string
       }>
     }

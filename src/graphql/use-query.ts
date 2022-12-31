@@ -12,17 +12,21 @@ import btcPriceList from "./queries/btc-price-list"
 import businessMapMarkers from "./queries/business-map-markers"
 import contacts from "./queries/contacts"
 import getWalletCsvTransactions from "./queries/get-wallet-csv-transactions"
-import main from "./queries/main"
 import onChainTxFee from "./queries/on-chain-tx-fee"
 import quizQuestions from "./queries/quiz-questions"
-import transactionList from "./queries/transaction-list"
-import transactionListForContact from "./queries/transaction-list-for-contact"
-import transactionListForDefaultAccount from "./queries/transaction-list-for-default-account"
 import userDefaultWalletId from "./queries/user-default-wallet-id"
 import usernameAvailable from "./queries/username-available"
 import currencyList from "./queries/currency-list"
 
 import { GaloyGQL, joinErrorsMessages } from "../index"
+import { loadFilesSync } from "@graphql-tools/load-files"
+
+const main = loadFilesSync("./queries/main.gql")[0]
+const transactionList = loadFilesSync("./queries/transaction-list.gql")[0]
+const transactionListForContact = loadFilesSync("./queries/transaction-list.gql")[0]
+const transactionListForDefaultAccount = loadFilesSync(
+  "./queries/transaction-list.gql",
+)[0]
 
 export const QUERIES = {
   accountDefaultWallet,
