@@ -17,31 +17,58 @@ const userLoginUpgrade = loadFilesSync("./mutations/user-login-upgrade.gql")[0]
 const userDeviceAccountCreate = loadFilesSync(
   "./mutations/user-device-account-create.gql",
 )[0]
-
-import captchaCreateChallenge from "./mutations/captcha-create-challenge"
-import captchaRequestAuthCode from "./mutations/captcha-request-auth-code"
-import deviceNotificationTokenCreate from "./mutations/device-notification-token-create"
-import intraLedgerPaymentSend from "./mutations/intra-ledger-paymest-send"
-import intraLedgerUsdPaymentSend from "./mutations/intra-ledger-usd-payment-send"
-import lnInvoiceCreate from "./mutations/ln-invoice-create"
-import lnInvoiceCreateOnBehalfOfRecipient from "./mutations/ln-invoice-create-on-behalf-of-recipient"
-import lnInvoiceFeeProbe from "./mutations/ln-invoice-fee-probe"
-import lnInvoicePaymentSend from "./mutations/ln-invoice-payment-send"
-import lnNoAmountInvoiceCreate from "./mutations/ln-no-amount-invoice-create"
-import lnNoAmountInvoiceFeeProbe from "./mutations/ln-no-amount-invoice-fee-probe"
-import lnNoAmountInvoicePaymentSend from "./mutations/ln-no-amount-invoice-payment-send"
-import lnNoAmountUsdInvoiceFeeProbe from "./mutations/ln-no-amount-usd-invoice-fee-probe"
-import lnNoAmountUsdInvoicePaymentSend from "./mutations/ln-no-amount-usd-invoice-payment-send"
-import lnUsdInvoiceCreate from "./mutations/ln-usd-invoice-create"
-import lnUsdInvoiceCreateOnBehalfOfRecipient from "./mutations/ln-usd-invoice-create-on-behalf-of-recipient"
-import lnUsdInvoiceFeeProbe from "./mutations/ln-usd-invoice-fee-probe"
-import onChainAddressCurrent from "./mutations/on-chain-address-current"
-import onChainPaymentSend from "./mutations/on-chain-payment-send"
-import userContactUpdateAlias from "./mutations/user-contact-update-alias"
-import userLogin from "./mutations/user-login"
-import userQuizQuestionUpdateCompleted from "./mutations/user-quiz-question-update-completed"
-import userUpdateLanguage from "./mutations/user-update-language"
-import userUpdateUsername from "./mutations/user-update-username"
+const captchaCreateChallenge = loadFilesSync(
+  "./mutations/captcha-create-challenge.gql",
+)[0]
+const captchaRequestAuthCode = loadFilesSync(
+  "./mutations/captcha-request-auth-code.gql",
+)[0]
+const deviceNotificationTokenCreate = loadFilesSync(
+  "./mutations/device-notification-token-create.gql",
+)[0]
+const intraLedgerPaymentSend = loadFilesSync(
+  "./mutations/intra-ledger-paymest-send.gql",
+)[0]
+const intraLedgerUsdPaymentSend = loadFilesSync(
+  "./mutations/intra-ledger-usd-payment-send.gql",
+)[0]
+const lnInvoiceCreate = loadFilesSync("./mutations/ln-invoice-create.gql")[0]
+const lnInvoiceCreateOnBehalfOfRecipient = loadFilesSync(
+  "./mutations/ln-invoice-create-on-behalf-of-recipient.gql",
+)[0]
+const lnInvoiceFeeProbe = loadFilesSync("./mutations/ln-invoice-fee-probe.gql")[0]
+const lnInvoicePaymentSend = loadFilesSync("./mutations/ln-invoice-payment-send.gql")[0]
+const lnNoAmountInvoiceCreate = loadFilesSync(
+  "./mutations/ln-no-amount-invoice-create.gql",
+)[0]
+const lnNoAmountInvoiceFeeProbe = loadFilesSync(
+  "./mutations/ln-no-amount-invoice-fee-probe.gql",
+)[0]
+const lnNoAmountInvoicePaymentSend = loadFilesSync(
+  "./mutations/ln-no-amount-invoice-payment-send.gql",
+)[0]
+const lnNoAmountUsdInvoiceFeeProbe = loadFilesSync(
+  "./mutations/ln-no-amount-usd-invoice-fee-probe.gql",
+)[0]
+const lnNoAmountUsdInvoicePaymentSend = loadFilesSync(
+  "./mutations/ln-no-amount-usd-invoice-payment-send.gql",
+)[0]
+const lnUsdInvoiceCreate = loadFilesSync("./mutations/ln-usd-invoice-create.gql")[0]
+const lnUsdInvoiceCreateOnBehalfOfRecipient = loadFilesSync(
+  "./mutations/ln-usd-invoice-create-on-behalf-of-recipient.gql",
+)[0]
+const lnUsdInvoiceFeeProbe = loadFilesSync("./mutations/ln-usd-invoice-fee-probe.gql")[0]
+const onChainAddressCurrent = loadFilesSync("./mutations/on-chain-address-current.gql")[0]
+const onChainPaymentSend = loadFilesSync("./mutations/on-chain-payment-send.gql")[0]
+const userContactUpdateAlias = loadFilesSync(
+  "./mutations/user-contact-update-alias.gql",
+)[0]
+const userLogin = loadFilesSync("./mutations/user-login.gql")[0]
+const userQuizQuestionUpdateCompleted = loadFilesSync(
+  "./mutations/user-quiz-question-update-completed.gql",
+)[0]
+const userUpdateLanguage = loadFilesSync("./mutations/user-update-language.gql")[0]
+const userUpdateUsername = loadFilesSync("./mutations/user-update-username.gql")[0]
 
 export const MUTATIONS = {
   accountUpdateDefaultWalletId,

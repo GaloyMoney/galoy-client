@@ -1,0 +1,11 @@
+query btcPriceList($range: PriceGraphRange!) {
+  btcPriceList(range: $range) {
+    timestamp
+    price {
+      base
+      offset
+      currencyUnit
+      formattedAmount
+    }
+  }
+}
