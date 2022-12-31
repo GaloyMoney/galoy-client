@@ -1,0 +1,8 @@
+query currencyList {
+  currencyList {
+    code
+    symbol
+    name
+    flag
+  }
+}

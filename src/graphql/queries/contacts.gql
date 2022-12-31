@@ -1,0 +1,10 @@
+query contacts {
+  me {
+    id
+    contacts {
+      username
+      alias
+      transactionsCount
+    }
+  }
+}
