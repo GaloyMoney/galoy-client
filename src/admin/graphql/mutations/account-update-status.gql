@@ -1,0 +1,13 @@
+mutation accountUpdateStatus($input: AccountUpdateStatusInput!) {
+  accountUpdateStatus(input: $input) {
+    accountDetails {
+      id
+      username
+      level
+      status
+      title
+
+      createdAt
+    }
+  }
+}
