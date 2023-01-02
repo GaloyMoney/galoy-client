@@ -12,8 +12,9 @@ import {
   useApolloClient,
 } from "@apollo/client"
 import { ErrorLink, onError } from "@apollo/client/link/error"
-import { WebSocketLink } from "@apollo/client/link/ws"
 import { getMainDefinition } from "@apollo/client/utilities"
+import { GraphQLWsLink } from "@apollo/client/link/subscriptions"
+import { createClient } from "graphql-ws"
 
 export { ApolloProvider as GaloyProvider } from "@apollo/client"
 export type { NormalizedCacheObject } from "@apollo/client"
@@ -115,20 +116,17 @@ export const createGaloyClient: CreateGaloyClientFunction =
 
     const httpLink = new HttpLink({ uri: config.graphqlUrl, credentials: "include" })
 
-    const wsLink = new WebSocketLink({
-      uri: config.graphqlSubscriptionUrl,
-      options: {
-        reconnect: true,
-        reconnectionAttempts: 3,
-        lazy: true,
-        connectionParams: async () => {
-          return {
-            credentials: "include",
-            authorization: authToken ? `Bearer ${authToken}` : "",
-          }
-        },
-      },
-    })
+    const wsLink = new GraphQLWsLink(
+      createClient({
+        url: config.graphqlSubscriptionUrl,
+        connectionParams: authToken
+          ? { Authorization: `Bearer ${authToken}` }
+          : undefined,
+        webSocketImpl: WebSocket,
+        // TODO: implement keepAlive and reconnection?
+        // https://github.com/enisdenjo/graphql-ws/blob/master/docs/interfaces/client.ClientOptions.md#keepalive
+      }),
+    )
 
     const splitLink = split(
       ({ query }) => {
