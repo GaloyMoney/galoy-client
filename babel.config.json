@@ -1,7 +1,4 @@
 {
-  "targets": {
-    "node": 18
-  },
   "plugins": [
     "import-graphql"
   ]

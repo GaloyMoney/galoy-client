@@ -3,12 +3,12 @@ import {
   QueryHookOptions,
   useApolloClient,
   useQuery as useApolloQuery,
-  QueryOptions,
-} from "@apollo/client"
+  QueryOptions } from "@apollo/client"
 import { useCallback, useState } from "react"
 
 import { GaloyGQL, joinErrorsMessages } from "../index"
 import { QUERIES } from "./import"
+import { DocumentNode } from "graphql"
 
 type QueryHelpers = {
   errorsMessage?: string
@@ -18,7 +18,7 @@ const useQueryWrapper = <TData = unknown, TVars = unknown>(
   queryName: keyof typeof QUERIES,
   config?: QueryHookOptions<TData, TVars>,
 ): QueryResult<TData, TVars> & QueryHelpers => {
-  const result = useApolloQuery<TData, TVars>(QUERIES[queryName], config)
+  const result = useApolloQuery<TData, TVars>(QUERIES[queryName] as unknown as DocumentNode, config)
 
   const { data, error } = result
   const errors = (data as any)?.[queryName]?.errors
@@ -139,7 +139,7 @@ const useDelayedQueryWrapper = <TData = unknown, TVars = unknown>(
       setLoading(true)
       try {
         const result = await client.query({
-          query: QUERIES[queryName],
+          query: QUERIES[queryName] as unknown as DocumentNode,
           variables,
           ...config,
         })

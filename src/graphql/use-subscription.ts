@@ -6,6 +6,7 @@ import {
 
 import { GaloyGQL, joinErrorsMessages } from "../index"
 import { SUBSCRIPTIONS } from "./import"
+import { DocumentNode } from "graphql"
 
 type SubscriptionHelpers = {
   errorsMessage?: string
@@ -16,7 +17,7 @@ const useSubscriptionWrapper = <TData = unknown, TVars = unknown>(
   config?: SubscriptionHookOptions<TData, TVars>,
 ): SubscriptionResult<TData> & SubscriptionHelpers => {
   const result = useApolloSubscription<TData, TVars>(
-    SUBSCRIPTIONS[subscriptionName] as DocumentNode,
+    SUBSCRIPTIONS[subscriptionName] as unknown as DocumentNode,
     config,
   )
 

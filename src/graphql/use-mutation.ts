@@ -8,6 +8,7 @@ import { useCallback } from "react"
 
 import { GaloyGQL, joinErrorsMessages } from "../index"
 import { MUTATIONS } from "./import"
+import { DocumentNode } from "graphql"
 
 type MutationHelpers = {
   errorsMessage?: string
@@ -18,7 +19,7 @@ const useMutationWrapper = <TData = unknown, TVars = unknown, TFunc = unknown>(
   config?: MutationHookOptions<TData, TVars>,
 ): [TFunc, MutationResult<TData> & MutationHelpers] => {
   const [mutationFunction, result] = useApolloMutation<TData, TVars>(
-    MUTATIONS[mutationName],
+    MUTATIONS[mutationName] as unknown as DocumentNode,
     config,
   )
 
