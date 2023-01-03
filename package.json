@@ -5,7 +5,8 @@
   "license": "MIT",
   "repository": "https://github.com/galoymoney/galoy-client",
   "scripts": {
-    "build": "yarn install && rm -rf dist && yarn babel src/graphql/import.ts.source --out-file src/graphql/import.ts && tsc --sourceMap false --skipLibCheck true",
+    "build": "yarn install && rm -rf dist && tsc --sourceMap false --skipLibCheck true",
+    "prebuild": "yarn babel src/graphql/import.ts.source --out-file src/graphql/import.ts && prettier --write .",
     "code:check": "yarn tsc:check && yarn eslint:check && yarn prettier:check",
     "dev:codegen": "graphql-codegen --config codegen.yml",
     "eslint:check": "eslint . --ext ts --ext tsx",
