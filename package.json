@@ -30,7 +30,7 @@
     "ws": "^8.11.0"
   },
   "devDependencies": {
-    "@apollo/client": "^3.6.9",
+    "@apollo/client": "^3.7.3",
     "@graphql-codegen/add": "^3.2.3",
     "@graphql-codegen/cli": "2.16.2",
     "@graphql-codegen/typescript": "2.7.1",
