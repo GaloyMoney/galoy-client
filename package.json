@@ -60,5 +60,8 @@
     "@babel/cli": "^7.20.7",
     "@babel/core": "^7.20.7",
     "babel-plugin-import-graphql": "^2.8.1"
+  },
+  "resolutions": {
+    "**/**/json5": ">=2.2.2"
   }
 }
