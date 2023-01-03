@@ -5,15 +5,7 @@ import {
 } from "@apollo/client"
 
 import { GaloyGQL, joinErrorsMessages } from "../index"
-import { loadFilesSync } from "@graphql-tools/load-files"
-
-const myUpdates = loadFilesSync("./subscriptions/my-updates.gql")[0]
-const lnInvoicePaymentStatus = loadFilesSync("./subscriptions/my-updates.gql")[0]
-
-export const SUBSCRIPTIONS = {
-  myUpdates,
-  lnInvoicePaymentStatus,
-}
+import { SUBSCRIPTIONS } from "./import"
 
 type SubscriptionHelpers = {
   errorsMessage?: string
@@ -24,7 +16,7 @@ const useSubscriptionWrapper = <TData = unknown, TVars = unknown>(
   config?: SubscriptionHookOptions<TData, TVars>,
 ): SubscriptionResult<TData> & SubscriptionHelpers => {
   const result = useApolloSubscription<TData, TVars>(
-    SUBSCRIPTIONS[subscriptionName],
+    SUBSCRIPTIONS[subscriptionName] as DocumentNode,
     config,
   )
 

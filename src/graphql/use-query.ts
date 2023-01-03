@@ -8,43 +8,7 @@ import {
 import { useCallback, useState } from "react"
 
 import { GaloyGQL, joinErrorsMessages } from "../index"
-import { loadFilesSync } from "@graphql-tools/load-files"
-
-const main = loadFilesSync("./queries/main.gql")[0]
-const transactionList = loadFilesSync("./queries/transaction-list.gql")[0]
-const transactionListForContact = loadFilesSync("./queries/transaction-list.gql")[0]
-const transactionListForDefaultAccount = loadFilesSync(
-  "./queries/transaction-list.gql",
-)[0]
-const accountDefaultWallet = loadFilesSync("./queries/account-default-wallet.gql")[0]
-const btcPriceList = loadFilesSync("./queries/btc-price-list.gql")[0]
-const businessMapMarkers = loadFilesSync("./queries/business-map-markers.gql")[0]
-const contacts = loadFilesSync("./queries/contacts.gql")[0]
-const getWalletCsvTransactions = loadFilesSync(
-  "./queries/get-wallet-csv-transactions.gql",
-)[0]
-const onChainTxFee = loadFilesSync("./queries/on-chain-tx-fee.gql")[0]
-const quizQuestions = loadFilesSync("./queries/quiz-questions.gql")[0]
-const userDefaultWalletId = loadFilesSync("./queries/user-default-wallet-id.gql")[0]
-const usernameAvailable = loadFilesSync("./queries/username-available.gql")[0]
-const currencyList = loadFilesSync("./queries/currency-list.gql")[0]
-
-export const QUERIES = {
-  accountDefaultWallet,
-  btcPriceList,
-  businessMapMarkers,
-  contacts,
-  getWalletCsvTransactions,
-  main,
-  onChainTxFee,
-  quizQuestions,
-  transactionList,
-  transactionListForContact,
-  transactionListForDefaultAccount,
-  userDefaultWalletId,
-  usernameAvailable,
-  currencyList,
-}
+import { QUERIES } from "./import"
 
 type QueryHelpers = {
   errorsMessage?: string
