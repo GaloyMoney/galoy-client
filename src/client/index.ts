@@ -19,7 +19,6 @@ import { createClient } from "graphql-ws"
 export { ApolloProvider as GaloyProvider } from "@apollo/client"
 export type { NormalizedCacheObject } from "@apollo/client"
 
-export { renderToStringWithData } from "@apollo/client/react/ssr"
 export { MockedProvider } from "@apollo/client/testing"
 
 export type { ApolloClient as GaloyClient } from "@apollo/client"
@@ -121,8 +120,8 @@ export const createGaloyClient: CreateGaloyClientFunction =
         url: config.graphqlSubscriptionUrl,
         connectionParams: authToken
           ? { Authorization: `Bearer ${authToken}` }
-          : undefined
-          // TODO: implement keepAlive and reconnection?
+          : undefined,
+        // TODO: implement keepAlive and reconnection?
         // https://github.com/enisdenjo/graphql-ws/blob/master/docs/interfaces/client.ClientOptions.md#keepalive
       }),
     )
