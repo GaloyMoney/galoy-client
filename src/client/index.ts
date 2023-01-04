@@ -121,9 +121,8 @@ export const createGaloyClient: CreateGaloyClientFunction =
         url: config.graphqlSubscriptionUrl,
         connectionParams: authToken
           ? { Authorization: `Bearer ${authToken}` }
-          : undefined,
-        webSocketImpl: WebSocket,
-        // TODO: implement keepAlive and reconnection?
+          : undefined
+          // TODO: implement keepAlive and reconnection?
         // https://github.com/enisdenjo/graphql-ws/blob/master/docs/interfaces/client.ClientOptions.md#keepalive
       }),
     )
