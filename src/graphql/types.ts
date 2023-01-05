@@ -1959,6 +1959,7 @@ export namespace GaloyGQL {
     readonly globals?: {
       readonly __typename?: "Globals"
       readonly nodesIds: ReadonlyArray<string>
+      readonly network: Network
       readonly lightningAddressDomain: string
     } | null
     readonly btcPrice?: {
@@ -2051,6 +2052,18 @@ export namespace GaloyGQL {
         >
       }
     } | null
+  }
+
+  export type MobileVersionsQueryVariables = Exact<{ [key: string]: never }>
+
+  export type MobileVersionsQuery = {
+    readonly __typename?: "Query"
+    readonly mobileVersions?: ReadonlyArray<{
+      readonly __typename: "MobileVersions"
+      readonly platform: string
+      readonly currentSupported: number
+      readonly minSupported: number
+    } | null> | null
   }
 
   export type OnChainTxFeeQueryVariables = Exact<{

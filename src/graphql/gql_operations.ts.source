@@ -40,6 +40,7 @@ const SUBSCRIPTIONS = { myUpdates, lnInvoicePaymentStatus }
 
 
 import main from "./queries/main.gql"
+import mobileVersions from "./queries/mobile-versions.gql"
 import transactionList from "./queries/transaction-list.gql"
 import transactionListForContact from "./queries/transaction-list.gql"
 import transactionListForDefaultAccount from "./queries/transaction-list.gql"
@@ -61,6 +62,7 @@ const QUERIES = {
   contacts,
   getWalletCsvTransactions,
   main,
+  mobileVersions,
   onChainTxFee,
   quizQuestions,
   transactionList,
