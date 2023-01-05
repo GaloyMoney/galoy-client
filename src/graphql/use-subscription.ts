@@ -5,7 +5,7 @@ import {
 } from "@apollo/client"
 
 import { GaloyGQL, joinErrorsMessages } from "../index"
-import { SUBSCRIPTIONS } from "./import"
+import { SUBSCRIPTIONS } from "./gql_operations"
 import { DocumentNode } from "graphql"
 
 type SubscriptionHelpers = {

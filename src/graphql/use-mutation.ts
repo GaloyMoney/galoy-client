@@ -7,7 +7,7 @@ import {
 import { useCallback } from "react"
 
 import { GaloyGQL, joinErrorsMessages } from "../index"
-import { MUTATIONS } from "./import"
+import { MUTATIONS } from "./gql_operations"
 import { DocumentNode } from "graphql"
 
 type MutationHelpers = {

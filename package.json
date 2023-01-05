@@ -6,7 +6,7 @@
   "repository": "https://github.com/galoymoney/galoy-client",
   "scripts": {
     "build": "yarn install && rm -rf dist && tsc --sourceMap false --skipLibCheck true",
-    "prebuild": "yarn babel src/graphql/import.ts.source --out-file src/graphql/import.ts && prettier --write .",
+    "prebuild": "yarn babel src/graphql/gql_operations.ts.source --out-file src/graphql/gql_operations.ts && prettier --write .",
     "code:check": "yarn tsc:check && yarn eslint:check && yarn prettier:check",
     "dev:codegen": "graphql-codegen --config codegen.yml",
     "eslint:check": "eslint . --ext ts --ext tsx",
