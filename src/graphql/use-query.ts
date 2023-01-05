@@ -8,7 +8,7 @@ import {
 import { useCallback, useState } from "react"
 
 import { GaloyGQL, joinErrorsMessages } from "../index"
-import { QUERIES } from "./import"
+import { QUERIES } from "./gql_operations"
 import { DocumentNode } from "graphql"
 
 type QueryHelpers = {
