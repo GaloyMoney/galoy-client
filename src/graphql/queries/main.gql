@@ -1,6 +1,7 @@
 query main($isAuthenticated: Boolean!, $recentTransactions: Int) {
   globals {
     nodesIds
+    network
     lightningAddressDomain
   }
   btcPrice {

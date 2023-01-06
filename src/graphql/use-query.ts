@@ -66,6 +66,19 @@ const accountDefaultWalletQuery = (
   >("accountDefaultWallet", config)
 }
 
+const mobileVersionsQuery = (
+  config?: QueryHookOptions<
+    GaloyGQL.MobileVersionsQuery,
+    GaloyGQL.MobileVersionsQueryVariables
+  >,
+): QueryResult<GaloyGQL.MobileVersionsQuery, GaloyGQL.MobileVersionsQueryVariables> &
+  QueryHelpers => {
+  return useQueryWrapper<
+    GaloyGQL.MobileVersionsQuery,
+    GaloyGQL.MobileVersionsQueryVariables
+  >("mobileVersions", config)
+}
+
 const transactionListQuery = (
   config?: QueryHookOptions<
     GaloyGQL.TransactionListQuery,
@@ -120,6 +133,7 @@ export const useQuery = {
   accountDefaultWallet: accountDefaultWalletQuery,
   contacts: contactsQuery,
   main: mainQuery,
+  mobileVersions: mobileVersionsQuery,
   onChainTxFee: onChainTxFeeQuery,
   transactionList: transactionListQuery,
   transactionListForContact: transactionListForContactQuery,
@@ -208,6 +222,19 @@ const contactsDelayedQuery = (
   )
 }
 
+const mobileVersionsDelayedQuery = (
+  config?: QueryHookOptions<
+    GaloyGQL.MobileVersionsQuery,
+    GaloyGQL.MobileVersionsQueryVariables
+  >,
+): QueryResult<GaloyGQL.MobileVersionsQuery, GaloyGQL.MobileVersionsQueryVariables> &
+  QueryHelpers => {
+  return useQueryWrapper<
+    GaloyGQL.MobileVersionsQuery,
+    GaloyGQL.MobileVersionsQueryVariables
+  >("mobileVersions", config)
+}
+
 const transactionListDelayedQuery = (
   config?: QueryOptions<
     GaloyGQL.TransactionListQuery,
@@ -243,9 +270,10 @@ const onChainTxFeeDelayedQuery = (
 
 export const useDelayedQuery = {
   accountDefaultWallet: accountDefaultWalletDelayedQuery,
+  contacts: contactsDelayedQuery,
+  mobileVersions: mobileVersionsDelayedQuery,
   onChainTxFee: onChainTxFeeDelayedQuery,
   transactionList: transactionListDelayedQuery,
   transactionListForContact: transactionListForContactDelayedQuery,
   userDefaultWalletId: userDefaultWalletIdDelayedQuery,
-  contacts: contactsDelayedQuery,
 }

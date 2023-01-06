@@ -3141,6 +3141,12 @@ var main = {
                 },
                 {
                   kind: "Field",
+                  name: { kind: "Name", value: "network" },
+                  arguments: [],
+                  directives: [],
+                },
+                {
+                  kind: "Field",
                   name: { kind: "Name", value: "lightningAddressDomain" },
                   arguments: [],
                   directives: [],
@@ -3220,9 +3226,70 @@ var main = {
   ],
   loc: {
     start: 0,
-    end: 251,
+    end: 263,
     source: {
-      body: "query main($isAuthenticated: Boolean!, $recentTransactions: Int) {\n  globals {\n    nodesIds\n    lightningAddressDomain\n  }\n  btcPrice {\n    base\n    offset\n    currencyUnit\n    formattedAmount\n  }\n  me @include(if: $isAuthenticated) {\n    ...Me\n  }\n}\n",
+      body: "query main($isAuthenticated: Boolean!, $recentTransactions: Int) {\n  globals {\n    nodesIds\n    network\n    lightningAddressDomain\n  }\n  btcPrice {\n    base\n    offset\n    currencyUnit\n    formattedAmount\n  }\n  me @include(if: $isAuthenticated) {\n    ...Me\n  }\n}\n",
+      name: "GraphQL request",
+      locationOffset: { line: 1, column: 1 },
+    },
+  },
+}
+var mobileVersions = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "mobileVersions" },
+      variableDefinitions: [],
+      directives: [],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "mobileVersions" },
+            arguments: [],
+            directives: [],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "__typename" },
+                  arguments: [],
+                  directives: [],
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "platform" },
+                  arguments: [],
+                  directives: [],
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "currentSupported" },
+                  arguments: [],
+                  directives: [],
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "minSupported" },
+                  arguments: [],
+                  directives: [],
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+  loc: {
+    start: 0,
+    end: 114,
+    source: {
+      body: "query mobileVersions {\n  mobileVersions {\n    __typename\n    platform\n    currentSupported\n    minSupported\n  }\n}\n",
       name: "GraphQL request",
       locationOffset: { line: 1, column: 1 },
     },
@@ -4420,6 +4487,7 @@ const QUERIES = {
   contacts,
   getWalletCsvTransactions,
   main,
+  mobileVersions,
   onChainTxFee,
   quizQuestions,
   transactionList,
