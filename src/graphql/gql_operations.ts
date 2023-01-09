@@ -4216,8 +4216,17 @@ var transactionListForContact = {
     {
       kind: "OperationDefinition",
       operation: "query",
-      name: { kind: "Name", value: "transactionList" },
+      name: { kind: "Name", value: "transactionListForContact" },
       variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "username" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Username" } },
+          },
+          directives: [],
+        },
         {
           kind: "VariableDefinition",
           variable: { kind: "Variable", name: { kind: "Name", value: "first" } },
@@ -4263,80 +4272,66 @@ var transactionListForContact = {
                 },
                 {
                   kind: "Field",
-                  name: { kind: "Name", value: "defaultAccount" },
-                  arguments: [],
+                  name: { kind: "Name", value: "contactByUsername" },
+                  arguments: [
+                    {
+                      kind: "Argument",
+                      name: { kind: "Name", value: "username" },
+                      value: {
+                        kind: "Variable",
+                        name: { kind: "Name", value: "username" },
+                      },
+                    },
+                  ],
                   directives: [],
                   selectionSet: {
                     kind: "SelectionSet",
                     selections: [
                       {
                         kind: "Field",
-                        name: { kind: "Name", value: "id" },
-                        arguments: [],
-                        directives: [],
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "wallets" },
-                        arguments: [],
+                        name: { kind: "Name", value: "transactions" },
+                        arguments: [
+                          {
+                            kind: "Argument",
+                            name: { kind: "Name", value: "first" },
+                            value: {
+                              kind: "Variable",
+                              name: { kind: "Name", value: "first" },
+                            },
+                          },
+                          {
+                            kind: "Argument",
+                            name: { kind: "Name", value: "after" },
+                            value: {
+                              kind: "Variable",
+                              name: { kind: "Name", value: "after" },
+                            },
+                          },
+                          {
+                            kind: "Argument",
+                            name: { kind: "Name", value: "last" },
+                            value: {
+                              kind: "Variable",
+                              name: { kind: "Name", value: "last" },
+                            },
+                          },
+                          {
+                            kind: "Argument",
+                            name: { kind: "Name", value: "before" },
+                            value: {
+                              kind: "Variable",
+                              name: { kind: "Name", value: "before" },
+                            },
+                          },
+                        ],
                         directives: [],
                         selectionSet: {
                           kind: "SelectionSet",
                           selections: [
                             {
-                              kind: "Field",
-                              name: { kind: "Name", value: "id" },
-                              arguments: [],
+                              kind: "FragmentSpread",
+                              name: { kind: "Name", value: "TransactionList" },
                               directives: [],
-                            },
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "transactions" },
-                              arguments: [
-                                {
-                                  kind: "Argument",
-                                  name: { kind: "Name", value: "first" },
-                                  value: {
-                                    kind: "Variable",
-                                    name: { kind: "Name", value: "first" },
-                                  },
-                                },
-                                {
-                                  kind: "Argument",
-                                  name: { kind: "Name", value: "after" },
-                                  value: {
-                                    kind: "Variable",
-                                    name: { kind: "Name", value: "after" },
-                                  },
-                                },
-                                {
-                                  kind: "Argument",
-                                  name: { kind: "Name", value: "last" },
-                                  value: {
-                                    kind: "Variable",
-                                    name: { kind: "Name", value: "last" },
-                                  },
-                                },
-                                {
-                                  kind: "Argument",
-                                  name: { kind: "Name", value: "before" },
-                                  value: {
-                                    kind: "Variable",
-                                    name: { kind: "Name", value: "before" },
-                                  },
-                                },
-                              ],
-                              directives: [],
-                              selectionSet: {
-                                kind: "SelectionSet",
-                                selections: [
-                                  {
-                                    kind: "FragmentSpread",
-                                    name: { kind: "Name", value: "TransactionList" },
-                                    directives: [],
-                                  },
-                                ],
-                              },
                             },
                           ],
                         },
@@ -4679,9 +4674,9 @@ var transactionListForContact = {
   ],
   loc: {
     start: 0,
-    end: 1330,
+    end: 1344,
     source: {
-      body: "query transactionList($first: Int, $after: String, $last: Int, $before: String) {\n  me {\n    id\n    defaultAccount {\n      id\n      wallets {\n        id\n        transactions(first: $first, after: $after, last: $last, before: $before) {\n          ...TransactionList\n        }\n      }\n    }\n  }\n}\n\nfragment TransactionList on TransactionConnection {\n  pageInfo {\n    hasNextPage\n    hasPreviousPage\n    startCursor\n    endCursor\n  }\n  edges {\n    cursor\n    node {\n      __typename\n      id\n      status\n      direction\n      memo\n      createdAt\n\n      settlementAmount\n      settlementFee\n      settlementCurrency\n      settlementPrice {\n        base\n        offset\n        currencyUnit\n        formattedAmount\n      }\n\n      initiationVia {\n        __typename\n        ... on InitiationViaIntraLedger {\n          counterPartyWalletId\n          counterPartyUsername\n        }\n        ... on InitiationViaLn {\n          paymentHash\n        }\n        ... on InitiationViaOnChain {\n          address\n        }\n      }\n      settlementVia {\n        __typename\n        ... on SettlementViaIntraLedger {\n          counterPartyWalletId\n          counterPartyUsername\n        }\n        ... on SettlementViaLn {\n          paymentSecret\n        }\n        ... on SettlementViaOnChain {\n          transactionHash\n        }\n      }\n    }\n  }\n}\n",
+      body: "query transactionListForContact(\n  $username: Username!\n  $first: Int\n  $after: String\n  $last: Int\n  $before: String\n) {\n  me {\n    id\n    contactByUsername(username: $username) {\n      transactions(first: $first, after: $after, last: $last, before: $before) {\n        ...TransactionList\n      }\n    }\n  }\n}\n\nfragment TransactionList on TransactionConnection {\n  pageInfo {\n    hasNextPage\n    hasPreviousPage\n    startCursor\n    endCursor\n  }\n  edges {\n    cursor\n    node {\n      __typename\n      id\n      status\n      direction\n      memo\n      createdAt\n\n      settlementAmount\n      settlementFee\n      settlementCurrency\n      settlementPrice {\n        base\n        offset\n        currencyUnit\n        formattedAmount\n      }\n\n      initiationVia {\n        __typename\n        ... on InitiationViaIntraLedger {\n          counterPartyWalletId\n          counterPartyUsername\n        }\n        ... on InitiationViaLn {\n          paymentHash\n        }\n        ... on InitiationViaOnChain {\n          address\n        }\n      }\n      settlementVia {\n        __typename\n        ... on SettlementViaIntraLedger {\n          counterPartyWalletId\n          counterPartyUsername\n        }\n        ... on SettlementViaLn {\n          paymentSecret\n        }\n        ... on SettlementViaOnChain {\n          transactionHash\n        }\n      }\n    }\n  }\n}\n",
       name: "GraphQL request",
       locationOffset: { line: 1, column: 1 },
     },
@@ -4693,7 +4688,7 @@ var transactionListForDefaultAccount = {
     {
       kind: "OperationDefinition",
       operation: "query",
-      name: { kind: "Name", value: "transactionList" },
+      name: { kind: "Name", value: "transactionListForDefaultAccount" },
       variableDefinitions: [
         {
           kind: "VariableDefinition",
@@ -4754,66 +4749,49 @@ var transactionListForDefaultAccount = {
                       },
                       {
                         kind: "Field",
-                        name: { kind: "Name", value: "wallets" },
-                        arguments: [],
+                        name: { kind: "Name", value: "transactions" },
+                        arguments: [
+                          {
+                            kind: "Argument",
+                            name: { kind: "Name", value: "first" },
+                            value: {
+                              kind: "Variable",
+                              name: { kind: "Name", value: "first" },
+                            },
+                          },
+                          {
+                            kind: "Argument",
+                            name: { kind: "Name", value: "after" },
+                            value: {
+                              kind: "Variable",
+                              name: { kind: "Name", value: "after" },
+                            },
+                          },
+                          {
+                            kind: "Argument",
+                            name: { kind: "Name", value: "last" },
+                            value: {
+                              kind: "Variable",
+                              name: { kind: "Name", value: "last" },
+                            },
+                          },
+                          {
+                            kind: "Argument",
+                            name: { kind: "Name", value: "before" },
+                            value: {
+                              kind: "Variable",
+                              name: { kind: "Name", value: "before" },
+                            },
+                          },
+                        ],
                         directives: [],
                         selectionSet: {
                           kind: "SelectionSet",
                           selections: [
                             {
-                              kind: "Field",
-                              name: { kind: "Name", value: "id" },
-                              arguments: [],
+                              kind: "FragmentSpread",
+                              name: { kind: "Name", value: "TransactionList" },
                               directives: [],
-                            },
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "transactions" },
-                              arguments: [
-                                {
-                                  kind: "Argument",
-                                  name: { kind: "Name", value: "first" },
-                                  value: {
-                                    kind: "Variable",
-                                    name: { kind: "Name", value: "first" },
-                                  },
-                                },
-                                {
-                                  kind: "Argument",
-                                  name: { kind: "Name", value: "after" },
-                                  value: {
-                                    kind: "Variable",
-                                    name: { kind: "Name", value: "after" },
-                                  },
-                                },
-                                {
-                                  kind: "Argument",
-                                  name: { kind: "Name", value: "last" },
-                                  value: {
-                                    kind: "Variable",
-                                    name: { kind: "Name", value: "last" },
-                                  },
-                                },
-                                {
-                                  kind: "Argument",
-                                  name: { kind: "Name", value: "before" },
-                                  value: {
-                                    kind: "Variable",
-                                    name: { kind: "Name", value: "before" },
-                                  },
-                                },
-                              ],
-                              directives: [],
-                              selectionSet: {
-                                kind: "SelectionSet",
-                                selections: [
-                                  {
-                                    kind: "FragmentSpread",
-                                    name: { kind: "Name", value: "TransactionList" },
-                                    directives: [],
-                                  },
-                                ],
-                              },
                             },
                           ],
                         },
@@ -5156,9 +5134,9 @@ var transactionListForDefaultAccount = {
   ],
   loc: {
     start: 0,
-    end: 1330,
+    end: 1313,
     source: {
-      body: "query transactionList($first: Int, $after: String, $last: Int, $before: String) {\n  me {\n    id\n    defaultAccount {\n      id\n      wallets {\n        id\n        transactions(first: $first, after: $after, last: $last, before: $before) {\n          ...TransactionList\n        }\n      }\n    }\n  }\n}\n\nfragment TransactionList on TransactionConnection {\n  pageInfo {\n    hasNextPage\n    hasPreviousPage\n    startCursor\n    endCursor\n  }\n  edges {\n    cursor\n    node {\n      __typename\n      id\n      status\n      direction\n      memo\n      createdAt\n\n      settlementAmount\n      settlementFee\n      settlementCurrency\n      settlementPrice {\n        base\n        offset\n        currencyUnit\n        formattedAmount\n      }\n\n      initiationVia {\n        __typename\n        ... on InitiationViaIntraLedger {\n          counterPartyWalletId\n          counterPartyUsername\n        }\n        ... on InitiationViaLn {\n          paymentHash\n        }\n        ... on InitiationViaOnChain {\n          address\n        }\n      }\n      settlementVia {\n        __typename\n        ... on SettlementViaIntraLedger {\n          counterPartyWalletId\n          counterPartyUsername\n        }\n        ... on SettlementViaLn {\n          paymentSecret\n        }\n        ... on SettlementViaOnChain {\n          transactionHash\n        }\n      }\n    }\n  }\n}\n",
+      body: "query transactionListForDefaultAccount(\n  $first: Int\n  $after: String\n  $last: Int\n  $before: String\n) {\n  me {\n    id\n    defaultAccount {\n      id\n      transactions(first: $first, after: $after, last: $last, before: $before) {\n        ...TransactionList\n      }\n    }\n  }\n}\n\nfragment TransactionList on TransactionConnection {\n  pageInfo {\n    hasNextPage\n    hasPreviousPage\n    startCursor\n    endCursor\n  }\n  edges {\n    cursor\n    node {\n      __typename\n      id\n      status\n      direction\n      memo\n      createdAt\n\n      settlementAmount\n      settlementFee\n      settlementCurrency\n      settlementPrice {\n        base\n        offset\n        currencyUnit\n        formattedAmount\n      }\n\n      initiationVia {\n        __typename\n        ... on InitiationViaIntraLedger {\n          counterPartyWalletId\n          counterPartyUsername\n        }\n        ... on InitiationViaLn {\n          paymentHash\n        }\n        ... on InitiationViaOnChain {\n          address\n        }\n      }\n      settlementVia {\n        __typename\n        ... on SettlementViaIntraLedger {\n          counterPartyWalletId\n          counterPartyUsername\n        }\n        ... on SettlementViaLn {\n          paymentSecret\n        }\n        ... on SettlementViaOnChain {\n          transactionHash\n        }\n      }\n    }\n  }\n}\n",
       name: "GraphQL request",
       locationOffset: { line: 1, column: 1 },
     },
