@@ -3223,12 +3223,450 @@ var main = {
         ],
       },
     },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "Me" },
+      typeCondition: { kind: "NamedType", name: { kind: "Name", value: "User" } },
+      directives: [],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "id" },
+            arguments: [],
+            directives: [],
+          },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "language" },
+            arguments: [],
+            directives: [],
+          },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "username" },
+            arguments: [],
+            directives: [],
+          },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "phone" },
+            arguments: [],
+            directives: [],
+          },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "defaultAccount" },
+            arguments: [],
+            directives: [],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "id" },
+                  arguments: [],
+                  directives: [],
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "defaultWalletId" },
+                  arguments: [],
+                  directives: [],
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "transactions" },
+                  arguments: [
+                    {
+                      kind: "Argument",
+                      name: { kind: "Name", value: "first" },
+                      value: {
+                        kind: "Variable",
+                        name: { kind: "Name", value: "recentTransactions" },
+                      },
+                    },
+                  ],
+                  directives: [],
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "FragmentSpread",
+                        name: { kind: "Name", value: "TransactionList" },
+                        directives: [],
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "wallets" },
+                  arguments: [],
+                  directives: [],
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "id" },
+                        arguments: [],
+                        directives: [],
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "balance" },
+                        arguments: [],
+                        directives: [],
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "walletCurrency" },
+                        arguments: [],
+                        directives: [],
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "TransactionList" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "TransactionConnection" },
+      },
+      directives: [],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "pageInfo" },
+            arguments: [],
+            directives: [],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "hasNextPage" },
+                  arguments: [],
+                  directives: [],
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "hasPreviousPage" },
+                  arguments: [],
+                  directives: [],
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "startCursor" },
+                  arguments: [],
+                  directives: [],
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "endCursor" },
+                  arguments: [],
+                  directives: [],
+                },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "edges" },
+            arguments: [],
+            directives: [],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "cursor" },
+                  arguments: [],
+                  directives: [],
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "node" },
+                  arguments: [],
+                  directives: [],
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                        arguments: [],
+                        directives: [],
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "id" },
+                        arguments: [],
+                        directives: [],
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "status" },
+                        arguments: [],
+                        directives: [],
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "direction" },
+                        arguments: [],
+                        directives: [],
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "memo" },
+                        arguments: [],
+                        directives: [],
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "createdAt" },
+                        arguments: [],
+                        directives: [],
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "settlementAmount" },
+                        arguments: [],
+                        directives: [],
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "settlementFee" },
+                        arguments: [],
+                        directives: [],
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "settlementCurrency" },
+                        arguments: [],
+                        directives: [],
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "settlementPrice" },
+                        arguments: [],
+                        directives: [],
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "base" },
+                              arguments: [],
+                              directives: [],
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "offset" },
+                              arguments: [],
+                              directives: [],
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "currencyUnit" },
+                              arguments: [],
+                              directives: [],
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "formattedAmount" },
+                              arguments: [],
+                              directives: [],
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "initiationVia" },
+                        arguments: [],
+                        directives: [],
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "__typename" },
+                              arguments: [],
+                              directives: [],
+                            },
+                            {
+                              kind: "InlineFragment",
+                              typeCondition: {
+                                kind: "NamedType",
+                                name: { kind: "Name", value: "InitiationViaIntraLedger" },
+                              },
+                              directives: [],
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "counterPartyWalletId" },
+                                    arguments: [],
+                                    directives: [],
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "counterPartyUsername" },
+                                    arguments: [],
+                                    directives: [],
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "InlineFragment",
+                              typeCondition: {
+                                kind: "NamedType",
+                                name: { kind: "Name", value: "InitiationViaLn" },
+                              },
+                              directives: [],
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "paymentHash" },
+                                    arguments: [],
+                                    directives: [],
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "InlineFragment",
+                              typeCondition: {
+                                kind: "NamedType",
+                                name: { kind: "Name", value: "InitiationViaOnChain" },
+                              },
+                              directives: [],
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "address" },
+                                    arguments: [],
+                                    directives: [],
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "settlementVia" },
+                        arguments: [],
+                        directives: [],
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "__typename" },
+                              arguments: [],
+                              directives: [],
+                            },
+                            {
+                              kind: "InlineFragment",
+                              typeCondition: {
+                                kind: "NamedType",
+                                name: { kind: "Name", value: "SettlementViaIntraLedger" },
+                              },
+                              directives: [],
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "counterPartyWalletId" },
+                                    arguments: [],
+                                    directives: [],
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "counterPartyUsername" },
+                                    arguments: [],
+                                    directives: [],
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "InlineFragment",
+                              typeCondition: {
+                                kind: "NamedType",
+                                name: { kind: "Name", value: "SettlementViaLn" },
+                              },
+                              directives: [],
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "paymentSecret" },
+                                    arguments: [],
+                                    directives: [],
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "InlineFragment",
+                              typeCondition: {
+                                kind: "NamedType",
+                                name: { kind: "Name", value: "SettlementViaOnChain" },
+                              },
+                              directives: [],
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "transactionHash" },
+                                    arguments: [],
+                                    directives: [],
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
   ],
   loc: {
     start: 0,
-    end: 263,
+    end: 1550,
     source: {
-      body: "query main($isAuthenticated: Boolean!, $recentTransactions: Int) {\n  globals {\n    nodesIds\n    network\n    lightningAddressDomain\n  }\n  btcPrice {\n    base\n    offset\n    currencyUnit\n    formattedAmount\n  }\n  me @include(if: $isAuthenticated) {\n    ...Me\n  }\n}\n",
+      body: "query main($isAuthenticated: Boolean!, $recentTransactions: Int) {\n  globals {\n    nodesIds\n    network\n    lightningAddressDomain\n  }\n  btcPrice {\n    base\n    offset\n    currencyUnit\n    formattedAmount\n  }\n  me @include(if: $isAuthenticated) {\n    ...Me\n  }\n}\n\nfragment Me on User {\n  id\n  language\n  username\n  phone\n  defaultAccount {\n    id\n    defaultWalletId\n    transactions(first: $recentTransactions) {\n      ...TransactionList\n    }\n    wallets {\n      id\n      balance\n      walletCurrency\n    }\n  }\n}\n\nfragment TransactionList on TransactionConnection {\n  pageInfo {\n    hasNextPage\n    hasPreviousPage\n    startCursor\n    endCursor\n  }\n  edges {\n    cursor\n    node {\n      __typename\n      id\n      status\n      direction\n      memo\n      createdAt\n\n      settlementAmount\n      settlementFee\n      settlementCurrency\n      settlementPrice {\n        base\n        offset\n        currencyUnit\n        formattedAmount\n      }\n\n      initiationVia {\n        __typename\n        ... on InitiationViaIntraLedger {\n          counterPartyWalletId\n          counterPartyUsername\n        }\n        ... on InitiationViaLn {\n          paymentHash\n        }\n        ... on InitiationViaOnChain {\n          address\n        }\n      }\n      settlementVia {\n        __typename\n        ... on SettlementViaIntraLedger {\n          counterPartyWalletId\n          counterPartyUsername\n        }\n        ... on SettlementViaLn {\n          paymentSecret\n        }\n        ... on SettlementViaOnChain {\n          transactionHash\n        }\n      }\n    }\n  }\n}\n",
       name: "GraphQL request",
       locationOffset: { line: 1, column: 1 },
     },
@@ -3435,12 +3873,338 @@ var transactionList = {
         ],
       },
     },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "TransactionList" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "TransactionConnection" },
+      },
+      directives: [],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "pageInfo" },
+            arguments: [],
+            directives: [],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "hasNextPage" },
+                  arguments: [],
+                  directives: [],
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "hasPreviousPage" },
+                  arguments: [],
+                  directives: [],
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "startCursor" },
+                  arguments: [],
+                  directives: [],
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "endCursor" },
+                  arguments: [],
+                  directives: [],
+                },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "edges" },
+            arguments: [],
+            directives: [],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "cursor" },
+                  arguments: [],
+                  directives: [],
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "node" },
+                  arguments: [],
+                  directives: [],
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                        arguments: [],
+                        directives: [],
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "id" },
+                        arguments: [],
+                        directives: [],
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "status" },
+                        arguments: [],
+                        directives: [],
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "direction" },
+                        arguments: [],
+                        directives: [],
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "memo" },
+                        arguments: [],
+                        directives: [],
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "createdAt" },
+                        arguments: [],
+                        directives: [],
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "settlementAmount" },
+                        arguments: [],
+                        directives: [],
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "settlementFee" },
+                        arguments: [],
+                        directives: [],
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "settlementCurrency" },
+                        arguments: [],
+                        directives: [],
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "settlementPrice" },
+                        arguments: [],
+                        directives: [],
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "base" },
+                              arguments: [],
+                              directives: [],
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "offset" },
+                              arguments: [],
+                              directives: [],
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "currencyUnit" },
+                              arguments: [],
+                              directives: [],
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "formattedAmount" },
+                              arguments: [],
+                              directives: [],
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "initiationVia" },
+                        arguments: [],
+                        directives: [],
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "__typename" },
+                              arguments: [],
+                              directives: [],
+                            },
+                            {
+                              kind: "InlineFragment",
+                              typeCondition: {
+                                kind: "NamedType",
+                                name: { kind: "Name", value: "InitiationViaIntraLedger" },
+                              },
+                              directives: [],
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "counterPartyWalletId" },
+                                    arguments: [],
+                                    directives: [],
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "counterPartyUsername" },
+                                    arguments: [],
+                                    directives: [],
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "InlineFragment",
+                              typeCondition: {
+                                kind: "NamedType",
+                                name: { kind: "Name", value: "InitiationViaLn" },
+                              },
+                              directives: [],
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "paymentHash" },
+                                    arguments: [],
+                                    directives: [],
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "InlineFragment",
+                              typeCondition: {
+                                kind: "NamedType",
+                                name: { kind: "Name", value: "InitiationViaOnChain" },
+                              },
+                              directives: [],
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "address" },
+                                    arguments: [],
+                                    directives: [],
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "settlementVia" },
+                        arguments: [],
+                        directives: [],
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "__typename" },
+                              arguments: [],
+                              directives: [],
+                            },
+                            {
+                              kind: "InlineFragment",
+                              typeCondition: {
+                                kind: "NamedType",
+                                name: { kind: "Name", value: "SettlementViaIntraLedger" },
+                              },
+                              directives: [],
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "counterPartyWalletId" },
+                                    arguments: [],
+                                    directives: [],
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "counterPartyUsername" },
+                                    arguments: [],
+                                    directives: [],
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "InlineFragment",
+                              typeCondition: {
+                                kind: "NamedType",
+                                name: { kind: "Name", value: "SettlementViaLn" },
+                              },
+                              directives: [],
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "paymentSecret" },
+                                    arguments: [],
+                                    directives: [],
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "InlineFragment",
+                              typeCondition: {
+                                kind: "NamedType",
+                                name: { kind: "Name", value: "SettlementViaOnChain" },
+                              },
+                              directives: [],
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "transactionHash" },
+                                    arguments: [],
+                                    directives: [],
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
   ],
   loc: {
     start: 0,
-    end: 295,
+    end: 1330,
     source: {
-      body: "query transactionList($first: Int, $after: String, $last: Int, $before: String) {\n  me {\n    id\n    defaultAccount {\n      id\n      wallets {\n        id\n        transactions(first: $first, after: $after, last: $last, before: $before) {\n          ...TransactionList\n        }\n      }\n    }\n  }\n}\n",
+      body: "query transactionList($first: Int, $after: String, $last: Int, $before: String) {\n  me {\n    id\n    defaultAccount {\n      id\n      wallets {\n        id\n        transactions(first: $first, after: $after, last: $last, before: $before) {\n          ...TransactionList\n        }\n      }\n    }\n  }\n}\n\nfragment TransactionList on TransactionConnection {\n  pageInfo {\n    hasNextPage\n    hasPreviousPage\n    startCursor\n    endCursor\n  }\n  edges {\n    cursor\n    node {\n      __typename\n      id\n      status\n      direction\n      memo\n      createdAt\n\n      settlementAmount\n      settlementFee\n      settlementCurrency\n      settlementPrice {\n        base\n        offset\n        currencyUnit\n        formattedAmount\n      }\n\n      initiationVia {\n        __typename\n        ... on InitiationViaIntraLedger {\n          counterPartyWalletId\n          counterPartyUsername\n        }\n        ... on InitiationViaLn {\n          paymentHash\n        }\n        ... on InitiationViaOnChain {\n          address\n        }\n      }\n      settlementVia {\n        __typename\n        ... on SettlementViaIntraLedger {\n          counterPartyWalletId\n          counterPartyUsername\n        }\n        ... on SettlementViaLn {\n          paymentSecret\n        }\n        ... on SettlementViaOnChain {\n          transactionHash\n        }\n      }\n    }\n  }\n}\n",
       name: "GraphQL request",
       locationOffset: { line: 1, column: 1 },
     },
@@ -3586,12 +4350,338 @@ var transactionListForContact = {
         ],
       },
     },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "TransactionList" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "TransactionConnection" },
+      },
+      directives: [],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "pageInfo" },
+            arguments: [],
+            directives: [],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "hasNextPage" },
+                  arguments: [],
+                  directives: [],
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "hasPreviousPage" },
+                  arguments: [],
+                  directives: [],
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "startCursor" },
+                  arguments: [],
+                  directives: [],
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "endCursor" },
+                  arguments: [],
+                  directives: [],
+                },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "edges" },
+            arguments: [],
+            directives: [],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "cursor" },
+                  arguments: [],
+                  directives: [],
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "node" },
+                  arguments: [],
+                  directives: [],
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                        arguments: [],
+                        directives: [],
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "id" },
+                        arguments: [],
+                        directives: [],
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "status" },
+                        arguments: [],
+                        directives: [],
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "direction" },
+                        arguments: [],
+                        directives: [],
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "memo" },
+                        arguments: [],
+                        directives: [],
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "createdAt" },
+                        arguments: [],
+                        directives: [],
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "settlementAmount" },
+                        arguments: [],
+                        directives: [],
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "settlementFee" },
+                        arguments: [],
+                        directives: [],
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "settlementCurrency" },
+                        arguments: [],
+                        directives: [],
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "settlementPrice" },
+                        arguments: [],
+                        directives: [],
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "base" },
+                              arguments: [],
+                              directives: [],
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "offset" },
+                              arguments: [],
+                              directives: [],
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "currencyUnit" },
+                              arguments: [],
+                              directives: [],
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "formattedAmount" },
+                              arguments: [],
+                              directives: [],
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "initiationVia" },
+                        arguments: [],
+                        directives: [],
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "__typename" },
+                              arguments: [],
+                              directives: [],
+                            },
+                            {
+                              kind: "InlineFragment",
+                              typeCondition: {
+                                kind: "NamedType",
+                                name: { kind: "Name", value: "InitiationViaIntraLedger" },
+                              },
+                              directives: [],
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "counterPartyWalletId" },
+                                    arguments: [],
+                                    directives: [],
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "counterPartyUsername" },
+                                    arguments: [],
+                                    directives: [],
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "InlineFragment",
+                              typeCondition: {
+                                kind: "NamedType",
+                                name: { kind: "Name", value: "InitiationViaLn" },
+                              },
+                              directives: [],
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "paymentHash" },
+                                    arguments: [],
+                                    directives: [],
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "InlineFragment",
+                              typeCondition: {
+                                kind: "NamedType",
+                                name: { kind: "Name", value: "InitiationViaOnChain" },
+                              },
+                              directives: [],
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "address" },
+                                    arguments: [],
+                                    directives: [],
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "settlementVia" },
+                        arguments: [],
+                        directives: [],
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "__typename" },
+                              arguments: [],
+                              directives: [],
+                            },
+                            {
+                              kind: "InlineFragment",
+                              typeCondition: {
+                                kind: "NamedType",
+                                name: { kind: "Name", value: "SettlementViaIntraLedger" },
+                              },
+                              directives: [],
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "counterPartyWalletId" },
+                                    arguments: [],
+                                    directives: [],
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "counterPartyUsername" },
+                                    arguments: [],
+                                    directives: [],
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "InlineFragment",
+                              typeCondition: {
+                                kind: "NamedType",
+                                name: { kind: "Name", value: "SettlementViaLn" },
+                              },
+                              directives: [],
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "paymentSecret" },
+                                    arguments: [],
+                                    directives: [],
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "InlineFragment",
+                              typeCondition: {
+                                kind: "NamedType",
+                                name: { kind: "Name", value: "SettlementViaOnChain" },
+                              },
+                              directives: [],
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "transactionHash" },
+                                    arguments: [],
+                                    directives: [],
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
   ],
   loc: {
     start: 0,
-    end: 295,
+    end: 1330,
     source: {
-      body: "query transactionList($first: Int, $after: String, $last: Int, $before: String) {\n  me {\n    id\n    defaultAccount {\n      id\n      wallets {\n        id\n        transactions(first: $first, after: $after, last: $last, before: $before) {\n          ...TransactionList\n        }\n      }\n    }\n  }\n}\n",
+      body: "query transactionList($first: Int, $after: String, $last: Int, $before: String) {\n  me {\n    id\n    defaultAccount {\n      id\n      wallets {\n        id\n        transactions(first: $first, after: $after, last: $last, before: $before) {\n          ...TransactionList\n        }\n      }\n    }\n  }\n}\n\nfragment TransactionList on TransactionConnection {\n  pageInfo {\n    hasNextPage\n    hasPreviousPage\n    startCursor\n    endCursor\n  }\n  edges {\n    cursor\n    node {\n      __typename\n      id\n      status\n      direction\n      memo\n      createdAt\n\n      settlementAmount\n      settlementFee\n      settlementCurrency\n      settlementPrice {\n        base\n        offset\n        currencyUnit\n        formattedAmount\n      }\n\n      initiationVia {\n        __typename\n        ... on InitiationViaIntraLedger {\n          counterPartyWalletId\n          counterPartyUsername\n        }\n        ... on InitiationViaLn {\n          paymentHash\n        }\n        ... on InitiationViaOnChain {\n          address\n        }\n      }\n      settlementVia {\n        __typename\n        ... on SettlementViaIntraLedger {\n          counterPartyWalletId\n          counterPartyUsername\n        }\n        ... on SettlementViaLn {\n          paymentSecret\n        }\n        ... on SettlementViaOnChain {\n          transactionHash\n        }\n      }\n    }\n  }\n}\n",
       name: "GraphQL request",
       locationOffset: { line: 1, column: 1 },
     },
@@ -3737,12 +4827,338 @@ var transactionListForDefaultAccount = {
         ],
       },
     },
+    {
+      kind: "FragmentDefinition",
+      name: { kind: "Name", value: "TransactionList" },
+      typeCondition: {
+        kind: "NamedType",
+        name: { kind: "Name", value: "TransactionConnection" },
+      },
+      directives: [],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "pageInfo" },
+            arguments: [],
+            directives: [],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "hasNextPage" },
+                  arguments: [],
+                  directives: [],
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "hasPreviousPage" },
+                  arguments: [],
+                  directives: [],
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "startCursor" },
+                  arguments: [],
+                  directives: [],
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "endCursor" },
+                  arguments: [],
+                  directives: [],
+                },
+              ],
+            },
+          },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "edges" },
+            arguments: [],
+            directives: [],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "cursor" },
+                  arguments: [],
+                  directives: [],
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "node" },
+                  arguments: [],
+                  directives: [],
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                        arguments: [],
+                        directives: [],
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "id" },
+                        arguments: [],
+                        directives: [],
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "status" },
+                        arguments: [],
+                        directives: [],
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "direction" },
+                        arguments: [],
+                        directives: [],
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "memo" },
+                        arguments: [],
+                        directives: [],
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "createdAt" },
+                        arguments: [],
+                        directives: [],
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "settlementAmount" },
+                        arguments: [],
+                        directives: [],
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "settlementFee" },
+                        arguments: [],
+                        directives: [],
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "settlementCurrency" },
+                        arguments: [],
+                        directives: [],
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "settlementPrice" },
+                        arguments: [],
+                        directives: [],
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "base" },
+                              arguments: [],
+                              directives: [],
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "offset" },
+                              arguments: [],
+                              directives: [],
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "currencyUnit" },
+                              arguments: [],
+                              directives: [],
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "formattedAmount" },
+                              arguments: [],
+                              directives: [],
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "initiationVia" },
+                        arguments: [],
+                        directives: [],
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "__typename" },
+                              arguments: [],
+                              directives: [],
+                            },
+                            {
+                              kind: "InlineFragment",
+                              typeCondition: {
+                                kind: "NamedType",
+                                name: { kind: "Name", value: "InitiationViaIntraLedger" },
+                              },
+                              directives: [],
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "counterPartyWalletId" },
+                                    arguments: [],
+                                    directives: [],
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "counterPartyUsername" },
+                                    arguments: [],
+                                    directives: [],
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "InlineFragment",
+                              typeCondition: {
+                                kind: "NamedType",
+                                name: { kind: "Name", value: "InitiationViaLn" },
+                              },
+                              directives: [],
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "paymentHash" },
+                                    arguments: [],
+                                    directives: [],
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "InlineFragment",
+                              typeCondition: {
+                                kind: "NamedType",
+                                name: { kind: "Name", value: "InitiationViaOnChain" },
+                              },
+                              directives: [],
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "address" },
+                                    arguments: [],
+                                    directives: [],
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "settlementVia" },
+                        arguments: [],
+                        directives: [],
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "__typename" },
+                              arguments: [],
+                              directives: [],
+                            },
+                            {
+                              kind: "InlineFragment",
+                              typeCondition: {
+                                kind: "NamedType",
+                                name: { kind: "Name", value: "SettlementViaIntraLedger" },
+                              },
+                              directives: [],
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "counterPartyWalletId" },
+                                    arguments: [],
+                                    directives: [],
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "counterPartyUsername" },
+                                    arguments: [],
+                                    directives: [],
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "InlineFragment",
+                              typeCondition: {
+                                kind: "NamedType",
+                                name: { kind: "Name", value: "SettlementViaLn" },
+                              },
+                              directives: [],
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "paymentSecret" },
+                                    arguments: [],
+                                    directives: [],
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "InlineFragment",
+                              typeCondition: {
+                                kind: "NamedType",
+                                name: { kind: "Name", value: "SettlementViaOnChain" },
+                              },
+                              directives: [],
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "transactionHash" },
+                                    arguments: [],
+                                    directives: [],
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
   ],
   loc: {
     start: 0,
-    end: 295,
+    end: 1330,
     source: {
-      body: "query transactionList($first: Int, $after: String, $last: Int, $before: String) {\n  me {\n    id\n    defaultAccount {\n      id\n      wallets {\n        id\n        transactions(first: $first, after: $after, last: $last, before: $before) {\n          ...TransactionList\n        }\n      }\n    }\n  }\n}\n",
+      body: "query transactionList($first: Int, $after: String, $last: Int, $before: String) {\n  me {\n    id\n    defaultAccount {\n      id\n      wallets {\n        id\n        transactions(first: $first, after: $after, last: $last, before: $before) {\n          ...TransactionList\n        }\n      }\n    }\n  }\n}\n\nfragment TransactionList on TransactionConnection {\n  pageInfo {\n    hasNextPage\n    hasPreviousPage\n    startCursor\n    endCursor\n  }\n  edges {\n    cursor\n    node {\n      __typename\n      id\n      status\n      direction\n      memo\n      createdAt\n\n      settlementAmount\n      settlementFee\n      settlementCurrency\n      settlementPrice {\n        base\n        offset\n        currencyUnit\n        formattedAmount\n      }\n\n      initiationVia {\n        __typename\n        ... on InitiationViaIntraLedger {\n          counterPartyWalletId\n          counterPartyUsername\n        }\n        ... on InitiationViaLn {\n          paymentHash\n        }\n        ... on InitiationViaOnChain {\n          address\n        }\n      }\n      settlementVia {\n        __typename\n        ... on SettlementViaIntraLedger {\n          counterPartyWalletId\n          counterPartyUsername\n        }\n        ... on SettlementViaLn {\n          paymentSecret\n        }\n        ... on SettlementViaOnChain {\n          transactionHash\n        }\n      }\n    }\n  }\n}\n",
       name: "GraphQL request",
       locationOffset: { line: 1, column: 1 },
     },
