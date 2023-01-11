@@ -1,8 +1,0 @@
-query mobileVersions {
-  mobileVersions {
-    __typename
-    platform
-    currentSupported
-    minSupported
-  }
-}

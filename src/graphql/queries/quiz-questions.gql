@@ -1,6 +1,0 @@
-query quizQuestions {
-  quizQuestions {
-    id
-    earnAmount
-  }
-}
