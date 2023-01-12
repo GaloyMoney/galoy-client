@@ -46,7 +46,7 @@
   },
   "dependencies": {
     "@babel/cli": "^7.20.7",
-    "@babel/core": "^7.20.7"
+    "@babel/core": "^7.20.12"
   },
   "resolutions": {
     "**/**/json5": ">=2.2.2"
