@@ -47,7 +47,6 @@ const checkOnChain = (address: string, network: Network) => {
   const destination = parsePaymentDestination({
     destination: address,
     network,
-    pubKey: "",
     lnAddressDomains: [],
   })
 
@@ -63,7 +62,6 @@ const checkOnChainFail = (address: string, network: Network) => {
   const destination = parsePaymentDestination({
     destination: address,
     network,
-    pubKey: "",
     lnAddressDomains: [],
   })
   if (destination.paymentType !== PaymentType.Onchain) {
@@ -79,17 +77,15 @@ describe("parsePaymentDestination validations", () => {
     const result = parsePaymentDestination({
       destination: "",
       network: "mainnet",
-      pubKey: "",
       lnAddressDomains: [],
     })
-    expect(result.paymentType).toBe(PaymentType.Unknown)
+    expect(result.paymentType).toBe(PaymentType.NullInput)
   })
 
   it("validates an lnurl destination", () => {
     const result = parsePaymentDestination({
       destination: lnUrlInvoice,
       network: "mainnet",
-      pubKey: "",
       lnAddressDomains: [],
     })
     expect(result).toEqual(
@@ -105,7 +101,6 @@ describe("parsePaymentDestination validations", () => {
     const result = parsePaymentDestination({
       destination: lnUrlInvoiceWithFallback,
       network: "mainnet",
-      pubKey: "",
       lnAddressDomains: [],
     })
     expect(result).toEqual(
@@ -121,7 +116,6 @@ describe("parsePaymentDestination validations", () => {
     const result = parsePaymentDestination({
       destination: lnUrlInvoiceWithProtocol,
       network: "mainnet",
-      pubKey: "",
       lnAddressDomains: [],
     })
     expect(result).toEqual(
@@ -137,7 +131,6 @@ describe("parsePaymentDestination validations", () => {
     const result = parsePaymentDestination({
       destination: internalLnAddress,
       network: "mainnet",
-      pubKey: "",
       lnAddressDomains: ["pay.bbw.sv"],
     })
     expect(result).toEqual(
@@ -152,7 +145,6 @@ describe("parsePaymentDestination validations", () => {
     const result = parsePaymentDestination({
       destination: externalLnAddress,
       network: "mainnet",
-      pubKey: "",
       lnAddressDomains: ["pay.bbw.sv"],
     })
     expect(result).toEqual(
@@ -168,7 +160,6 @@ describe("parsePaymentDestination validations", () => {
     const result = parsePaymentDestination({
       destination: `lightning:${externalLnAddress}`,
       network: "mainnet",
-      pubKey: "",
       lnAddressDomains: ["pay.bbw.sv"],
     })
     expect(result).toEqual(
@@ -217,7 +208,6 @@ describe("parsePaymentDestination OnChain", () => {
     const paymentDestination = parsePaymentDestination({
       destination: addressAmount,
       network: "mainnet",
-      pubKey: "",
       lnAddressDomains: [],
     })
 
@@ -236,7 +226,6 @@ describe("parsePaymentDestination OnChain", () => {
     const paymentDestination = parsePaymentDestination({
       destination: addressNoAmount,
       network: "mainnet",
-      pubKey: "",
       lnAddressDomains: [],
     })
 
@@ -255,7 +244,6 @@ describe("parsePaymentDestination OnChain", () => {
     const paymentDestination = parsePaymentDestination({
       destination: addressLabel,
       network: "mainnet",
-      pubKey: "",
       lnAddressDomains: [],
     })
 
@@ -275,7 +263,6 @@ describe("parsePaymentDestination OnChain", () => {
     const paymentDestination = parsePaymentDestination({
       destination: addressMessage,
       network: "mainnet",
-      pubKey: "",
       lnAddressDomains: [],
     })
 
@@ -295,7 +282,6 @@ describe("parsePaymentDestination OnChain", () => {
     const paymentDestination = parsePaymentDestination({
       destination: addressLabelAndMessage,
       network: "mainnet",
-      pubKey: "",
       lnAddressDomains: [],
     })
 
@@ -315,7 +301,6 @@ describe("parsePaymentDestination OnChain", () => {
     const paymentDestination = parsePaymentDestination({
       destination: prefixAddress,
       network: "mainnet",
-      pubKey: "",
       lnAddressDomains: [],
     })
 
@@ -335,7 +320,6 @@ describe("parsePaymentDestination Lightning", () => {
       // lnInovice is a mainnet invoice
       destination: lnInvoice,
       network: "signet",
-      pubKey: "",
       lnAddressDomains: [],
     })
 
@@ -353,7 +337,6 @@ describe("parsePaymentDestination Lightning", () => {
       // lnInovice is a regtest invoice
       destination: lnbcrtInvoice,
       network: "signet",
-      pubKey: "",
       lnAddressDomains: [],
     })
 
@@ -371,7 +354,6 @@ describe("parsePaymentDestination Lightning", () => {
     const paymentDestination = parsePaymentDestination({
       destination: lntbInvoice,
       network: "mainnet",
-      pubKey: "",
       lnAddressDomains: [],
     })
 
@@ -389,7 +371,6 @@ describe("parsePaymentDestination Lightning", () => {
     const paymentDestination = parsePaymentDestination({
       destination: lnbcrtInvoice,
       network: "mainnet",
-      pubKey: "",
       lnAddressDomains: [],
     })
 
@@ -407,7 +388,6 @@ describe("parsePaymentDestination Lightning", () => {
     const paymentDestination = parsePaymentDestination({
       destination: lntbInvoice,
       network: "regtest",
-      pubKey: "",
       lnAddressDomains: [],
     })
 
@@ -425,7 +405,6 @@ describe("parsePaymentDestination Lightning", () => {
     const paymentDestination = parsePaymentDestination({
       destination: lnInvoice,
       network: "regtest",
-      pubKey: "",
       lnAddressDomains: [],
     })
 
@@ -444,7 +423,6 @@ describe("parsePaymentDestination Lightning", () => {
     const paymentDestination = parsePaymentDestination({
       destination: address,
       network: "mainnet",
-      pubKey: "",
       lnAddressDomains: [],
     })
 
@@ -463,7 +441,6 @@ describe("parsePaymentDestination Lightning", () => {
     const paymentDestination = parsePaymentDestination({
       destination: address,
       network: "mainnet",
-      pubKey: "",
       lnAddressDomains: [],
     })
 
@@ -480,7 +457,6 @@ describe("parsePaymentDestination Lightning", () => {
     const paymentDestination = parsePaymentDestination({
       destination: lnInvoice,
       network: "mainnet",
-      pubKey: "",
       lnAddressDomains: [],
     })
 
@@ -497,7 +473,6 @@ describe("parsePaymentDestination Lightning", () => {
     const paymentDestination = parsePaymentDestination({
       destination: expiredLNInvoice,
       network: "mainnet",
-      pubKey: "",
       lnAddressDomains: [],
     })
 
@@ -515,7 +490,6 @@ describe("parsePaymentDestination Lightning", () => {
     const paymentDestination = parsePaymentDestination({
       destination: address,
       network: "mainnet",
-      pubKey: "",
       lnAddressDomains: [],
     })
 
@@ -533,7 +507,6 @@ describe("parsePaymentDestination IntraLedger handles", () => {
     const paymentDestination = parsePaymentDestination({
       destination: "Nakamoto",
       network: "mainnet",
-      pubKey: "",
       lnAddressDomains: [],
     })
     expect(paymentDestination).toEqual(
@@ -548,7 +521,6 @@ describe("parsePaymentDestination IntraLedger handles", () => {
     const paymentDestination = parsePaymentDestination({
       destination: "https://some.where/userName",
       network: "mainnet",
-      pubKey: "",
       lnAddressDomains: [],
     })
     expect(paymentDestination).toEqual(
