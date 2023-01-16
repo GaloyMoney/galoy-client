@@ -73,13 +73,28 @@ const checkOnChainFail = (address: string, network: Network) => {
 }
 
 describe("parsePaymentDestination validations", () => {
-  it("classifies empty input as unknown", () => {
+  it("classifies empty input as nullInput", () => {
     const result = parsePaymentDestination({
       destination: "",
       network: "mainnet",
       lnAddressDomains: [],
     })
     expect(result.paymentType).toBe(PaymentType.NullInput)
+  })
+
+  it("test for invalidChecksum", () => {
+    const result = parsePaymentDestination({
+      destination:
+        "lntb1p3u2vt8pp5xhw2v5vl0ae3e4xqyjr8jkmv4ngzyk27dgpz9ftvmq2v5k2lwj3qdqqcqzpuxqyz5vqsp5adrt4eszrdke3efv2rv7m972ct2p3ersmcq7jntkdqm5zq6ffhyq9qyyssq5hw60yjskzu8067zveew58qxraahs73zp4l9x0yh7t8hl3ah0pe8u2wuzp7uk0tkq5luyx49rdwtj8y9tjap27un45rgakfz5x4cvqcprsl5jgs",
+      lnAddressDomains: ["ln.bitcoinbeach.com", "pay.bbw.sv"],
+      network: "signet",
+    })
+
+    expect(result).toEqual({
+      valid: false,
+      paymentType: "lightning",
+      invalidReason: InvalidLightningDestinationReason.InvalidChecksum,
+    })
   })
 
   it("validates an lnurl destination", () => {

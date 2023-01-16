@@ -109,6 +109,7 @@ export enum InvalidLightningDestinationReason {
   InvoiceExpired = "InvoiceExpired",
   WrongNetwork = "WrongNetwork",
   Unknown = "Unknown",
+  InvalidChecksum = "InvalidChecksum",
 }
 
 export type LightningPaymentDestination =
@@ -368,6 +369,15 @@ const getLightningPayResponse = ({
   try {
     payReq = bolt11.decode(lnProtocol, parseBolt11Network(network))
   } catch (err) {
+    const message = err.message
+
+    if (message.indexOf("Invalid checksum for") !== -1) {
+      return {
+        valid: false,
+        paymentType,
+        invalidReason: InvalidLightningDestinationReason.InvalidChecksum,
+      }
+    }
     return {
       valid: false,
       paymentType,
@@ -488,6 +498,8 @@ export const parsePaymentDestination = ({
     destinationWithoutProtocol,
     rawDestination: destination,
   })
+
+  console.log("paymentType", paymentType)
 
   switch (paymentType) {
     case PaymentType.Lnurl:
