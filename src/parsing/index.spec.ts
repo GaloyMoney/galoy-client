@@ -36,7 +36,6 @@ const checkOnChain = (address: string, network: Network) => {
   const { valid, paymentType } = parsePaymentDestination({
     destination: address,
     network,
-    pubKey: "",
   })
   expect(valid).toBeTruthy()
   expect(paymentType).toBe("onchain")
@@ -46,7 +45,6 @@ const checkOnChainFail = (address: string, network: Network) => {
   const { valid } = parsePaymentDestination({
     destination: address,
     network,
-    pubKey: "",
   })
   expect(valid).toBeFalsy()
 }
@@ -56,7 +54,7 @@ describe("parsePaymentDestination validations", () => {
     const result = parsePaymentDestination({
       destination: "",
       network: "mainnet",
-      pubKey: "",
+
     })
     expect(result.valid).toBeFalsy()
   })
@@ -65,7 +63,7 @@ describe("parsePaymentDestination validations", () => {
     const result = parsePaymentDestination({
       destination: lnUrlInvoice,
       network: "mainnet",
-      pubKey: "",
+
     })
     expect(result.valid).toBeTruthy()
     expect(result.paymentType).toBe("lnurl")
@@ -109,7 +107,7 @@ describe("parsePaymentDestination OnChain", () => {
     const { valid, paymentType, amount } = parsePaymentDestination({
       destination: addressAmount,
       network: "mainnet",
-      pubKey: "",
+
     })
     expect(valid).toBeTruthy()
     expect(paymentType).toBe("onchain")
@@ -122,7 +120,7 @@ describe("parsePaymentDestination OnChain", () => {
     const { valid, paymentType, memo } = parsePaymentDestination({
       destination: addressLabel,
       network: "mainnet",
-      pubKey: "",
+
     })
     expect(valid).toBeTruthy()
     expect(paymentType).toBe("onchain")
@@ -136,7 +134,7 @@ describe("parsePaymentDestination OnChain", () => {
     const { valid, paymentType, memo } = parsePaymentDestination({
       destination: addressMessage,
       network: "mainnet",
-      pubKey: "",
+
     })
     expect(valid).toBeTruthy()
     expect(paymentType).toBe("onchain")
@@ -150,7 +148,7 @@ describe("parsePaymentDestination OnChain", () => {
     const { valid, paymentType, memo } = parsePaymentDestination({
       destination: addressLabelAndMessage,
       network: "mainnet",
-      pubKey: "",
+
     })
     expect(valid).toBeTruthy()
     expect(paymentType).toBe("onchain")
@@ -163,7 +161,7 @@ describe("parsePaymentDestination OnChain", () => {
     const { valid, paymentType, amount } = parsePaymentDestination({
       destination: addressNoAmount,
       network: "mainnet",
-      pubKey: "",
+
     })
     expect(valid).toBeTruthy()
     expect(paymentType).toBe("onchain")
@@ -177,7 +175,7 @@ describe("parsePaymentDestination OnChain", () => {
     const { valid, paymentType, amount } = parsePaymentDestination({
       destination: prefixAddress,
       network: "mainnet",
-      pubKey: "",
+
     })
     expect(valid).toBeTruthy()
     expect(paymentType).toBe("onchain")
@@ -191,7 +189,7 @@ describe("parsePaymentDestination Lightning", () => {
       // lnInovice is a mainnet invoice
       destination: lnInvoice,
       network: "signet",
-      pubKey: "",
+
     })
     expect(result.valid).toBeFalsy()
     expect(result.paymentType).toBe("lightning")
@@ -203,7 +201,7 @@ describe("parsePaymentDestination Lightning", () => {
       // lnInovice is a regtest invoice
       destination: lnbcrtInvoice,
       network: "signet",
-      pubKey: "",
+
     })
     expect(result.valid).toBeFalsy()
     expect(result.paymentType).toBe("lightning")
@@ -215,7 +213,7 @@ describe("parsePaymentDestination Lightning", () => {
     const result = parsePaymentDestination({
       destination: lntbInvoice,
       network: "mainnet",
-      pubKey: "",
+
     })
     expect(result.valid).toBeFalsy()
     expect(result.paymentType).toBe("lightning")
@@ -226,7 +224,7 @@ describe("parsePaymentDestination Lightning", () => {
     const result = parsePaymentDestination({
       destination: lnbcrtInvoice,
       network: "mainnet",
-      pubKey: "",
+
     })
     expect(result.valid).toBeFalsy()
     expect(result.paymentType).toBe("lightning")
@@ -237,7 +235,7 @@ describe("parsePaymentDestination Lightning", () => {
     const result = parsePaymentDestination({
       destination: lntbInvoice,
       network: "regtest",
-      pubKey: "",
+
     })
     expect(result.valid).toBeFalsy()
     expect(result.paymentType).toBe("lightning")
@@ -248,7 +246,7 @@ describe("parsePaymentDestination Lightning", () => {
     const result = parsePaymentDestination({
       destination: lnInvoice,
       network: "regtest",
-      pubKey: "",
+
     })
     expect(result.valid).toBeFalsy()
     expect(result.paymentType).toBe("lightning")
@@ -260,7 +258,7 @@ describe("parsePaymentDestination Lightning", () => {
     const { valid, paymentType, errorMessage } = parsePaymentDestination({
       destination: address,
       network: "mainnet",
-      pubKey: "",
+
     })
     expect(valid).toBeTruthy()
     expect(paymentType).toBe("lightning")
@@ -271,7 +269,7 @@ describe("parsePaymentDestination Lightning", () => {
     const { valid, paymentType, errorMessage } = parsePaymentDestination({
       destination: lnInvoice,
       network: "mainnet",
-      pubKey: "",
+
     })
     expect(valid).toBeTruthy()
     expect(paymentType).toBe("lightning")
@@ -282,7 +280,7 @@ describe("parsePaymentDestination Lightning", () => {
     const { valid, paymentType, errorMessage } = parsePaymentDestination({
       destination: expiredLNInvoice,
       network: "mainnet",
-      pubKey: "",
+
     })
     expect(valid).toBeFalsy()
     expect(paymentType).toBe("lightning")
@@ -295,7 +293,7 @@ describe("parsePaymentDestination Lightning", () => {
     const { valid, paymentType, errorMessage } = parsePaymentDestination({
       destination: address,
       network: "mainnet",
-      pubKey: "",
+
     })
 
     expect(valid).toBeTruthy()
@@ -309,7 +307,7 @@ describe("parsePaymentDestination IntraLedger handles", () => {
     const { valid, paymentType, handle } = parsePaymentDestination({
       destination: "Nakamoto",
       network: "mainnet",
-      pubKey: "",
+
     })
     expect(valid).toBeTruthy()
     expect(paymentType).toBe("intraledger")
@@ -320,7 +318,7 @@ describe("parsePaymentDestination IntraLedger handles", () => {
     const { valid, paymentType, handle } = parsePaymentDestination({
       destination: "https://some.where/userName",
       network: "mainnet",
-      pubKey: "",
+
     })
     expect(valid).toBeTruthy()
     expect(paymentType).toBe("intraledger")

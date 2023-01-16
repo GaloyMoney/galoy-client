@@ -123,7 +123,6 @@ const parseAmount = (txt: string): number => {
 type ParsePaymentDestinationArgs = {
   destination: string
   network: Network
-  pubKey: string
 }
 
 const inputDataToObject = (data: string): any => {
@@ -183,11 +182,9 @@ const getLNURLPayResponse = ({
 const getLightningPayResponse = ({
   destination,
   network,
-  pubKey,
 }: {
   destination: string
   network: Network
-  pubKey: string
 }): ValidPaymentResponse => {
   const paymentType = "lightning"
   const { protocol, destinationText } = getProtocolAndData(destination)
@@ -221,8 +218,6 @@ const getLightningPayResponse = ({
     }
   }
 
-  const sameNode = pubKey === getDestination(payReq)
-
   const amount =
     payReq.satoshis || payReq.millisatoshis
       ? payReq.satoshis ?? Number(payReq.millisatoshis) / 1000
@@ -232,7 +227,6 @@ const getLightningPayResponse = ({
     return {
       valid: false,
       paymentType,
-      sameNode,
       amount,
       paymentRequest: destinationText,
       errorMessage: "invoice has expired",
@@ -243,7 +237,6 @@ const getLightningPayResponse = ({
   return {
     valid: true,
     paymentRequest: destinationText,
-    sameNode,
     amount,
     memo,
     paymentType,
@@ -331,7 +324,6 @@ const getIntraLedgerPayResponse = ({
 export const parsePaymentDestination = ({
   destination,
   network,
-  pubKey,
 }: ParsePaymentDestinationArgs): ValidPaymentResponse => {
   if (!destination) {
     return { valid: false }
@@ -345,7 +337,7 @@ export const parsePaymentDestination = ({
     case "lnurl":
       return getLNURLPayResponse({ destinationText })
     case "lightning":
-      return getLightningPayResponse({ destination, network, pubKey })
+      return getLightningPayResponse({ destination, network })
     case "onchain":
       return getOnChainPayResponse({ destinationText, network })
     case "intraledger":
