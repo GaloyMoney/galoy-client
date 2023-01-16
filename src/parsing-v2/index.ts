@@ -77,11 +77,16 @@ export enum PaymentType {
   Onchain = "onchain",
   Lnurl = "lnurl",
   Unified = "unified",
+  NullInput = "nullinput",
   Unknown = "unknown",
 }
 
 export type UnknownPaymentDestination = {
   paymentType: PaymentType.Unknown
+}
+
+export type NullInputPaymentDestination = {
+  paymentType: PaymentType.NullInput
 }
 
 export enum InvalidLnurlPaymentDestinationReason {
@@ -113,7 +118,6 @@ export type LightningPaymentDestination =
       paymentRequest: string
       amount?: number | undefined
       memo?: string | undefined
-      sameNode: boolean
     }
   | {
       paymentType: PaymentType.Lightning
@@ -148,6 +152,7 @@ export type IntraledgerPaymentDestination = {
 
 export type ParsedPaymentDestination =
   | UnknownPaymentDestination
+  | NullInputPaymentDestination
   | LnurlPaymentDestination
   | LightningPaymentDestination
   | OnchainPaymentDestination
@@ -191,7 +196,6 @@ const parseAmount = (txt: string): number => {
 type ParsePaymentDestinationArgs = {
   destination: string
   network: Network
-  pubKey: string
   lnAddressDomains: string[]
 }
 
@@ -338,11 +342,9 @@ const getLNURLPayResponse = ({
 const getLightningPayResponse = ({
   destination,
   network,
-  pubKey,
 }: {
   destination: string
   network: Network
-  pubKey: string
 }): LightningPaymentDestination => {
   const paymentType = PaymentType.Lightning
   const { destinationWithoutProtocol } = getProtocolAndData(destination)
@@ -373,8 +375,6 @@ const getLightningPayResponse = ({
     }
   }
 
-  const sameNode = pubKey === getDestination(payReq)
-
   const amount =
     payReq.satoshis || payReq.millisatoshis
       ? payReq.satoshis ?? Number(payReq.millisatoshis) / 1000
@@ -392,7 +392,6 @@ const getLightningPayResponse = ({
   return {
     valid: true,
     paymentRequest: lnProtocol,
-    sameNode,
     amount,
     memo,
     paymentType,
@@ -456,17 +455,14 @@ const getUnifiedPayResponse = ({
   destination,
   destinationWithoutProtocol,
   network,
-  pubKey,
 }: {
   destination: string
   destinationWithoutProtocol: string
   network: Network
-  pubKey: string
 }): OnchainPaymentDestination | LightningPaymentDestination => {
   const lightningPaymentResponse = getLightningPayResponse({
     destination,
     network,
-    pubKey,
   })
 
   if (lightningPaymentResponse.valid) {
@@ -479,11 +475,10 @@ const getUnifiedPayResponse = ({
 export const parsePaymentDestination = ({
   destination,
   network,
-  pubKey,
   lnAddressDomains,
 }: ParsePaymentDestinationArgs): ParsedPaymentDestination => {
   if (!destination) {
-    return { paymentType: PaymentType.Unknown }
+    return { paymentType: PaymentType.NullInput }
   }
 
   const { protocol, destinationWithoutProtocol } = getProtocolAndData(destination)
@@ -501,7 +496,7 @@ export const parsePaymentDestination = ({
         destination: protocol === "lightning" ? destinationWithoutProtocol : destination,
       })
     case PaymentType.Lightning:
-      return getLightningPayResponse({ destination, network, pubKey })
+      return getLightningPayResponse({ destination, network })
     case PaymentType.Onchain:
       return getOnChainPayResponse({ destinationWithoutProtocol, network })
     case PaymentType.Intraledger:
@@ -511,9 +506,10 @@ export const parsePaymentDestination = ({
         destination,
         destinationWithoutProtocol,
         network,
-        pubKey,
       })
     case PaymentType.Unknown:
       return { paymentType: PaymentType.Unknown }
   }
+
+  return { paymentType: PaymentType.Unknown }
 }
