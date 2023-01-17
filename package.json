@@ -36,7 +36,7 @@
     "eslint-plugin-import": "^2.27.4",
     "jest": "^28.1.2",
     "lnurl-pay": "^2.0.1",
-    "prettier": "^2.7.1",
+    "prettier": "^2.8.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "ts-jest": "^28.0.5",
