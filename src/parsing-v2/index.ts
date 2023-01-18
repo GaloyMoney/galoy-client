@@ -71,82 +71,93 @@ export const getHashFromInvoice = (
   }
 }
 
-export enum PaymentType {
-  Lightning = "lightning",
-  Intraledger = "intraledger",
-  Onchain = "onchain",
-  Lnurl = "lnurl",
-  Unified = "unified",
-  NullInput = "nullinput",
-  Unknown = "unknown",
-}
+export const PaymentType = {
+  Lightning: "lightning",
+  Intraledger: "intraledger",
+  Onchain: "onchain",
+  Lnurl: "lnurl",
+  NullInput: "nullInput",
+  Unified: "unified",
+  Unknown: "unknown",
+} as const
+
+export type PaymentType = typeof PaymentType[keyof typeof PaymentType]
 
 export type UnknownPaymentDestination = {
-  paymentType: PaymentType.Unknown
+  paymentType: typeof PaymentType.Unknown
 }
 
 export type NullInputPaymentDestination = {
-  paymentType: PaymentType.NullInput
+  paymentType: typeof PaymentType.NullInput
 }
 
-export enum InvalidLnurlPaymentDestinationReason {
-  Unknown = "Unknown",
+export const InvalidLnurlPaymentDestinationReason = {
+  Unknown: "unknown",
 }
+
+export type InvalidLnurlPaymentDestinationReason =
+  typeof InvalidLnurlPaymentDestinationReason[keyof typeof InvalidLnurlPaymentDestinationReason]
 
 export type LnurlPaymentDestination =
   | {
-      paymentType: PaymentType.Lnurl
+      paymentType: typeof PaymentType.Lnurl
       valid: true
       lnurl: string
     }
   | {
-      paymentType: PaymentType.Lnurl
+      paymentType: typeof PaymentType.Lnurl
       valid: false
       invalidReason: InvalidLnurlPaymentDestinationReason
     }
 
-export enum InvalidLightningDestinationReason {
-  InvoiceExpired = "InvoiceExpired",
-  WrongNetwork = "WrongNetwork",
-  Unknown = "Unknown",
-}
+export const InvalidLightningDestinationReason = {
+  InvoiceExpired: "InvoiceExpired",
+  WrongNetwork: "WrongNetwork",
+  Unknown: "Unknown",
+} as const
+
+export type InvalidLightningDestinationReason =
+  typeof InvalidLightningDestinationReason[keyof typeof InvalidLightningDestinationReason]
 
 export type LightningPaymentDestination =
   | {
-      paymentType: PaymentType.Lightning
+      paymentType: typeof PaymentType.Lightning
       valid: true
       paymentRequest: string
       amount?: number | undefined
       memo?: string | undefined
     }
   | {
-      paymentType: PaymentType.Lightning
+      paymentType: typeof PaymentType.Lightning
       valid: false
       invalidReason: InvalidLightningDestinationReason
     }
 
-export enum InvalidOnchainDestinationReason {
-  WrongNetwork = "WrongNetwork",
-  Unknown = "Unknown",
-  InvalidAmount = "InvalidAmount",
-}
+export const InvalidOnchainDestinationReason = {
+  WrongNetwork: "WrongNetwork",
+  Unknown: "Unknown",
+  InvalidAmount: "InvalidAmount",
+} as const
+
+export type InvalidOnchainDestinationReason =
+  typeof InvalidOnchainDestinationReason[keyof typeof InvalidOnchainDestinationReason]
 
 export type OnchainPaymentDestination =
   | {
-      paymentType: PaymentType.Onchain
+      paymentType: typeof PaymentType.Onchain
       valid: true
       address: string
       amount?: number | undefined
       memo?: string | undefined
     }
   | {
-      paymentType: PaymentType.Onchain
+      paymentType: typeof PaymentType.Onchain
       valid: false
       invalidReason: InvalidOnchainDestinationReason
     }
 
 export type IntraledgerPaymentDestination = {
-  paymentType: PaymentType.Intraledger
+  paymentType: typeof PaymentType.Intraledger
   handle: string
 }
 
