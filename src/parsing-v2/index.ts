@@ -71,44 +71,51 @@ export const getHashFromInvoice = (
   }
 }
 
-export enum PaymentType {
-  Lightning = "lightning",
-  Intraledger = "intraledger",
-  Onchain = "onchain",
-  Lnurl = "lnurl",
-  Unified = "unified",
-  Unknown = "unknown",
-}
+export const ParsedPaymentType = {
+  Lightning: "lightning",
+  Intraledger: "intraledger",
+  Onchain: "onchain",
+  Lnurl: "lnurl",
+  Unified: "unified",
+  Unknown: "unknown",
+} as const
+
+export type ParsedPaymentType = typeof ParsedPaymentType[keyof typeof ParsedPaymentType]
 
 export type UnknownPaymentDestination = {
-  paymentType: PaymentType.Unknown
+  paymentType: "unknown"
 }
 
-export enum InvalidLnurlPaymentDestinationReason {
-  Unknown = "Unknown",
+export const InvalidLnurlPaymentDestinationReason = {
+  Unknown: "unknown"
 }
+
+export type InvalidLnurlPaymentDestinationReason = typeof InvalidLnurlPaymentDestinationReason[keyof typeof InvalidLnurlPaymentDestinationReason]
+
 
 export type LnurlPaymentDestination =
   | {
-      paymentType: PaymentType.Lnurl
+      paymentType: "lnurl"
       valid: true
       lnurl: string
     }
   | {
-      paymentType: PaymentType.Lnurl
+      paymentType: "lnurl"
       valid: false
       invalidReason: InvalidLnurlPaymentDestinationReason
     }
 
-export enum InvalidLightningDestinationReason {
-  InvoiceExpired = "InvoiceExpired",
-  WrongNetwork = "WrongNetwork",
-  Unknown = "Unknown",
-}
+export const InvalidLightningDestinationReason = {
+  InvoiceExpired: "InvoiceExpired",
+  WrongNetwork: "WrongNetwork",
+  Unknown: "Unknown",
+} as const
+
+export type InvalidLightningDestinationReason = typeof InvalidLightningDestinationReason[keyof typeof InvalidLightningDestinationReason]
 
 export type LightningPaymentDestination =
   | {
-      paymentType: PaymentType.Lightning
+      paymentType: "lightning"
       valid: true
       paymentRequest: string
       amount?: number | undefined
@@ -116,33 +123,35 @@ export type LightningPaymentDestination =
       sameNode: boolean
     }
   | {
-      paymentType: PaymentType.Lightning
+      paymentType: "lightning"
       valid: false
       invalidReason: InvalidLightningDestinationReason
     }
 
-export enum InvalidOnchainDestinationReason {
-  WrongNetwork = "WrongNetwork",
-  Unknown = "Unknown",
-  InvalidAmount = "InvalidAmount",
-}
+export const InvalidOnchainDestinationReason = {
+  WrongNetwork: "WrongNetwork",
+  Unknown: "Unknown",
+  InvalidAmount: "InvalidAmount",
+} as const
+
+export type InvalidOnchainDestinationReason = typeof InvalidOnchainDestinationReason[keyof typeof InvalidOnchainDestinationReason]
 
 export type OnchainPaymentDestination =
   | {
-      paymentType: PaymentType.Onchain
+      paymentType: "onchain"
       valid: true
       address: string
       amount?: number | undefined
       memo?: string | undefined
     }
   | {
-      paymentType: PaymentType.Onchain
+      paymentType: "onchain"
       valid: false
       invalidReason: InvalidOnchainDestinationReason
     }
 
 export type IntraledgerPaymentDestination = {
-  paymentType: PaymentType.Intraledger
+  paymentType: "intraledger"
   handle: string
 }
 
@@ -221,7 +230,7 @@ const getPaymentType = ({
   protocol: string
   destinationWithoutProtocol: string
   rawDestination: string
-}): PaymentType => {
+}): ParsedPaymentType => {
   // As far as the client is concerned, lnurl is the same as lightning address
   if (
     utils.parseLnUrl(
@@ -231,22 +240,22 @@ const getPaymentType = ({
       protocol === "lightning" ? destinationWithoutProtocol : rawDestination,
     )
   ) {
-    return PaymentType.Lnurl
+    return ParsedPaymentType.Lnurl
   }
 
   if (destinationWithoutProtocol.match(/^ln(bc|tb).{50,}/iu)) {
-    return PaymentType.Lightning
+    return ParsedPaymentType.Lightning
   }
 
   if (destinationWithoutProtocol && getLNParam(destinationWithoutProtocol)) {
-    return PaymentType.Unified
+    return ParsedPaymentType.Unified
   }
 
   if (
     protocol === "onchain" ||
     destinationWithoutProtocol.match(/^(1|3|bc1|tb1|bcrt1)/iu)
   ) {
-    return PaymentType.Onchain
+    return ParsedPaymentType.Onchain
   }
 
   const handle = protocol.match(/^(http|\/\/)/iu)
@@ -256,10 +265,10 @@ const getPaymentType = ({
     : destinationWithoutProtocol
 
   if (handle?.match(/(?!^(1|3|bc1|lnbc1))^[0-9a-z_]{3,50}$/iu)) {
-    return PaymentType.Intraledger
+    return ParsedPaymentType.Intraledger
   }
 
-  return PaymentType.Unknown
+  return ParsedPaymentType.Unknown
 }
 
 const getIntraLedgerPayResponse = ({
@@ -269,7 +278,7 @@ const getIntraLedgerPayResponse = ({
   protocol: string
   destinationWithoutProtocol: string
 }): IntraledgerPaymentDestination | UnknownPaymentDestination => {
-  const paymentType = PaymentType.Intraledger
+  const paymentType = ParsedPaymentType.Intraledger
 
   const handle = protocol.match(/^(http|\/\/)/iu)
     ? destinationWithoutProtocol.split("/")[
@@ -285,7 +294,7 @@ const getIntraLedgerPayResponse = ({
   }
 
   return {
-    paymentType: PaymentType.Unknown,
+    paymentType: ParsedPaymentType.Unknown,
   }
 }
 
@@ -314,7 +323,7 @@ const getLNURLPayResponse = ({
 
     return {
       valid: true,
-      paymentType: PaymentType.Lnurl,
+      paymentType: ParsedPaymentType.Lnurl,
       lnurl: `${username}@${domain}`,
     }
   }
@@ -324,14 +333,14 @@ const getLNURLPayResponse = ({
   if (lnurl) {
     return {
       valid: true,
-      paymentType: PaymentType.Lnurl,
+      paymentType: ParsedPaymentType.Lnurl,
       lnurl,
     }
   }
 
   return {
     valid: false,
-    paymentType: PaymentType.Unknown,
+    paymentType: ParsedPaymentType.Unknown,
   }
 }
 
@@ -344,7 +353,7 @@ const getLightningPayResponse = ({
   network: Network
   pubKey: string
 }): LightningPaymentDestination => {
-  const paymentType = PaymentType.Lightning
+  const paymentType = ParsedPaymentType.Lightning
   const { destinationWithoutProtocol } = getProtocolAndData(destination)
   const lnProtocol =
     getLNParam(destination)?.toLowerCase() || destinationWithoutProtocol.toLowerCase()
@@ -406,7 +415,7 @@ const getOnChainPayResponse = ({
   destinationWithoutProtocol: string
   network: Network
 }): OnchainPaymentDestination => {
-  const paymentType = PaymentType.Onchain
+  const paymentType = ParsedPaymentType.Onchain
   try {
     const decodedData = inputDataToObject(destinationWithoutProtocol)
 
@@ -483,7 +492,7 @@ export const parsePaymentDestination = ({
   lnAddressDomains,
 }: ParsePaymentDestinationArgs): ParsedPaymentDestination => {
   if (!destination) {
-    return { paymentType: PaymentType.Unknown }
+    return { paymentType: ParsedPaymentType.Unknown }
   }
 
   const { protocol, destinationWithoutProtocol } = getProtocolAndData(destination)
@@ -495,25 +504,25 @@ export const parsePaymentDestination = ({
   })
 
   switch (paymentType) {
-    case PaymentType.Lnurl:
+    case ParsedPaymentType.Lnurl:
       return getLNURLPayResponse({
         lnAddressDomains,
         destination: protocol === "lightning" ? destinationWithoutProtocol : destination,
       })
-    case PaymentType.Lightning:
+    case ParsedPaymentType.Lightning:
       return getLightningPayResponse({ destination, network, pubKey })
-    case PaymentType.Onchain:
+    case ParsedPaymentType.Onchain:
       return getOnChainPayResponse({ destinationWithoutProtocol, network })
-    case PaymentType.Intraledger:
+    case ParsedPaymentType.Intraledger:
       return getIntraLedgerPayResponse({ protocol, destinationWithoutProtocol })
-    case PaymentType.Unified:
+    case ParsedPaymentType.Unified:
       return getUnifiedPayResponse({
         destination,
         destinationWithoutProtocol,
         network,
         pubKey,
       })
-    case PaymentType.Unknown:
-      return { paymentType: PaymentType.Unknown }
+    case ParsedPaymentType.Unknown:
+      return { paymentType: ParsedPaymentType.Unknown }
   }
 }

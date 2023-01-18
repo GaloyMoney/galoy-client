@@ -4,7 +4,7 @@ import {
   Network,
   OnchainPaymentDestination,
   parsePaymentDestination,
-  PaymentType,
+  ParsedPaymentType,
 } from "."
 
 beforeAll(() => {
@@ -51,7 +51,7 @@ const checkOnChain = (address: string, network: Network) => {
     lnAddressDomains: [],
   })
 
-  if (destination.paymentType !== PaymentType.Onchain) {
+  if (destination.paymentType !== ParsedPaymentType.Onchain) {
     throw Error("Expected onchain payment")
   }
   if (destination.valid !== true) {
@@ -66,7 +66,7 @@ const checkOnChainFail = (address: string, network: Network) => {
     pubKey: "",
     lnAddressDomains: [],
   })
-  if (destination.paymentType !== PaymentType.Onchain) {
+  if (destination.paymentType !== ParsedPaymentType.Onchain) {
     throw Error("Expected onchain payment")
   }
   if (destination.valid !== false) {
@@ -82,7 +82,7 @@ describe("parsePaymentDestination validations", () => {
       pubKey: "",
       lnAddressDomains: [],
     })
-    expect(result.paymentType).toBe(PaymentType.Unknown)
+    expect(result.paymentType).toBe(ParsedPaymentType.Unknown)
   })
 
   it("validates an lnurl destination", () => {
@@ -94,7 +94,7 @@ describe("parsePaymentDestination validations", () => {
     })
     expect(result).toEqual(
       expect.objectContaining({
-        paymentType: PaymentType.Lnurl,
+        paymentType: ParsedPaymentType.Lnurl,
         valid: true,
         lnurl: lnUrlInvoice,
       }),
@@ -110,7 +110,7 @@ describe("parsePaymentDestination validations", () => {
     })
     expect(result).toEqual(
       expect.objectContaining({
-        paymentType: PaymentType.Lnurl,
+        paymentType: ParsedPaymentType.Lnurl,
         valid: true,
         lnurl: lnUrlInvoice,
       }),
@@ -126,7 +126,7 @@ describe("parsePaymentDestination validations", () => {
     })
     expect(result).toEqual(
       expect.objectContaining({
-        paymentType: PaymentType.Lnurl,
+        paymentType: ParsedPaymentType.Lnurl,
         valid: true,
         lnurl: lnUrlInvoice,
       }),
@@ -142,7 +142,7 @@ describe("parsePaymentDestination validations", () => {
     })
     expect(result).toEqual(
       expect.objectContaining({
-        paymentType: PaymentType.Intraledger,
+        paymentType: ParsedPaymentType.Intraledger,
         handle: "username",
       }),
     )
@@ -157,7 +157,7 @@ describe("parsePaymentDestination validations", () => {
     })
     expect(result).toEqual(
       expect.objectContaining({
-        paymentType: PaymentType.Lnurl,
+        paymentType: ParsedPaymentType.Lnurl,
         valid: true,
         lnurl: externalLnAddress,
       }),
@@ -173,7 +173,7 @@ describe("parsePaymentDestination validations", () => {
     })
     expect(result).toEqual(
       expect.objectContaining({
-        paymentType: PaymentType.Lnurl,
+        paymentType: ParsedPaymentType.Lnurl,
         valid: true,
         lnurl: externalLnAddress,
       }),
@@ -223,7 +223,7 @@ describe("parsePaymentDestination OnChain", () => {
 
     expect(paymentDestination).toEqual(
       expect.objectContaining({
-        paymentType: PaymentType.Onchain,
+        paymentType: ParsedPaymentType.Onchain,
         valid: true,
         amount: 122000,
       }),
@@ -242,7 +242,7 @@ describe("parsePaymentDestination OnChain", () => {
 
     expect(paymentDestination).toEqual(
       expect.objectContaining({
-        paymentType: PaymentType.Onchain,
+        paymentType: ParsedPaymentType.Onchain,
         valid: true,
         amount: undefined,
       }),
@@ -261,7 +261,7 @@ describe("parsePaymentDestination OnChain", () => {
 
     expect(paymentDestination).toEqual(
       expect.objectContaining({
-        paymentType: PaymentType.Onchain,
+        paymentType: ParsedPaymentType.Onchain,
         valid: true,
         memo: "test label",
       }),
@@ -281,7 +281,7 @@ describe("parsePaymentDestination OnChain", () => {
 
     expect(paymentDestination).toEqual(
       expect.objectContaining({
-        paymentType: PaymentType.Onchain,
+        paymentType: ParsedPaymentType.Onchain,
         valid: true,
         memo: "test message",
       }),
@@ -301,7 +301,7 @@ describe("parsePaymentDestination OnChain", () => {
 
     expect(paymentDestination).toEqual(
       expect.objectContaining({
-        paymentType: PaymentType.Onchain,
+        paymentType: ParsedPaymentType.Onchain,
         valid: true,
         memo: "test label",
       }),
@@ -321,7 +321,7 @@ describe("parsePaymentDestination OnChain", () => {
 
     expect(paymentDestination).toEqual(
       expect.objectContaining({
-        paymentType: PaymentType.Onchain,
+        paymentType: ParsedPaymentType.Onchain,
         valid: true,
         amount: 122000,
       }),
@@ -342,7 +342,7 @@ describe("parsePaymentDestination Lightning", () => {
     expect(paymentDestination).toEqual(
       expect.objectContaining({
         valid: false,
-        paymentType: PaymentType.Lightning,
+        paymentType: ParsedPaymentType.Lightning,
         invalidReason: InvalidLightningDestinationReason.WrongNetwork,
       }),
     )
@@ -360,7 +360,7 @@ describe("parsePaymentDestination Lightning", () => {
     expect(paymentDestination).toEqual(
       expect.objectContaining({
         valid: false,
-        paymentType: PaymentType.Lightning,
+        paymentType: ParsedPaymentType.Lightning,
         invalidReason: InvalidLightningDestinationReason.WrongNetwork,
       }),
     )
@@ -378,7 +378,7 @@ describe("parsePaymentDestination Lightning", () => {
     expect(paymentDestination).toEqual(
       expect.objectContaining({
         valid: false,
-        paymentType: PaymentType.Lightning,
+        paymentType: ParsedPaymentType.Lightning,
         invalidReason: InvalidLightningDestinationReason.WrongNetwork,
       }),
     )
@@ -396,7 +396,7 @@ describe("parsePaymentDestination Lightning", () => {
     expect(paymentDestination).toEqual(
       expect.objectContaining({
         valid: false,
-        paymentType: PaymentType.Lightning,
+        paymentType: ParsedPaymentType.Lightning,
         invalidReason: InvalidLightningDestinationReason.WrongNetwork,
       }),
     )
@@ -414,7 +414,7 @@ describe("parsePaymentDestination Lightning", () => {
     expect(paymentDestination).toEqual(
       expect.objectContaining({
         valid: false,
-        paymentType: PaymentType.Lightning,
+        paymentType: ParsedPaymentType.Lightning,
         invalidReason: InvalidLightningDestinationReason.WrongNetwork,
       }),
     )
@@ -432,7 +432,7 @@ describe("parsePaymentDestination Lightning", () => {
     expect(paymentDestination).toEqual(
       expect.objectContaining({
         valid: false,
-        paymentType: PaymentType.Lightning,
+        paymentType: ParsedPaymentType.Lightning,
         invalidReason: InvalidLightningDestinationReason.WrongNetwork,
       }),
     )
@@ -453,7 +453,7 @@ describe("parsePaymentDestination Lightning", () => {
         valid: true,
         paymentRequest:
           "lnbc10u1p3pj257pp5yztkwjcz5ftl5laxkav23zmzekaw37zk6kmv80pk4xaev5qhtz7qdpdwd3xger9wd5kwm36yprx7u3qd36kucmgyp282etnv3shjcqzpgxqyz5vqsp5usyc4lk9chsfp53kvcnvq456ganh60d89reykdngsmtj6yw3nhvq9qyyssqjcewm5cjwz4a6rfjx77c490yced6pemk0upkxhy89cmm7sct66k8gneanwykzgdrwrfje69h9u5u0w57rrcsysas7gadwmzxc8c6t0spjazup6",
-        paymentType: PaymentType.Lightning,
+        paymentType: ParsedPaymentType.Lightning,
       }),
     )
   })
@@ -470,7 +470,7 @@ describe("parsePaymentDestination Lightning", () => {
     expect(paymentDestination).toEqual<OnchainPaymentDestination>(
       expect.objectContaining<OnchainPaymentDestination>({
         valid: true,
-        paymentType: PaymentType.Onchain,
+        paymentType: ParsedPaymentType.Onchain,
         address: bech32,
       }),
     )
@@ -488,7 +488,7 @@ describe("parsePaymentDestination Lightning", () => {
       expect.objectContaining({
         paymentRequest: lnInvoice.toLowerCase(),
         valid: true,
-        paymentType: PaymentType.Lightning,
+        paymentType: ParsedPaymentType.Lightning,
       }),
     )
   })
@@ -504,7 +504,7 @@ describe("parsePaymentDestination Lightning", () => {
     expect(paymentDestination).toEqual(
       expect.objectContaining({
         valid: false,
-        paymentType: PaymentType.Lightning,
+        paymentType: ParsedPaymentType.Lightning,
       }),
     )
   })
@@ -522,7 +522,7 @@ describe("parsePaymentDestination Lightning", () => {
     expect(paymentDestination).toEqual(
       expect.objectContaining({
         valid: true,
-        paymentType: PaymentType.Lightning,
+        paymentType: ParsedPaymentType.Lightning,
       }),
     )
   })
@@ -538,7 +538,7 @@ describe("parsePaymentDestination IntraLedger handles", () => {
     })
     expect(paymentDestination).toEqual(
       expect.objectContaining({
-        paymentType: PaymentType.Intraledger,
+        paymentType: ParsedPaymentType.Intraledger,
         handle: "Nakamoto",
       }),
     )
@@ -553,7 +553,7 @@ describe("parsePaymentDestination IntraLedger handles", () => {
     })
     expect(paymentDestination).toEqual(
       expect.objectContaining({
-        paymentType: PaymentType.Intraledger,
+        paymentType: ParsedPaymentType.Intraledger,
         handle: "userName",
       }),
     )
