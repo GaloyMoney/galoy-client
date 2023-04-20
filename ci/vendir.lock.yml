@@ -2,8 +2,14 @@ apiVersion: vendir.k14s.io/v1alpha1
 directories:
 - contents:
   - git:
-      commitTitle: 'fix: REPO_PATH initialization'
-      sha: 70728a1b62e43be803a337bfae5968b2324f7ea8
+      commitTitle: 'chore: have version for prepping docker build'
+      sha: ffb5caaacf1331b1e74f7c7f4893bfb7b3656eef
     path: .
-  path: vendor
+  path: ../.github/workflows/vendor
+- contents:
+  - git:
+      commitTitle: 'chore: have version for prepping docker build'
+      sha: ffb5caaacf1331b1e74f7c7f4893bfb7b3656eef
+    path: .
+  path: ./vendor
 kind: LockConfig
