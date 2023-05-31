@@ -1,20 +1,23 @@
 /* eslint-disable max-lines */
 import bolt11 from "bolt11"
 import url from "url"
-import { networks, address } from "bitcoinjs-lib"
+import * as bitcoinjs from "bitcoinjs-lib"
 import { utils } from "lnurl-pay"
+import * as ecc from "tiny-secp256k1"
 
 export type Network = "mainnet" | "signet" | "regtest"
 
-const parseBitcoinJsNetwork = (network: string): networks.Network => {
+bitcoinjs.initEccLib(ecc)
+
+const parseBitcoinJsNetwork = (network: string): bitcoinjs.networks.Network => {
   if (network === "mainnet") {
-    return networks.bitcoin
+    return bitcoinjs.networks.bitcoin
   } else if (network === "signet") {
-    return networks.testnet
+    return bitcoinjs.networks.testnet
   } else if (network === "regtest") {
-    return networks.regtest
+    return bitcoinjs.networks.regtest
   }
-  return networks.bitcoin
+  return bitcoinjs.networks.bitcoin
 }
 // This is a hack to get around the fact that bolt11 doesn't support signet
 export const parseBolt11Network = (network: string): bolt11.Network => {
@@ -443,7 +446,7 @@ const getOnChainPayResponse = ({
       }
     }
 
-    address.toOutputScript(path, parseBitcoinJsNetwork(network))
+    bitcoinjs.address.toOutputScript(path, parseBitcoinJsNetwork(network))
 
     return {
       valid: true,

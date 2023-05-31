@@ -28,7 +28,7 @@ const lnUrlInvoice =
   "lnurl1dp68gurn8ghj7mrw9e3xjarrda5kucn9v93kstnrdakj7tnhv4kxctttdehhwm30d3h82unvwqhhxctdv4eqztzfux"
 const lnUrlInvoiceWithFallback = `https://fallback.com?lightning=${lnUrlInvoice}`
 const lnUrlInvoiceWithProtocol = `lightning:${lnUrlInvoice}`
-const internalLnAddress = "username@pay.bbw.sv"
+const internalLnAddress = "username@blink.sv"
 const externalLnAddress = "username@external.com"
 
 const lnInvoice =
@@ -131,7 +131,7 @@ describe("parsePaymentDestination validations", () => {
     const result = parsePaymentDestination({
       destination: internalLnAddress,
       network: "mainnet",
-      lnAddressDomains: ["pay.bbw.sv"],
+      lnAddressDomains: ["blink.sv"],
     })
     expect(result).toEqual(
       expect.objectContaining({
@@ -145,7 +145,7 @@ describe("parsePaymentDestination validations", () => {
     const result = parsePaymentDestination({
       destination: externalLnAddress,
       network: "mainnet",
-      lnAddressDomains: ["pay.bbw.sv"],
+      lnAddressDomains: ["blink.sv"],
     })
     expect(result).toEqual(
       expect.objectContaining({
@@ -160,7 +160,7 @@ describe("parsePaymentDestination validations", () => {
     const result = parsePaymentDestination({
       destination: `lightning:${externalLnAddress}`,
       network: "mainnet",
-      lnAddressDomains: ["pay.bbw.sv"],
+      lnAddressDomains: ["blink.sv"],
     })
     expect(result).toEqual(
       expect.objectContaining({
