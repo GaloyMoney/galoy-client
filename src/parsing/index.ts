@@ -3,11 +3,8 @@ import bolt11 from "bolt11"
 import url from "url"
 import * as bitcoinjs from "bitcoinjs-lib"
 import { utils } from "lnurl-pay"
-import * as ecc from "tiny-secp256k1"
 
 export type Network = "mainnet" | "signet" | "regtest"
-
-bitcoinjs.initEccLib(ecc)
 
 const parseBitcoinJsNetwork = (network: string): bitcoinjs.networks.Network => {
   if (network === "mainnet") {
@@ -84,7 +81,7 @@ export const PaymentType = {
   Unknown: "unknown",
 } as const
 
-export type PaymentType = (typeof PaymentType)[keyof typeof PaymentType]
+export type PaymentType = typeof PaymentType[keyof typeof PaymentType]
 
 export type UnknownPaymentDestination = {
   paymentType: typeof PaymentType.Unknown
@@ -99,7 +96,7 @@ export const InvalidLnurlPaymentDestinationReason = {
 }
 
 export type InvalidLnurlPaymentDestinationReason =
-  (typeof InvalidLnurlPaymentDestinationReason)[keyof typeof InvalidLnurlPaymentDestinationReason]
+  typeof InvalidLnurlPaymentDestinationReason[keyof typeof InvalidLnurlPaymentDestinationReason]
 
 export type LnurlPaymentDestination =
   | {
@@ -120,7 +117,7 @@ export const InvalidLightningDestinationReason = {
 } as const
 
 export type InvalidLightningDestinationReason =
-  (typeof InvalidLightningDestinationReason)[keyof typeof InvalidLightningDestinationReason]
+  typeof InvalidLightningDestinationReason[keyof typeof InvalidLightningDestinationReason]
 
 export type LightningPaymentDestination =
   | {
@@ -143,7 +140,7 @@ export const InvalidOnchainDestinationReason = {
 } as const
 
 export type InvalidOnchainDestinationReason =
-  (typeof InvalidOnchainDestinationReason)[keyof typeof InvalidOnchainDestinationReason]
+  typeof InvalidOnchainDestinationReason[keyof typeof InvalidOnchainDestinationReason]
 
 export type OnchainPaymentDestination =
   | {
