@@ -5,9 +5,8 @@ import {
   LnUrlRequestInvoiceArgs,
   LnUrlRequestInvoiceResponse,
 } from "lnurl-pay/dist/types/types"
-import { getDestination } from "../parsing"
+import { getDestination, Network, parseBolt11Network } from "../parsing"
 import bolt11 from "bolt11"
-import { Network, parseBolt11Network } from "../parsing-v2"
 
 type isLnurlPaymentSameNodeArgs = {
   lnUrlOrAddress: string

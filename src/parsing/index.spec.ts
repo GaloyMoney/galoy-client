@@ -1,4 +1,11 @@
-import { Network, parsePaymentDestination } from "./index"
+/* eslint-disable max-lines */
+import {
+  InvalidLightningDestinationReason,
+  Network,
+  OnchainPaymentDestination,
+  parsePaymentDestination,
+  PaymentType,
+} from "."
 
 beforeAll(() => {
   jest.setSystemTime(1598110996000) // Aug 22 2020 10:43
@@ -19,6 +26,10 @@ const bech32Signet = "tb1q0g444vcyy53pza03zsel3tcwdejt9z5kq3w385aqgazpfxjhsr0qhd
 
 const lnUrlInvoice =
   "lnurl1dp68gurn8ghj7mrw9e3xjarrda5kucn9v93kstnrdakj7tnhv4kxctttdehhwm30d3h82unvwqhhxctdv4eqztzfux"
+const lnUrlInvoiceWithFallback = `https://fallback.com?lightning=${lnUrlInvoice}`
+const lnUrlInvoiceWithProtocol = `lightning:${lnUrlInvoice}`
+const internalLnAddress = "username@blink.sv"
+const externalLnAddress = "username@external.com"
 
 const lnInvoice =
   "LNBC6864270N1P05ZVJJPP5FPEHVLV3DD2R76065R9V0L3N8QV9MFWU9RYHVPJ5XSZ3P4HY734QDZHXYSV89EQYVMZQSNFW3PXCMMRDDPX7MMDYPP8YATWVD5ZQMMWYPQH2EM4WD6ZQVESYQ5YYUN4DE3KSGZ0DEK8J2GCQZPGXQRRSS6LQA5JLLVUGLW5TPSUG4S2TMT5C8FNERR95FUH8HTCSYX52CP3WZSWJ32XJ5GEWYFN7MG293V6JLA9CZ8ZNDHWDHCNNKUL2QKF6PJLSPJ2NL3J"
@@ -33,39 +44,131 @@ const expiredLNInvoice =
   "LNBC11245410N1P05Z2LTPP52W2GX57TZVLM09SWZ8M0CAWGQPVTL3KUWZA836H5LG6HK2N2PRYQDPHXYSV89EQYVMJQSNFW3PXCMMRDDZXJMNWV4EZQST4VA6HXAPQXGU8G6QCQZPGXQRRSSVS7S2WT4GX90MQC9CVMA8UYDSTX5P0FA68V03U96HQDPFCT9DGDQQSENNAAGAXND6664CTKV88GMQ689LS0J7FFAD4DRN6SPLXAXZ0CQYZAU9Q"
 
 const checkOnChain = (address: string, network: Network) => {
-  const { valid, paymentType } = parsePaymentDestination({
+  const destination = parsePaymentDestination({
     destination: address,
     network,
+    lnAddressDomains: [],
   })
-  expect(valid).toBeTruthy()
-  expect(paymentType).toBe("onchain")
+
+  if (destination.paymentType !== PaymentType.Onchain) {
+    throw Error("Expected onchain payment")
+  }
+  if (destination.valid !== true) {
+    throw Error("Expected valid payment destination")
+  }
 }
 
 const checkOnChainFail = (address: string, network: Network) => {
-  const { valid } = parsePaymentDestination({
+  const destination = parsePaymentDestination({
     destination: address,
     network,
+    lnAddressDomains: [],
   })
-  expect(valid).toBeFalsy()
+  if (destination.paymentType !== PaymentType.Onchain) {
+    throw Error("Expected onchain payment")
+  }
+  if (destination.valid !== false) {
+    throw Error("Expected invalid payment destination")
+  }
 }
 
 describe("parsePaymentDestination validations", () => {
-  it("invalidates empty input", () => {
+  it("classifies empty input as unknown", () => {
     const result = parsePaymentDestination({
       destination: "",
       network: "mainnet",
+      lnAddressDomains: [],
     })
-    expect(result.valid).toBeFalsy()
+    expect(result.paymentType).toBe(PaymentType.NullInput)
   })
 
   it("validates an lnurl destination", () => {
     const result = parsePaymentDestination({
       destination: lnUrlInvoice,
       network: "mainnet",
+      lnAddressDomains: [],
     })
-    expect(result.valid).toBeTruthy()
-    expect(result.paymentType).toBe("lnurl")
-    expect(result.lnurl).toBe(lnUrlInvoice)
+    expect(result).toEqual(
+      expect.objectContaining({
+        paymentType: PaymentType.Lnurl,
+        valid: true,
+        lnurl: lnUrlInvoice,
+      }),
+    )
+  })
+
+  it("validates an lnurl destination with fallback url", () => {
+    const result = parsePaymentDestination({
+      destination: lnUrlInvoiceWithFallback,
+      network: "mainnet",
+      lnAddressDomains: [],
+    })
+    expect(result).toEqual(
+      expect.objectContaining({
+        paymentType: PaymentType.Lnurl,
+        valid: true,
+        lnurl: lnUrlInvoice,
+      }),
+    )
+  })
+
+  it("validates an lnurl destination with a protocol", () => {
+    const result = parsePaymentDestination({
+      destination: lnUrlInvoiceWithProtocol,
+      network: "mainnet",
+      lnAddressDomains: [],
+    })
+    expect(result).toEqual(
+      expect.objectContaining({
+        paymentType: PaymentType.Lnurl,
+        valid: true,
+        lnurl: lnUrlInvoice,
+      }),
+    )
+  })
+
+  it("validates an internal lightning address", () => {
+    const result = parsePaymentDestination({
+      destination: internalLnAddress,
+      network: "mainnet",
+      lnAddressDomains: ["blink.sv"],
+    })
+    expect(result).toEqual(
+      expect.objectContaining({
+        paymentType: PaymentType.Intraledger,
+        handle: "username",
+      }),
+    )
+  })
+
+  it("validates an external lightning address", () => {
+    const result = parsePaymentDestination({
+      destination: externalLnAddress,
+      network: "mainnet",
+      lnAddressDomains: ["blink.sv"],
+    })
+    expect(result).toEqual(
+      expect.objectContaining({
+        paymentType: PaymentType.Lnurl,
+        valid: true,
+        lnurl: externalLnAddress,
+      }),
+    )
+  })
+
+  it("validates a lightning address with protocol", () => {
+    const result = parsePaymentDestination({
+      destination: `lightning:${externalLnAddress}`,
+      network: "mainnet",
+      lnAddressDomains: ["blink.sv"],
+    })
+    expect(result).toEqual(
+      expect.objectContaining({
+        paymentType: PaymentType.Lnurl,
+        valid: true,
+        lnurl: externalLnAddress,
+      }),
+    )
   })
 })
 
@@ -102,206 +205,329 @@ describe("parsePaymentDestination OnChain", () => {
   it("validates an onchain destination with amount ", () => {
     const addressAmount = "bc1qdx09anw82zhujxzzsn56mruv8qvd33czzy9apt?amount=0.00122"
 
-    const { valid, paymentType, amount } = parsePaymentDestination({
+    const paymentDestination = parsePaymentDestination({
       destination: addressAmount,
       network: "mainnet",
+      lnAddressDomains: [],
     })
-    expect(valid).toBeTruthy()
-    expect(paymentType).toBe("onchain")
-    expect(amount).toBe(122000)
+
+    expect(paymentDestination).toEqual(
+      expect.objectContaining({
+        paymentType: PaymentType.Onchain,
+        valid: true,
+        amount: 122000,
+      }),
+    )
+  })
+
+  it("validates an onchain destination without amount", () => {
+    const addressNoAmount = "bc1qdx09anw82zhujxzzsn56mruv8qvd33czzy9apt"
+
+    const paymentDestination = parsePaymentDestination({
+      destination: addressNoAmount,
+      network: "mainnet",
+      lnAddressDomains: [],
+    })
+
+    expect(paymentDestination).toEqual(
+      expect.objectContaining({
+        paymentType: PaymentType.Onchain,
+        valid: true,
+        amount: undefined,
+      }),
+    )
   })
 
   it("validates an onchain destination with a label", () => {
     const addressLabel = "bc1qdx09anw82zhujxzzsn56mruv8qvd33czzy9apt?label=test%20label"
 
-    const { valid, paymentType, memo } = parsePaymentDestination({
+    const paymentDestination = parsePaymentDestination({
       destination: addressLabel,
       network: "mainnet",
+      lnAddressDomains: [],
     })
-    expect(valid).toBeTruthy()
-    expect(paymentType).toBe("onchain")
-    expect(memo).toBe("test label")
+
+    expect(paymentDestination).toEqual(
+      expect.objectContaining({
+        paymentType: PaymentType.Onchain,
+        valid: true,
+        memo: "test label",
+      }),
+    )
   })
 
   it("validates an onchain destination with a message", () => {
     const addressMessage =
       "bc1qdx09anw82zhujxzzsn56mruv8qvd33czzy9apt?message=test%20message"
 
-    const { valid, paymentType, memo } = parsePaymentDestination({
+    const paymentDestination = parsePaymentDestination({
       destination: addressMessage,
       network: "mainnet",
+      lnAddressDomains: [],
     })
-    expect(valid).toBeTruthy()
-    expect(paymentType).toBe("onchain")
-    expect(memo).toBe("test message")
+
+    expect(paymentDestination).toEqual(
+      expect.objectContaining({
+        paymentType: PaymentType.Onchain,
+        valid: true,
+        memo: "test message",
+      }),
+    )
   })
 
   it("returns the label as the memo when label and message are both present", () => {
     const addressLabelAndMessage =
       "bc1qdx09anw82zhujxzzsn56mruv8qvd33czzy9apt?label=test%20label&message=test%20message"
 
-    const { valid, paymentType, memo } = parsePaymentDestination({
+    const paymentDestination = parsePaymentDestination({
       destination: addressLabelAndMessage,
       network: "mainnet",
+      lnAddressDomains: [],
     })
-    expect(valid).toBeTruthy()
-    expect(paymentType).toBe("onchain")
-    expect(memo).toBe("test label")
-  })
 
-  it("validates an onchain destination without amount", () => {
-    const addressNoAmount = "bc1qdx09anw82zhujxzzsn56mruv8qvd33czzy9apt"
-
-    const { valid, paymentType, amount } = parsePaymentDestination({
-      destination: addressNoAmount,
-      network: "mainnet",
-    })
-    expect(valid).toBeTruthy()
-    expect(paymentType).toBe("onchain")
-    expect(amount).toBeUndefined()
+    expect(paymentDestination).toEqual(
+      expect.objectContaining({
+        paymentType: PaymentType.Onchain,
+        valid: true,
+        memo: "test label",
+      }),
+    )
   })
 
   it("validates an onchain destination with a prefix", () => {
     const prefixAddress =
       "bitcoin:bc1qdx09anw82zhujxzzsn56mruv8qvd33czzy9apt?amount=0.00122"
 
-    const { valid, paymentType, amount } = parsePaymentDestination({
+    const paymentDestination = parsePaymentDestination({
       destination: prefixAddress,
       network: "mainnet",
+      lnAddressDomains: [],
     })
-    expect(valid).toBeTruthy()
-    expect(paymentType).toBe("onchain")
-    expect(amount).toBe(122000)
+
+    expect(paymentDestination).toEqual(
+      expect.objectContaining({
+        paymentType: PaymentType.Onchain,
+        valid: true,
+        amount: 122000,
+      }),
+    )
   })
 })
 
 describe("parsePaymentDestination Lightning", () => {
   it("invalidates a mainnet invoice on signet", () => {
-    const result = parsePaymentDestination({
+    const paymentDestination = parsePaymentDestination({
       // lnInovice is a mainnet invoice
       destination: lnInvoice,
       network: "signet",
+      lnAddressDomains: [],
     })
-    expect(result.valid).toBeFalsy()
-    expect(result.paymentType).toBe("lightning")
-    expect(result.errorMessage).toBe("Invalid lightning invoice for signet network")
+
+    expect(paymentDestination).toEqual(
+      expect.objectContaining({
+        valid: false,
+        paymentType: PaymentType.Lightning,
+        invalidReason: InvalidLightningDestinationReason.WrongNetwork,
+      }),
+    )
   })
 
   it("invalidates a regtest invoice on signet", () => {
-    const result = parsePaymentDestination({
+    const paymentDestination = parsePaymentDestination({
       // lnInovice is a regtest invoice
       destination: lnbcrtInvoice,
       network: "signet",
+      lnAddressDomains: [],
     })
-    expect(result.valid).toBeFalsy()
-    expect(result.paymentType).toBe("lightning")
-    expect(result.errorMessage).toBe("Invalid lightning invoice for signet network")
+
+    expect(paymentDestination).toEqual(
+      expect.objectContaining({
+        valid: false,
+        paymentType: PaymentType.Lightning,
+        invalidReason: InvalidLightningDestinationReason.WrongNetwork,
+      }),
+    )
   })
 
   it("invalidates a signet invoice on mainnet", () => {
     // lntbInovice is a signet invoice
-    const result = parsePaymentDestination({
+    const paymentDestination = parsePaymentDestination({
       destination: lntbInvoice,
       network: "mainnet",
+      lnAddressDomains: [],
     })
-    expect(result.valid).toBeFalsy()
-    expect(result.paymentType).toBe("lightning")
+
+    expect(paymentDestination).toEqual(
+      expect.objectContaining({
+        valid: false,
+        paymentType: PaymentType.Lightning,
+        invalidReason: InvalidLightningDestinationReason.WrongNetwork,
+      }),
+    )
   })
 
   it("invalidates a regtest invoice on mainnet", () => {
     // lntbInovice is a regtest invoice
-    const result = parsePaymentDestination({
+    const paymentDestination = parsePaymentDestination({
       destination: lnbcrtInvoice,
       network: "mainnet",
+      lnAddressDomains: [],
     })
-    expect(result.valid).toBeFalsy()
-    expect(result.paymentType).toBe("lightning")
+
+    expect(paymentDestination).toEqual(
+      expect.objectContaining({
+        valid: false,
+        paymentType: PaymentType.Lightning,
+        invalidReason: InvalidLightningDestinationReason.WrongNetwork,
+      }),
+    )
   })
 
   it("invalidates a signet invoice on regtest", () => {
     // lntbInovice is a signet invoice
-    const result = parsePaymentDestination({
+    const paymentDestination = parsePaymentDestination({
       destination: lntbInvoice,
       network: "regtest",
+      lnAddressDomains: [],
     })
-    expect(result.valid).toBeFalsy()
-    expect(result.paymentType).toBe("lightning")
+
+    expect(paymentDestination).toEqual(
+      expect.objectContaining({
+        valid: false,
+        paymentType: PaymentType.Lightning,
+        invalidReason: InvalidLightningDestinationReason.WrongNetwork,
+      }),
+    )
   })
 
   it("invalidates a mainnet invoice on regtest", () => {
     // lntbInovice is a mainnet invoice
-    const result = parsePaymentDestination({
+    const paymentDestination = parsePaymentDestination({
       destination: lnInvoice,
       network: "regtest",
+      lnAddressDomains: [],
     })
-    expect(result.valid).toBeFalsy()
-    expect(result.paymentType).toBe("lightning")
+
+    expect(paymentDestination).toEqual(
+      expect.objectContaining({
+        valid: false,
+        paymentType: PaymentType.Lightning,
+        invalidReason: InvalidLightningDestinationReason.WrongNetwork,
+      }),
+    )
   })
 
   it("detects a lightning param in an onchain address", () => {
     const address =
       "bitcoin:bc1qylh3u67j673h6y6alv70m0pl2yz53tzhvxgg7u?amount=0.00001&label=sbddesign%3A%20For%20lunch%20Tuesday&message=For%20lunch%20Tuesday&lightning=lnbc10u1p3pj257pp5yztkwjcz5ftl5laxkav23zmzekaw37zk6kmv80pk4xaev5qhtz7qdpdwd3xger9wd5kwm36yprx7u3qd36kucmgyp282etnv3shjcqzpgxqyz5vqsp5usyc4lk9chsfp53kvcnvq456ganh60d89reykdngsmtj6yw3nhvq9qyyssqjcewm5cjwz4a6rfjx77c490yced6pemk0upkxhy89cmm7sct66k8gneanwykzgdrwrfje69h9u5u0w57rrcsysas7gadwmzxc8c6t0spjazup6"
-    const { valid, paymentType, errorMessage } = parsePaymentDestination({
+    const paymentDestination = parsePaymentDestination({
       destination: address,
       network: "mainnet",
+      lnAddressDomains: [],
     })
-    expect(valid).toBeTruthy()
-    expect(paymentType).toBe("lightning")
-    expect(errorMessage).not.toBe("invoice has expired")
+
+    expect(paymentDestination).toEqual(
+      expect.objectContaining({
+        valid: true,
+        paymentRequest:
+          "lnbc10u1p3pj257pp5yztkwjcz5ftl5laxkav23zmzekaw37zk6kmv80pk4xaev5qhtz7qdpdwd3xger9wd5kwm36yprx7u3qd36kucmgyp282etnv3shjcqzpgxqyz5vqsp5usyc4lk9chsfp53kvcnvq456ganh60d89reykdngsmtj6yw3nhvq9qyyssqjcewm5cjwz4a6rfjx77c490yced6pemk0upkxhy89cmm7sct66k8gneanwykzgdrwrfje69h9u5u0w57rrcsysas7gadwmzxc8c6t0spjazup6",
+        paymentType: PaymentType.Lightning,
+      }),
+    )
+  })
+
+  it("fallbacks to on chain address if the lightning param has expired", () => {
+    const address = `bitcoin:${bech32}?amount=0.00001&label=sbddesign%3A%20For%20lunch%20Tuesday&message=For%20lunch%20Tuesday&lightning=${expiredLNInvoice}`
+    const paymentDestination = parsePaymentDestination({
+      destination: address,
+      network: "mainnet",
+      lnAddressDomains: [],
+    })
+
+    expect(paymentDestination).toEqual<OnchainPaymentDestination>(
+      expect.objectContaining<OnchainPaymentDestination>({
+        valid: true,
+        paymentType: PaymentType.Onchain,
+        address: bech32,
+      }),
+    )
   })
 
   it("validates an opennode invoice", () => {
-    const { valid, paymentType, errorMessage } = parsePaymentDestination({
+    const paymentDestination = parsePaymentDestination({
       destination: lnInvoice,
       network: "mainnet",
+      lnAddressDomains: [],
     })
-    expect(valid).toBeTruthy()
-    expect(paymentType).toBe("lightning")
-    expect(errorMessage).not.toBe("invoice has expired")
+
+    expect(paymentDestination).toEqual(
+      expect.objectContaining({
+        paymentRequest: lnInvoice.toLowerCase(),
+        valid: true,
+        paymentType: PaymentType.Lightning,
+      }),
+    )
   })
 
   it("invalidates an expired opennode invoice", () => {
-    const { valid, paymentType, errorMessage } = parsePaymentDestination({
+    const paymentDestination = parsePaymentDestination({
       destination: expiredLNInvoice,
       network: "mainnet",
+      lnAddressDomains: [],
     })
-    expect(valid).toBeFalsy()
-    expect(paymentType).toBe("lightning")
-    expect(errorMessage).toBe("invoice has expired")
+
+    expect(paymentDestination).toEqual(
+      expect.objectContaining({
+        valid: false,
+        paymentType: PaymentType.Lightning,
+      }),
+    )
   })
 
   it("validates a lightning invoice with prefix", () => {
     const address = `LIGHTNING:${lnInvoice}`
 
-    const { valid, paymentType, errorMessage } = parsePaymentDestination({
+    const paymentDestination = parsePaymentDestination({
       destination: address,
       network: "mainnet",
+      lnAddressDomains: [],
     })
 
-    expect(valid).toBeTruthy()
-    expect(paymentType).toBe("lightning")
-    expect(errorMessage).not.toBe("invoice has expired")
+    expect(paymentDestination).toEqual(
+      expect.objectContaining({
+        valid: true,
+        paymentType: PaymentType.Lightning,
+      }),
+    )
   })
 })
 
 describe("parsePaymentDestination IntraLedger handles", () => {
   it("validates a regular handle", () => {
-    const { valid, paymentType, handle } = parsePaymentDestination({
+    const paymentDestination = parsePaymentDestination({
       destination: "Nakamoto",
       network: "mainnet",
+      lnAddressDomains: [],
     })
-    expect(valid).toBeTruthy()
-    expect(paymentType).toBe("intraledger")
-    expect(handle).toBe("Nakamoto")
+    expect(paymentDestination).toEqual(
+      expect.objectContaining({
+        paymentType: PaymentType.Intraledger,
+        handle: "Nakamoto",
+      }),
+    )
   })
 
   it("validates an http handle", () => {
-    const { valid, paymentType, handle } = parsePaymentDestination({
+    const paymentDestination = parsePaymentDestination({
       destination: "https://some.where/userName",
       network: "mainnet",
+      lnAddressDomains: [],
     })
-    expect(valid).toBeTruthy()
-    expect(paymentType).toBe("intraledger")
-    expect(handle).toBe("userName")
+    expect(paymentDestination).toEqual(
+      expect.objectContaining({
+        paymentType: PaymentType.Intraledger,
+        handle: "userName",
+      }),
+    )
   })
 })
