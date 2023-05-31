@@ -84,7 +84,7 @@ export const PaymentType = {
   Unknown: "unknown",
 } as const
 
-export type PaymentType = typeof PaymentType[keyof typeof PaymentType]
+export type PaymentType = (typeof PaymentType)[keyof typeof PaymentType]
 
 export type UnknownPaymentDestination = {
   paymentType: typeof PaymentType.Unknown
@@ -99,7 +99,7 @@ export const InvalidLnurlPaymentDestinationReason = {
 }
 
 export type InvalidLnurlPaymentDestinationReason =
-  typeof InvalidLnurlPaymentDestinationReason[keyof typeof InvalidLnurlPaymentDestinationReason]
+  (typeof InvalidLnurlPaymentDestinationReason)[keyof typeof InvalidLnurlPaymentDestinationReason]
 
 export type LnurlPaymentDestination =
   | {
@@ -120,7 +120,7 @@ export const InvalidLightningDestinationReason = {
 } as const
 
 export type InvalidLightningDestinationReason =
-  typeof InvalidLightningDestinationReason[keyof typeof InvalidLightningDestinationReason]
+  (typeof InvalidLightningDestinationReason)[keyof typeof InvalidLightningDestinationReason]
 
 export type LightningPaymentDestination =
   | {
@@ -143,7 +143,7 @@ export const InvalidOnchainDestinationReason = {
 } as const
 
 export type InvalidOnchainDestinationReason =
-  typeof InvalidOnchainDestinationReason[keyof typeof InvalidOnchainDestinationReason]
+  (typeof InvalidOnchainDestinationReason)[keyof typeof InvalidOnchainDestinationReason]
 
 export type OnchainPaymentDestination =
   | {
