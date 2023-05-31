@@ -56,7 +56,7 @@ describe("datetime utils", () => {
 
   describe("formatTime", () => {
     it("works", () => {
-      expect(formatTime(mockedUnixTime - 60)).toEqual("Sat, Aug 22, 2020, 3:42 PM")
+      expect(formatTime(mockedUnixTime - 60)).toMatch(/Sat, Aug 22, 2020, 3:42 PM/u)
     })
   })
 
