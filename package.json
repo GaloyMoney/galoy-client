@@ -35,7 +35,7 @@
     "eslint-plugin-import": "^2.27.5",
     "jest": "^28.1.2",
     "lnurl-pay": "^2.2.2",
-    "prettier": "^2.7.1",
+    "prettier": "^2.8.8",
     "tiny-secp256k1": "^2.2.1",
     "ts-jest": "^28.0.5",
     "typescript": "^4.9.4",
