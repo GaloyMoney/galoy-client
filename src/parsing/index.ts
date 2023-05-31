@@ -3,11 +3,8 @@ import bolt11 from "bolt11"
 import url from "url"
 import * as bitcoinjs from "bitcoinjs-lib"
 import { utils } from "lnurl-pay"
-import * as ecc from "tiny-secp256k1"
 
 export type Network = "mainnet" | "signet" | "regtest"
-
-bitcoinjs.initEccLib(ecc)
 
 const parseBitcoinJsNetwork = (network: string): bitcoinjs.networks.Network => {
   if (network === "mainnet") {
