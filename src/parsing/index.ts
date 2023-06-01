@@ -244,7 +244,9 @@ const getPaymentType = ({
     ) ||
     utils.parseLightningAddress(
       protocol === "lightning" ? destinationWithoutProtocol : rawDestination,
-    )
+    ) ||
+    rawDestination.slice(0, 9) === "lnurlw://" ||
+    rawDestination.slice(0, 9) === "lnurlp://" // should already be handled by parseLnUrl
   ) {
     return PaymentType.Lnurl
   }
@@ -331,6 +333,17 @@ const getLNURLPayResponse = ({
       valid: true,
       paymentType: PaymentType.Lnurl,
       lnurl: `${username}@${domain}`,
+    }
+  }
+
+  if (
+    destination.slice(0, 9) === "lnurlw://" ||
+    destination.slice(0, 9) === "lnurlp://"
+  ) {
+    return {
+      valid: true,
+      paymentType: PaymentType.Lnurl,
+      lnurl: destination,
     }
   }
 

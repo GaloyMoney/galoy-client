@@ -26,6 +26,8 @@ const bech32Signet = "tb1q0g444vcyy53pza03zsel3tcwdejt9z5kq3w385aqgazpfxjhsr0qhd
 
 const lnUrlInvoice =
   "lnurl1dp68gurn8ghj7mrw9e3xjarrda5kucn9v93kstnrdakj7tnhv4kxctttdehhwm30d3h82unvwqhhxctdv4eqztzfux"
+const lnUrlW = `lnurlw://cards.blink.sv/cards?p=ABCABCABCABCABCBACBACB&c=ABCABCABCABC`
+const lnUrlP = `lnurlp://testcallback.com/abc`
 const lnUrlInvoiceWithFallback = `https://fallback.com?lightning=${lnUrlInvoice}`
 const lnUrlInvoiceWithProtocol = `lightning:${lnUrlInvoice}`
 const internalLnAddress = "username@blink.sv"
@@ -93,6 +95,36 @@ describe("parsePaymentDestination validations", () => {
         paymentType: PaymentType.Lnurl,
         valid: true,
         lnurl: lnUrlInvoice,
+      }),
+    )
+  })
+
+  it("validates an lnurlw destination", () => {
+    const result = parsePaymentDestination({
+      destination: lnUrlW,
+      network: "mainnet",
+      lnAddressDomains: [],
+    })
+    expect(result).toEqual(
+      expect.objectContaining({
+        paymentType: PaymentType.Lnurl,
+        valid: true,
+        lnurl: lnUrlW,
+      }),
+    )
+  })
+
+  it("validates an lnUrlP destination", () => {
+    const result = parsePaymentDestination({
+      destination: lnUrlP,
+      network: "mainnet",
+      lnAddressDomains: [],
+    })
+    expect(result).toEqual(
+      expect.objectContaining({
+        paymentType: PaymentType.Lnurl,
+        valid: true,
+        lnurl: lnUrlP,
       }),
     )
   })
