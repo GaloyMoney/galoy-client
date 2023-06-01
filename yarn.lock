@@ -2854,10 +2854,10 @@ lines-and-columns@^1.1.6:
   resolved "https://registry.npmjs.org/lines-and-columns/-/lines-and-columns-1.2.4.tgz#eca284f75d2965079309dc0ad9255abb2ebc1632"
   integrity sha512-7ylylesZQ/PV29jhEDl3Ufjo6ZX7gCqJr5F7PKrqc93v7fzSymt1BpwEU8nAUXs8qzzvqhbjhK5QZg6Mt/HkBg==
 
-lnurl-pay@^2.2.2:
-  version "2.2.2"
-  resolved "https://registry.npmjs.org/lnurl-pay/-/lnurl-pay-2.2.2.tgz#7be225c6748a3536c143c24613563819685737dc"
-  integrity sha512-ijf/mRdbUoRPOaerRaVUaSyDaxI0Op3+AetttLIBGdhLboKJlMdGZK/sZBRl3EkVVWm7aSO58w0USb0b3Hr7vw==
+lnurl-pay@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/lnurl-pay/-/lnurl-pay-2.3.0.tgz#97a24b0498634ab45ca6ef8924b4ff3285c381da"
+  integrity sha512-6bEwpueNFoh1X+jVwh422mFy9LMFIoMvVXO9INAsskAmcgUI5BWbOM6oYN6uudVT8jA5f0YL/BreqGddYy3Smg==
   dependencies:
     "@aws-crypto/sha256-js" "^4.0.0"
     aes-js "^3.1.2"
@@ -2873,7 +2873,6 @@ lnurl-pay@^2.2.2:
     stream-browserify "^3.0.0"
     stream-http "^3.2.0"
     tslib "^2.5.2"
-    url "^0.11.0"
 
 locate-path@^5.0.0:
   version "5.0.0"
