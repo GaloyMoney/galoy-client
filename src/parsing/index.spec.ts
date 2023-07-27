@@ -1,5 +1,6 @@
 /* eslint-disable max-lines */
 import {
+  InvalidIntraledgerReason,
   InvalidLightningDestinationReason,
   Network,
   OnchainPaymentDestination,
@@ -557,8 +558,9 @@ describe("parsePaymentDestination IntraLedger handles", () => {
     })
     expect(paymentDestination).toEqual(
       expect.objectContaining({
+        valid: false,
         paymentType: PaymentType.Intraledger,
-        handle: "userName",
+        invalidReason: InvalidIntraledgerReason.WrongDomain,
       }),
     )
   })

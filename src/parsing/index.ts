@@ -156,10 +156,24 @@ export type OnchainPaymentDestination =
       invalidReason: InvalidOnchainDestinationReason
     }
 
-export type IntraledgerPaymentDestination = {
-  paymentType: typeof PaymentType.Intraledger
-  handle: string
-}
+export const InvalidIntraledgerReason = {
+  WrongDomain: "WrongDomain",
+} as const
+
+export type InvalidIntraledgerReason =
+  (typeof InvalidIntraledgerReason)[keyof typeof InvalidIntraledgerReason]
+
+export type IntraledgerPaymentDestination =
+  | {
+      valid: true
+      paymentType: typeof PaymentType.Intraledger
+      handle: string
+    }
+  | {
+      paymentType: typeof PaymentType.Intraledger
+      valid: false
+      invalidReason: InvalidIntraledgerReason
+    }
 
 export type ParsedPaymentDestination =
   | UnknownPaymentDestination
@@ -296,6 +310,7 @@ const getIntraLedgerPayResponse = ({
 
   if (handle?.match(/(?!^(1|3|bc1|lnbc1))^[0-9a-z_]{3,50}$/iu)) {
     return {
+      valid: true,
       paymentType,
       handle,
     }
