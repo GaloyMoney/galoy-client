@@ -156,10 +156,24 @@ export type OnchainPaymentDestination =
       invalidReason: InvalidOnchainDestinationReason
     }
 
-export type IntraledgerPaymentDestination = {
-  paymentType: typeof PaymentType.Intraledger
-  handle: string
-}
+export const InvalidIntraledgerReason = {
+  WrongDomain: "WrongDomain",
+} as const
+
+export type InvalidIntraledgerReason =
+  (typeof InvalidIntraledgerReason)[keyof typeof InvalidIntraledgerReason]
+
+export type IntraledgerPaymentDestination =
+  | {
+      valid: true
+      paymentType: typeof PaymentType.Intraledger
+      handle: string
+    }
+  | {
+      paymentType: typeof PaymentType.Intraledger
+      valid: false
+      invalidReason: InvalidIntraledgerReason
+    }
 
 export type ParsedPaymentDestination =
   | UnknownPaymentDestination
@@ -282,9 +296,13 @@ const getPaymentType = ({
 const getIntraLedgerPayResponse = ({
   protocol,
   destinationWithoutProtocol,
+  destination,
+  lnAddressDomains,
 }: {
   protocol: string
   destinationWithoutProtocol: string
+  destination: string
+  lnAddressDomains: string[]
 }): IntraledgerPaymentDestination | UnknownPaymentDestination => {
   const paymentType = PaymentType.Intraledger
 
@@ -294,8 +312,20 @@ const getIntraLedgerPayResponse = ({
       ]
     : destinationWithoutProtocol
 
+  if (protocol.match(/^(http|\/\/)/iu)) {
+    const domain = new url.URL(destination).hostname
+    if (!lnAddressDomains.find((lnAddressDomain) => lnAddressDomain === domain)) {
+      return {
+        valid: false,
+        paymentType,
+        invalidReason: InvalidIntraledgerReason.WrongDomain,
+      }
+    }
+  }
+
   if (handle?.match(/(?!^(1|3|bc1|lnbc1))^[0-9a-z_]{3,50}$/iu)) {
     return {
+      valid: true,
       paymentType,
       handle,
     }
@@ -326,6 +356,8 @@ const getLNURLPayResponse = ({
       return getIntraLedgerPayResponse({
         protocol: "",
         destinationWithoutProtocol: username,
+        lnAddressDomains,
+        destination,
       })
     }
 
@@ -524,7 +556,12 @@ export const parsePaymentDestination = ({
     case PaymentType.Onchain:
       return getOnChainPayResponse({ destinationWithoutProtocol, network })
     case PaymentType.Intraledger:
-      return getIntraLedgerPayResponse({ protocol, destinationWithoutProtocol })
+      return getIntraLedgerPayResponse({
+        protocol,
+        destinationWithoutProtocol,
+        destination,
+        lnAddressDomains,
+      })
     case PaymentType.Unified:
       return getUnifiedPayResponse({
         destination,
