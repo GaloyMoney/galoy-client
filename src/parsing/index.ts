@@ -173,6 +173,7 @@ export type IntraledgerPaymentDestination =
       paymentType: typeof PaymentType.Intraledger
       valid: false
       invalidReason: InvalidIntraledgerReason
+      handle: string
     }
 
 export type ParsedPaymentDestination =
@@ -318,6 +319,7 @@ const getIntraLedgerPayResponse = ({
       return {
         valid: false,
         paymentType,
+        handle,
         invalidReason: InvalidIntraledgerReason.WrongDomain,
       }
     }
