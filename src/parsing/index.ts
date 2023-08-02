@@ -313,7 +313,7 @@ const getIntraLedgerPayResponse = ({
     : destinationWithoutProtocol
 
   if (protocol.match(/^(http|\/\/)/iu)) {
-    const domain = new url.URL(destination).hostname
+    const domain = url.parse(destination).hostname
     if (!lnAddressDomains.find((lnAddressDomain) => lnAddressDomain === domain)) {
       return {
         valid: false,
