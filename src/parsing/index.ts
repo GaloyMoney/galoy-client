@@ -3,6 +3,8 @@ import bolt11 from "bolt11"
 import url from "url"
 import * as bitcoinjs from "bitcoinjs-lib"
 import { utils } from "lnurl-pay"
+import * as ecc from "@bitcoinerlab/secp256k1"
+bitcoinjs.initEccLib(ecc)
 
 export type Network = "mainnet" | "signet" | "regtest"
 
