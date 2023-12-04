@@ -1,7 +1,7 @@
 {
   "name": "@galoymoney/client",
   "main": "dist/index.js",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "license": "MIT",
   "repository": "https://github.com/galoymoney/galoy-client",
   "scripts": {
