@@ -1,6 +1,5 @@
 /* eslint-disable max-lines */
 import bolt11 from "bolt11"
-import url from "url"
 import * as bitcoinjs from "bitcoinjs-lib"
 import { utils } from "lnurl-pay"
 import * as ecc from "@bitcoinerlab/secp256k1"
@@ -86,6 +85,7 @@ export const PaymentType = {
 export type PaymentType = (typeof PaymentType)[keyof typeof PaymentType]
 
 export type UnknownPaymentDestination = {
+  valid: false
   paymentType: typeof PaymentType.Unknown
 }
 
@@ -172,8 +172,8 @@ export type IntraledgerPaymentDestination =
       handle: string
     }
   | {
-      paymentType: typeof PaymentType.Intraledger
       valid: false
+      paymentType: typeof PaymentType.Intraledger
       invalidReason: InvalidIntraledgerReason
       handle: string
     }
@@ -227,12 +227,12 @@ type ParsePaymentDestinationArgs = {
   lnAddressDomains: string[]
 }
 
-const inputDataToObject = (data: string): any => {
-  return url.parse(data, true)
-}
-
-const getLNParam = (data: string): string | undefined => {
-  return inputDataToObject(data)?.query?.lightning
+const getLNParam = (data: string): string | null => {
+  try {
+    return new URL(data).searchParams?.get("lightning")
+  } catch (err) {
+    return null
+  }
 }
 
 const getProtocolAndData = (
@@ -272,7 +272,10 @@ const getPaymentType = ({
     return PaymentType.Lightning
   }
 
-  if (destinationWithoutProtocol && getLNParam(destinationWithoutProtocol)) {
+  if (
+    destinationWithoutProtocol &&
+    getLNParam(`lightning:${destinationWithoutProtocol}`)
+  ) {
     return PaymentType.Unified
   }
 
@@ -316,7 +319,7 @@ const getIntraLedgerPayResponse = ({
     : destinationWithoutProtocol
 
   if (protocol.match(/^(http|\/\/)/iu)) {
-    const domain = url.parse(destination).hostname
+    const domain = new URL(destination).hostname
     if (!lnAddressDomains.find((lnAddressDomain) => lnAddressDomain === domain)) {
       return {
         valid: false,
@@ -336,6 +339,7 @@ const getIntraLedgerPayResponse = ({
   }
 
   return {
+    valid: false,
     paymentType: PaymentType.Unknown,
   }
 }
@@ -467,22 +471,23 @@ const getOnChainPayResponse = ({
 }): OnchainPaymentDestination => {
   const paymentType = PaymentType.Onchain
   try {
-    const decodedData = inputDataToObject(destinationWithoutProtocol)
+    const decodedData = new URL(`bitcoin:${destinationWithoutProtocol}`)
 
     // some apps encode addresses in UPPERCASE
-    const path = decodedData?.pathname as string
+    const path = decodedData?.pathname
     if (!path) {
       throw new Error("No address detected in decoded destination")
     }
 
-    const label: string | undefined = decodedData?.query?.label
-    const message: string | undefined = decodedData?.query?.message
+    const label: string | null = decodedData?.searchParams.get("label")
+    const message: string | null = decodedData?.searchParams.get("message")
     const memo = label || message || undefined
     let amount: number | undefined = undefined
     try {
-      amount = decodedData?.query?.amount
-        ? parseAmount(decodedData.query.amount as string)
-        : undefined
+      const parsedAmount = decodedData?.searchParams.get("amount")
+      if (parsedAmount) {
+        amount = parseAmount(parsedAmount)
+      }
     } catch (err) {
       console.debug("[Parse error: amount]:", err)
       return {
@@ -573,8 +578,8 @@ export const parsePaymentDestination = ({
         network,
       })
     case PaymentType.Unknown:
-      return { paymentType: PaymentType.Unknown }
+      return { paymentType: PaymentType.Unknown, valid: false }
   }
 
-  return { paymentType: PaymentType.Unknown }
+  return { paymentType: PaymentType.Unknown, valid: false }
 }
