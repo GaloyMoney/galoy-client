@@ -238,11 +238,24 @@ const getLNParam = (data: string): string | null => {
 const getProtocolAndData = (
   destination: string,
 ): { protocol: string; destinationWithoutProtocol: string } => {
-  // input might start with 'lightning:', 'bitcoin:'
-  const split = destination.split(":")
-  const protocol = split[1] ? split[0].toLocaleLowerCase() : ""
-  const destinationWithoutProtocol = split[1] ?? split[0]
-  return { protocol, destinationWithoutProtocol }
+  if (destination.toLocaleLowerCase().slice(0, 10) === "lightning:") {
+    return {
+      protocol: "lightning",
+      destinationWithoutProtocol: destination.slice(10),
+    }
+  }
+
+  if (destination.toLocaleLowerCase().slice(0, 8) === "bitcoin:") {
+    return {
+      protocol: "bitcoin",
+      destinationWithoutProtocol: destination.slice(8),
+    }
+  }
+
+  return {
+    protocol: "",
+    destinationWithoutProtocol: destination,
+  }
 }
 
 const getPaymentType = ({
@@ -286,7 +299,7 @@ const getPaymentType = ({
     return PaymentType.Onchain
   }
 
-  const handle = protocol.match(/^(http|\/\/)/iu)
+  const handle = destinationWithoutProtocol.match(/^(http|\/\/)/iu)
     ? destinationWithoutProtocol.split("/")[
         destinationWithoutProtocol.split("/").length - 1
       ]
@@ -300,25 +313,23 @@ const getPaymentType = ({
 }
 
 const getIntraLedgerPayResponse = ({
-  protocol,
   destinationWithoutProtocol,
   destination,
   lnAddressDomains,
 }: {
-  protocol: string
   destinationWithoutProtocol: string
   destination: string
   lnAddressDomains: string[]
 }): IntraledgerPaymentDestination | UnknownPaymentDestination => {
   const paymentType = PaymentType.Intraledger
 
-  const handle = protocol.match(/^(http|\/\/)/iu)
+  const handle = destinationWithoutProtocol.match(/^(http|\/\/)/iu)
     ? destinationWithoutProtocol.split("/")[
         destinationWithoutProtocol.split("/").length - 1
       ]
     : destinationWithoutProtocol
 
-  if (protocol.match(/^(http|\/\/)/iu)) {
+  if (destinationWithoutProtocol.match(/^(http|\/\/)/iu)) {
     const domain = new URL(destination).hostname
     if (!lnAddressDomains.find((lnAddressDomain) => lnAddressDomain === domain)) {
       return {
@@ -362,7 +373,6 @@ const getLNURLPayResponse = ({
 
     if (lnAddressDomains.find((lnAddressDomain) => lnAddressDomain === domain)) {
       return getIntraLedgerPayResponse({
-        protocol: "",
         destinationWithoutProtocol: username,
         lnAddressDomains,
         destination,
@@ -412,6 +422,7 @@ const getLightningPayResponse = ({
 }): LightningPaymentDestination => {
   const paymentType = PaymentType.Lightning
   const { destinationWithoutProtocol } = getProtocolAndData(destination)
+
   const lnProtocol =
     getLNParam(destination)?.toLowerCase() || destinationWithoutProtocol.toLowerCase()
 
@@ -566,7 +577,6 @@ export const parsePaymentDestination = ({
       return getOnChainPayResponse({ destinationWithoutProtocol, network })
     case PaymentType.Intraledger:
       return getIntraLedgerPayResponse({
-        protocol,
         destinationWithoutProtocol,
         destination,
         lnAddressDomains,
