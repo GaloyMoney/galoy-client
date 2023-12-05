@@ -8,10 +8,6 @@ import {
   PaymentType,
 } from "."
 
-beforeAll(() => {
-  jest.setSystemTime(1598110996000) // Aug 22 2020 10:43
-})
-
 const p2pkh = "1KP2uzAZYoNF6U8BkMBRdivLNujwSjtAQV"
 const p2sh = "3J98t1WpEZ73CNmQviecrnyiWrnqRhWNLy"
 const bech32 = "bc1qdx09anw82zhujxzzsn56mruv8qvd33czzy9apt"
@@ -45,6 +41,12 @@ const lnbcrtInvoice =
 
 const expiredLNInvoice =
   "LNBC11245410N1P05Z2LTPP52W2GX57TZVLM09SWZ8M0CAWGQPVTL3KUWZA836H5LG6HK2N2PRYQDPHXYSV89EQYVMJQSNFW3PXCMMRDDZXJMNWV4EZQST4VA6HXAPQXGU8G6QCQZPGXQRRSSVS7S2WT4GX90MQC9CVMA8UYDSTX5P0FA68V03U96HQDPFCT9DGDQQSENNAAGAXND6664CTKV88GMQ689LS0J7FFAD4DRN6SPLXAXZ0CQYZAU9Q"
+
+const cashappInvoiceQR =
+  "bitcoin:BC1Q5J58AAKAJGNZ78W2924WAJKGQLPS5CT6QXGR5E?amount=0.00025177&lightning=LNBC251770N1PJKUCFDDQDGDSHX6PQG9C8QPP5T9ZKQFZW905W3A2VZEL4VCZHQG40Q9FM0VZGCJ3DWC203KT9V4MQSP5DEYZWTU6HSSSLKDEWFH3FYR8K2YD3L7XA8KLNSVC4JP4XFK6LTCS9QRSGQCQPCXQY8AYQRZJQV06K0M23T593PNGL0JT7N9WZNP64FQNGVCTZ7VTS8NQ4TUKVTLJQZG0K5QQT0QQQSQQQQQQQQQQQQQQ9GRZJQTSJY9P55GDCEEVP36FVDMRKXQVZFHY8AK2TGC5ZGTJTRA9XLAZ97Z965UQQTQCQQQQQQQQQQQQQQQQQ9G6LA8G90SULF7X0XAF7XUMATK57KF733X04S8027XKZZJK945DZYKZWTQY63FARFWYSNKDGHHMU74KXVE9KUR3624ETHDKT60CGCJL2SQZ9V7LT"
+
+const btcpayServerQR =
+  "bitcoin:BC1QUZ8NQRJ3UX86QEHT4F6QQNC75XMNRGCE06ASCH?amount=0.00025885&pj=https://pay.pavlenex.com/BTC/pj&lightning=LNBC258850N1PJKUC3KSP5DKXUDY39Z3PAG74FGE6LGCWA6UHAN084MUU3SRPLXML4NY8FSLPSPP58JJ3Q9A6C9EQ2CTPRCUNGF5RNPQ6A9TRCLSD6GFSQ0JRWZWAX3PQDRQ2PSKJEPQW3HJQ5RPWEKX2MN90QSYGMMWV96XJMMWYQ5Y7UNYV4EZQJ2Y8GS9V5RTXVCNY7PKVEV8Q6262DPN2DJPD5UNXJEFXQR3J0CQPJRZJQTTFTVQU0F5SNECKEP3LKWDUT7MMHHPCYJMLMNJN4HZE8ED7PQ88XRRTWYQQ9USQQYQQQZNDQQQQQXCQ2Q9QXPQYSGQKYWUNGZ5TNRDXKLRHW968GMW3TUECTSSU4STH3MRWLJDUEG9JNVRNFYMJJZN8J5GAWEURCFRW6477MZTVZQAAQX5678NP8TPGPM6EPCQ9NWAGG"
 
 const checkOnChain = (address: string, network: Network) => {
   const destination = parsePaymentDestination({
@@ -450,7 +452,9 @@ describe("parsePaymentDestination Lightning", () => {
     )
   })
 
-  it("detects a lightning param in an onchain address", () => {
+  it("detects a lightning param in an onchain address 1", () => {
+    jest.setSystemTime(1598110996000) // Aug 22 2020 10:43
+
     const address =
       "bitcoin:bc1qylh3u67j673h6y6alv70m0pl2yz53tzhvxgg7u?amount=0.00001&label=sbddesign%3A%20For%20lunch%20Tuesday&message=For%20lunch%20Tuesday&lightning=lnbc10u1p3pj257pp5yztkwjcz5ftl5laxkav23zmzekaw37zk6kmv80pk4xaev5qhtz7qdpdwd3xger9wd5kwm36yprx7u3qd36kucmgyp282etnv3shjcqzpgxqyz5vqsp5usyc4lk9chsfp53kvcnvq456ganh60d89reykdngsmtj6yw3nhvq9qyyssqjcewm5cjwz4a6rfjx77c490yced6pemk0upkxhy89cmm7sct66k8gneanwykzgdrwrfje69h9u5u0w57rrcsysas7gadwmzxc8c6t0spjazup6"
     const paymentDestination = parsePaymentDestination({
@@ -464,6 +468,46 @@ describe("parsePaymentDestination Lightning", () => {
         valid: true,
         paymentRequest:
           "lnbc10u1p3pj257pp5yztkwjcz5ftl5laxkav23zmzekaw37zk6kmv80pk4xaev5qhtz7qdpdwd3xger9wd5kwm36yprx7u3qd36kucmgyp282etnv3shjcqzpgxqyz5vqsp5usyc4lk9chsfp53kvcnvq456ganh60d89reykdngsmtj6yw3nhvq9qyyssqjcewm5cjwz4a6rfjx77c490yced6pemk0upkxhy89cmm7sct66k8gneanwykzgdrwrfje69h9u5u0w57rrcsysas7gadwmzxc8c6t0spjazup6",
+        paymentType: PaymentType.Lightning,
+      }),
+    )
+  })
+
+  it("detects a lightning param in an onchain address 2", () => {
+    jest.setSystemTime(1701753935000) // 2023-12-04 23:25:35 UTC
+
+    const address = cashappInvoiceQR
+    const paymentDestination = parsePaymentDestination({
+      destination: address,
+      network: "mainnet",
+      lnAddressDomains: [],
+    })
+
+    expect(paymentDestination).toEqual(
+      expect.objectContaining({
+        valid: true,
+        paymentRequest:
+          "lnbc251770n1pjkucfddqdgdshx6pqg9c8qpp5t9zkqfzw905w3a2vzel4vczhqg40q9fm0vzgcj3dwc203kt9v4mqsp5deyzwtu6hssslkdewfh3fyr8k2yd3l7xa8klnsvc4jp4xfk6ltcs9qrsgqcqpcxqy8ayqrzjqv06k0m23t593pngl0jt7n9wznp64fqngvctz7vts8nq4tukvtljqzg0k5qqt0qqqsqqqqqqqqqqqqqq9grzjqtsjy9p55gdceevp36fvdmrkxqvzfhy8ak2tgc5zgtjtra9xlaz97z965uqqtqcqqqqqqqqqqqqqqqqq9g6la8g90sulf7x0xaf7xumatk57kf733x04s8027xkzzjk945dzykzwtqy63farfwysnkdghhmu74kxve9kur3624ethdkt60cgcjl2sqz9v7lt",
+        paymentType: PaymentType.Lightning,
+      }),
+    )
+  })
+
+  it("detects a lightning param in an onchain address 3", () => {
+    jest.setSystemTime(1701750135000)
+
+    const address = btcpayServerQR
+    const paymentDestination = parsePaymentDestination({
+      destination: address,
+      network: "mainnet",
+      lnAddressDomains: [],
+    })
+
+    expect(paymentDestination).toEqual(
+      expect.objectContaining({
+        valid: true,
+        paymentRequest:
+          "lnbc258850n1pjkuc3ksp5dkxudy39z3pag74fge6lgcwa6uhan084muu3srplxml4ny8fslpspp58jj3q9a6c9eq2ctprcungf5rnpq6a9trclsd6gfsq0jrwzwax3pqdrq2pskjepqw3hjq5rpwekx2mn90qsygmmwv96xjmmwyq5y7unyv4ezqj2y8gs9v5rtxvcny7pkvev8q6262dpn2djpd5unxjefxqr3j0cqpjrzjqttftvqu0f5sneckep3lkwdut7mmhhpcyjmlmnjn4hze8ed7pq88xrrtwyqq9usqqyqqqzndqqqqqxcq2q9qxpqysgqkywungz5tnrdxklrhw968gmw3tuectssu4sth3mrwljdueg9jnvrnfymjjzn8j5gaweurcfrw6477mztvzqaaqx5678np8tpgpm6epcq9nwagg",
         paymentType: PaymentType.Lightning,
       }),
     )
@@ -487,6 +531,8 @@ describe("parsePaymentDestination Lightning", () => {
   })
 
   it("validates an opennode invoice", () => {
+    jest.setSystemTime(1598110996000) // Aug 22 2020 10:43
+
     const paymentDestination = parsePaymentDestination({
       destination: lnInvoice,
       network: "mainnet",
@@ -518,6 +564,8 @@ describe("parsePaymentDestination Lightning", () => {
   })
 
   it("validates a lightning invoice with prefix", () => {
+    jest.setSystemTime(1598110996000) // Aug 22 2020 10:43
+
     const address = `LIGHTNING:${lnInvoice}`
 
     const paymentDestination = parsePaymentDestination({

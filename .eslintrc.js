@@ -61,7 +61,6 @@ module.exports = {
     "jsx-quotes": "error",
     "linebreak-style": ["error", "unix"],
     "max-depth": ["error", { max: 3 }],
-    "max-lines-per-function": ["error", { max: 200 }],
     "max-lines": ["error", { max: 500 }],
     "max-nested-callbacks": ["error", { max: 5 }],
     "max-params": ["error", { max: 2 }],
