@@ -238,14 +238,14 @@ const getLNParam = (data: string): string | null => {
 const getProtocolAndData = (
   destination: string,
 ): { protocol: string; destinationWithoutProtocol: string } => {
-  if (destination.toLocaleLowerCase().slice(0, 10) === "lightning:") {
+  if (destination.toLocaleLowerCase().startsWith("lightning:")) {
     return {
       protocol: "lightning",
       destinationWithoutProtocol: destination.slice(10),
     }
   }
 
-  if (destination.toLocaleLowerCase().slice(0, 8) === "bitcoin:") {
+  if (destination.toLocaleLowerCase().startsWith("bitcoin:")) {
     return {
       protocol: "bitcoin",
       destinationWithoutProtocol: destination.slice(8),
