@@ -75,6 +75,7 @@ export const getHashFromInvoice = (
 export const PaymentType = {
   Lightning: "lightning",
   Intraledger: "intraledger",
+  IntraledgerWithFlag: "intraledgerWithFlag",
   Onchain: "onchain",
   Lnurl: "lnurl",
   NullInput: "nullInput",
@@ -158,9 +159,15 @@ export type OnchainPaymentDestination =
       invalidReason: InvalidOnchainDestinationReason
     }
 
+export const IntraledgerFlag = {
+  Usd: "usd",
+} as const
+
 export const InvalidIntraledgerReason = {
   WrongDomain: "WrongDomain",
 } as const
+
+export type IntraledgerFlag = (typeof IntraledgerFlag)[keyof typeof IntraledgerFlag]
 
 export type InvalidIntraledgerReason =
   (typeof InvalidIntraledgerReason)[keyof typeof InvalidIntraledgerReason]
@@ -170,6 +177,12 @@ export type IntraledgerPaymentDestination =
       valid: true
       paymentType: typeof PaymentType.Intraledger
       handle: string
+    }
+  | {
+      valid: true
+      paymentType: typeof PaymentType.IntraledgerWithFlag
+      handle: string
+      flag: IntraledgerFlag
     }
   | {
       valid: false
@@ -204,6 +217,8 @@ export const decodeInvoiceString = (
 ): bolt11.PaymentRequestObject => {
   return bolt11.decode(invoice, parseBolt11Network(network))
 }
+
+const reUsername = /(?!^(1|3|bc1|lnbc1))^[0-9a-z_]{3,50}$/iu
 
 // from https://github.com/bitcoin/bips/blob/master/bip-0020.mediawiki#Transfer%20amount/size
 const reAmount = /^(([\d.]+)(X(\d+))?|x([\da-f]*)(\.([\da-f]*))?(X([\da-f]+))?)$/iu
@@ -305,8 +320,19 @@ const getPaymentType = ({
       ]
     : destinationWithoutProtocol
 
-  if (handle?.match(/(?!^(1|3|bc1|lnbc1))^[0-9a-z_]{3,50}$/iu)) {
+  if (handle?.match(reUsername)) {
     return PaymentType.Intraledger
+  }
+
+  const handleAndFlag = handle?.split("+")
+  if (
+    handleAndFlag?.length === 2 &&
+    handleAndFlag[0].match(reUsername) &&
+    Object.values(IntraledgerFlag).includes(
+      handleAndFlag[1].toLowerCase() as IntraledgerFlag,
+    )
+  ) {
+    return PaymentType.IntraledgerWithFlag
   }
 
   return PaymentType.Unknown
@@ -321,8 +347,6 @@ const getIntraLedgerPayResponse = ({
   destination: string
   lnAddressDomains: string[]
 }): IntraledgerPaymentDestination | UnknownPaymentDestination => {
-  const paymentType = PaymentType.Intraledger
-
   const handle = destinationWithoutProtocol.match(/^(http|\/\/)/iu)
     ? destinationWithoutProtocol.split("/")[
         destinationWithoutProtocol.split("/").length - 1
@@ -334,18 +358,33 @@ const getIntraLedgerPayResponse = ({
     if (!lnAddressDomains.find((lnAddressDomain) => lnAddressDomain === domain)) {
       return {
         valid: false,
-        paymentType,
+        paymentType: PaymentType.Intraledger,
         handle,
         invalidReason: InvalidIntraledgerReason.WrongDomain,
       }
     }
   }
 
-  if (handle?.match(/(?!^(1|3|bc1|lnbc1))^[0-9a-z_]{3,50}$/iu)) {
+  if (handle?.match(reUsername)) {
     return {
       valid: true,
-      paymentType,
+      paymentType: PaymentType.Intraledger,
       handle,
+    }
+  }
+
+  const handleAndFlag = handle?.split("+")
+  const flag = handleAndFlag[1]?.toLowerCase()
+  if (
+    handleAndFlag?.length === 2 &&
+    handleAndFlag[0].match(reUsername) &&
+    flag === IntraledgerFlag.Usd
+  ) {
+    return {
+      valid: true,
+      paymentType: PaymentType.IntraledgerWithFlag,
+      handle: handleAndFlag[0],
+      flag,
     }
   }
 
@@ -564,7 +603,6 @@ export const parsePaymentDestination = ({
     destinationWithoutProtocol,
     rawDestination: destination,
   })
-
   switch (paymentType) {
     case PaymentType.Lnurl:
       return getLNURLPayResponse({
@@ -576,6 +614,7 @@ export const parsePaymentDestination = ({
     case PaymentType.Onchain:
       return getOnChainPayResponse({ destinationWithoutProtocol, network })
     case PaymentType.Intraledger:
+    case PaymentType.IntraledgerWithFlag:
       return getIntraLedgerPayResponse({
         destinationWithoutProtocol,
         destination,
