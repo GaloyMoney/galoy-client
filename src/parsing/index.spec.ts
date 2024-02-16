@@ -598,7 +598,64 @@ describe("parsePaymentDestination IntraLedger handles", () => {
     )
   })
 
+  it("validates a handle with flag", () => {
+    const paymentDestination = parsePaymentDestination({
+      destination: "Nakamoto+usd",
+      network: "mainnet",
+      lnAddressDomains: [],
+    })
+    expect(paymentDestination).toEqual(
+      expect.objectContaining({
+        paymentType: PaymentType.IntraledgerWithFlag,
+        handle: "Nakamoto",
+        flag: "usd",
+      }),
+    )
+  })
+
+  it("validates a handle with invalid flag", () => {
+    const paymentDestination = parsePaymentDestination({
+      destination: "Nakamoto+btc",
+      network: "mainnet",
+      lnAddressDomains: [],
+    })
+    expect(paymentDestination).toEqual(
+      expect.objectContaining({
+        paymentType: PaymentType.Unknown,
+        valid: false,
+      }),
+    )
+  })
+
+  it("validates a handle with flag and bad username", () => {
+    const paymentDestination = parsePaymentDestination({
+      destination: "me+usd",
+      network: "mainnet",
+      lnAddressDomains: [],
+    })
+    expect(paymentDestination).toEqual(
+      expect.objectContaining({
+        paymentType: PaymentType.Unknown,
+        valid: false,
+      }),
+    )
+  })
+
   it("validates an http handle", () => {
+    const paymentDestination = parsePaymentDestination({
+      destination: "https://some.where/userName",
+      network: "mainnet",
+      lnAddressDomains: ["some.where"],
+    })
+    expect(paymentDestination).toEqual(
+      expect.objectContaining({
+        handle: "userName",
+        paymentType: PaymentType.Intraledger,
+      }),
+    )
+  })
+
+  it("validates an http handle with invalid domain", () => {
     const paymentDestination = parsePaymentDestination({
       destination: "https://some.where/userName",
       network: "mainnet",
@@ -609,6 +666,21 @@ describe("parsePaymentDestination IntraLedger handles", () => {
         valid: false,
         paymentType: PaymentType.Intraledger,
         invalidReason: InvalidIntraledgerReason.WrongDomain,
+      }),
+    )
+  })
+
+  it("validates an http handle with flag", () => {
+    const paymentDestination = parsePaymentDestination({
+      destination: "https://some.where/userName+usd",
+      network: "mainnet",
+      lnAddressDomains: ["some.where"],
+    })
+    expect(paymentDestination).toEqual(
+      expect.objectContaining({
+        paymentType: PaymentType.IntraledgerWithFlag,
+        handle: "userName",
+        flag: "usd",
       }),
     )
   })
