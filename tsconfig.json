@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es6",
     "module": "commonjs",
     "lib": ["dom", "es2021", "scripthost"],
     "outDir": "dist",
@@ -17,5 +17,5 @@
     "declaration": true,
     "noErrorTruncation": true
   },
-  "include": ["src"]
+  "include": ["src", "eslint.config.mjs"]
 }

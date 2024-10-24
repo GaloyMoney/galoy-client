@@ -9,3 +9,5 @@ jest.config.json
 prettier.config.js
 tsconfig.json
 **/*.spec.js
+.eslintrc.js
+eslint.config.mjs

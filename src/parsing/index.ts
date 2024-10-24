@@ -245,7 +245,7 @@ type ParsePaymentDestinationArgs = {
 const getLNParam = (data: string): string | null => {
   try {
     return new URL(data).searchParams?.get("lightning")
-  } catch (err) {
+  } catch {
     return null
   }
 }
@@ -481,7 +481,7 @@ const getLightningPayResponse = ({
   let payReq: bolt11.PaymentRequestObject | undefined = undefined
   try {
     payReq = bolt11.decode(lnProtocol, parseBolt11Network(network))
-  } catch (err) {
+  } catch {
     return {
       valid: false,
       paymentType,
@@ -491,7 +491,7 @@ const getLightningPayResponse = ({
 
   const amount =
     payReq.satoshis || payReq.millisatoshis
-      ? payReq.satoshis ?? Number(payReq.millisatoshis) / 1000
+      ? (payReq.satoshis ?? Number(payReq.millisatoshis) / 1000)
       : undefined
 
   if (lightningInvoiceHasExpired(payReq)) {
