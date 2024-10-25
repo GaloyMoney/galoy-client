@@ -2,11 +2,12 @@
 import {
   InvalidIntraledgerReason,
   InvalidLightningDestinationReason,
-  Network,
   OnchainPaymentDestination,
   parsePaymentDestination,
   PaymentType,
 } from "."
+
+import type { Network } from "./types"
 
 const p2pkh = "1KP2uzAZYoNF6U8BkMBRdivLNujwSjtAQV"
 const p2sh = "3J98t1WpEZ73CNmQviecrnyiWrnqRhWNLy"
@@ -681,6 +682,48 @@ describe("parsePaymentDestination IntraLedger handles", () => {
         paymentType: PaymentType.IntraledgerWithFlag,
         handle: "userName",
         flag: "usd",
+      }),
+    )
+  })
+})
+
+describe("parsePaymentDestination Merchant QR", () => {
+  it("validates a merchant QR code on mainnet", () => {
+    const merchantQR =
+      "00020129530023za.co.electrum.picknpay.za.co.ecentric0122RD2HAK3KTI53EC/confirm520458125303710540115802ZA5916cryptoqrtestscan6002CT63049BE2"
+
+    const paymentDestination = parsePaymentDestination({
+      destination: merchantQR,
+      network: "mainnet",
+      lnAddressDomains: ["blink.sv"],
+    })
+
+    expect(paymentDestination).toEqual(
+      expect.objectContaining({
+        paymentType: PaymentType.Lnurl,
+        valid: true,
+        lnurl:
+          "00020129530023za.co.electrum.picknpay.za.co.ecentric0122RD2HAK3KTI53EC%2Fconfirm520458125303710540115802ZA5916cryptoqrtestscan6002CT63049BE2@cryptoqr.net",
+      }),
+    )
+  })
+
+  it("validates a merchant QR code on signet", () => {
+    const merchantQR =
+      "00020129530023za.co.electrum.picknpay.za.co.ecentric0122RD2HAK3KTI53EC/confirm520458125303710540115802ZA5916cryptoqrtestscan6002CT63049BE2"
+
+    const paymentDestination = parsePaymentDestination({
+      destination: merchantQR,
+      network: "signet",
+      lnAddressDomains: ["blink.sv"],
+    })
+
+    expect(paymentDestination).toEqual(
+      expect.objectContaining({
+        paymentType: PaymentType.Lnurl,
+        valid: true,
+        lnurl:
+          "00020129530023za.co.electrum.picknpay.za.co.ecentric0122RD2HAK3KTI53EC%2Fconfirm520458125303710540115802ZA5916cryptoqrtestscan6002CT63049BE2@staging.cryptoqr.net",
       }),
     )
   })

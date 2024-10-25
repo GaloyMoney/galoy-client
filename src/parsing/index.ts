@@ -1,11 +1,13 @@
 /* eslint-disable max-lines */
 import bolt11 from "bolt11"
-import * as bitcoinjs from "bitcoinjs-lib"
 import { utils } from "lnurl-pay"
+import * as bitcoinjs from "bitcoinjs-lib"
 import * as ecc from "@bitcoinerlab/secp256k1"
-bitcoinjs.initEccLib(ecc)
 
-export type Network = "mainnet" | "signet" | "regtest"
+import type { Network } from "./types"
+import { convertMerchantQRToLightningAddress } from "./merchants"
+
+bitcoinjs.initEccLib(ecc)
 
 const parseBitcoinJsNetwork = (network: string): bitcoinjs.networks.Network => {
   if (network === "mainnet") {
@@ -277,10 +279,12 @@ const getPaymentType = ({
   protocol,
   destinationWithoutProtocol,
   rawDestination,
+  network,
 }: {
   protocol: string
   destinationWithoutProtocol: string
   rawDestination: string
+  network: Network
 }): PaymentType => {
   // As far as the client is concerned, lnurl is the same as lightning address
   if (
@@ -333,6 +337,14 @@ const getPaymentType = ({
     )
   ) {
     return PaymentType.IntraledgerWithFlag
+  }
+
+  const merchantLightningAddress = convertMerchantQRToLightningAddress({
+    qrContent: rawDestination,
+    network,
+  })
+  if (merchantLightningAddress) {
+    return PaymentType.Lnurl
   }
 
   return PaymentType.Unknown
@@ -397,9 +409,11 @@ const getIntraLedgerPayResponse = ({
 const getLNURLPayResponse = ({
   lnAddressDomains,
   destination,
+  network,
 }: {
   lnAddressDomains: string[]
   destination: string
+  network: Network
 }):
   | LnurlPaymentDestination
   | IntraledgerPaymentDestination
@@ -443,6 +457,18 @@ const getLNURLPayResponse = ({
       valid: true,
       paymentType: PaymentType.Lnurl,
       lnurl,
+    }
+  }
+
+  const merchantLightningAddress = convertMerchantQRToLightningAddress({
+    qrContent: destination,
+    network,
+  })
+  if (merchantLightningAddress) {
+    return {
+      valid: true,
+      paymentType: PaymentType.Lnurl,
+      lnurl: merchantLightningAddress,
     }
   }
 
@@ -602,12 +628,14 @@ export const parsePaymentDestination = ({
     protocol,
     destinationWithoutProtocol,
     rawDestination: destination,
+    network,
   })
   switch (paymentType) {
     case PaymentType.Lnurl:
       return getLNURLPayResponse({
         lnAddressDomains,
         destination: protocol === "lightning" ? destinationWithoutProtocol : destination,
+        network,
       })
     case PaymentType.Lightning:
       return getLightningPayResponse({ destination, network })
