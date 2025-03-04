@@ -685,6 +685,76 @@ describe("parsePaymentDestination IntraLedger handles", () => {
       }),
     )
   })
+
+  it("validates a phone number as an intraledger payment", () => {
+    const paymentDestination = parsePaymentDestination({
+      destination: "+1234567890",
+      network: "mainnet",
+      lnAddressDomains: [],
+    })
+    expect(paymentDestination).toEqual(
+      expect.objectContaining({
+        paymentType: PaymentType.Intraledger,
+        handle: "+1234567890",
+      }),
+    )
+  })
+
+  it("validates a phone number with max length as an intraledger payment", () => {
+    const paymentDestination = parsePaymentDestination({
+      destination: "+12345678901234",
+      network: "mainnet",
+      lnAddressDomains: [],
+    })
+    expect(paymentDestination).toEqual(
+      expect.objectContaining({
+        paymentType: PaymentType.Intraledger,
+        handle: "+12345678901234",
+      }),
+    )
+  })
+
+  it("invalidates a phone number that is too short", () => {
+    const paymentDestination = parsePaymentDestination({
+      destination: "+12345",
+      network: "mainnet",
+      lnAddressDomains: [],
+    })
+    expect(paymentDestination).toEqual(
+      expect.objectContaining({
+        paymentType: PaymentType.Unknown,
+        valid: false,
+      }),
+    )
+  })
+
+  it("invalidates a phone number that is too long", () => {
+    const paymentDestination = parsePaymentDestination({
+      destination: "+12345678901234567",
+      network: "mainnet",
+      lnAddressDomains: [],
+    })
+    expect(paymentDestination).toEqual(
+      expect.objectContaining({
+        paymentType: PaymentType.Unknown,
+        valid: false,
+      }),
+    )
+  })
+
+  it("invalidates a phone number without plus sign", () => {
+    const paymentDestination = parsePaymentDestination({
+      destination: "1234567890",
+      network: "mainnet",
+      lnAddressDomains: [],
+    })
+    expect(paymentDestination).toEqual(
+      expect.objectContaining({
+        paymentType: PaymentType.Onchain,
+        valid: false,
+      }),
+    )
+  })
 })
 
 describe("parsePaymentDestination Merchant QR", () => {
