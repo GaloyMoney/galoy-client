@@ -249,7 +249,7 @@ export default [
       "quote-props": ["error", "consistent-as-needed"],
       "radix": "error",
       "require-atomic-updates": "error",
-      "require-unicode-regexp": "error",
+      "require-unicode-regexp": "off",
       "spaced-comment": "error",
       "symbol-description": "error",
       "yoda": "error",
