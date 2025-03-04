@@ -379,7 +379,7 @@ const getIntraLedgerPayResponse = ({
     }
   }
 
-  if (handle?.match(reUsername)) {
+  if (handle?.match(reUsername) || handle?.match(rePhoneNumber)) {
     return {
       valid: true,
       paymentType: PaymentType.Intraledger,
