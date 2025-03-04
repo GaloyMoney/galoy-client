@@ -222,7 +222,7 @@ export const decodeInvoiceString = (
 
 const reUsername = /(?!^(1|3|bc1|lnbc1))^[0-9a-z_]{3,50}$/iu
 
-const rePhoneNumber = /^\+\d{7,14}$/i
+const rePhoneNumber = /^\+\d{7,14}$/iu
 
 // from https://github.com/bitcoin/bips/blob/master/bip-0020.mediawiki#Transfer%20amount/size
 const reAmount = /^(([\d.]+)(X(\d+))?|x([\da-f]*)(\.([\da-f]*))?(X([\da-f]+))?)$/iu
