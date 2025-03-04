@@ -329,7 +329,6 @@ const getPaymentType = ({
   if (handle?.match(reUsername) || handle?.match(rePhoneNumber)) {
     return PaymentType.Intraledger
   }
-  
 
   const handleAndFlag = handle?.split("+")
   if (
