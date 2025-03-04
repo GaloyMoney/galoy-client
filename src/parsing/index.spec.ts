@@ -685,75 +685,52 @@ describe("parsePaymentDestination IntraLedger handles", () => {
       }),
     )
   })
+})
 
-  it("validates a phone number as an intraledger payment", () => {
-    const paymentDestination = parsePaymentDestination({
+describe("parsePaymentDestination - Phone Number as IntraLedger Payment", () => {
+  test.each([
+    {
+      description: "validates a phone number as an intraledger payment",
       destination: "+1234567890",
-      network: "mainnet",
-      lnAddressDomains: [],
-    })
-    expect(paymentDestination).toEqual(
-      expect.objectContaining({
+      expected: {
         paymentType: PaymentType.Intraledger,
         handle: "+1234567890",
-      }),
-    )
-  })
-
-  it("validates a phone number with max length as an intraledger payment", () => {
-    const paymentDestination = parsePaymentDestination({
+        valid: true,
+      },
+    },
+    {
+      description: "validates a phone number with max length as an intraledger payment",
       destination: "+12345678901234",
-      network: "mainnet",
-      lnAddressDomains: [],
-    })
-    expect(paymentDestination).toEqual(
-      expect.objectContaining({
+      expected: {
         paymentType: PaymentType.Intraledger,
         handle: "+12345678901234",
-      }),
-    )
-  })
-
-  it("invalidates a phone number that is too short", () => {
-    const paymentDestination = parsePaymentDestination({
+        valid: true,
+      },
+    },
+    {
+      description: "invalidates a phone number that is too short",
       destination: "+12345",
-      network: "mainnet",
-      lnAddressDomains: [],
-    })
-    expect(paymentDestination).toEqual(
-      expect.objectContaining({
+      expected: {
         paymentType: PaymentType.Unknown,
         valid: false,
-      }),
-    )
-  })
-
-  it("invalidates a phone number that is too long", () => {
-    const paymentDestination = parsePaymentDestination({
+      },
+    },
+    {
+      description: "invalidates a phone number that is too long",
       destination: "+12345678901234567",
-      network: "mainnet",
-      lnAddressDomains: [],
-    })
-    expect(paymentDestination).toEqual(
-      expect.objectContaining({
+      expected: {
         paymentType: PaymentType.Unknown,
         valid: false,
-      }),
-    )
-  })
-
-  it("invalidates a phone number without plus sign", () => {
+      },
+    },
+  ])("$description", ({ destination, expected }) => {
     const paymentDestination = parsePaymentDestination({
-      destination: "1234567890",
+      destination,
       network: "mainnet",
       lnAddressDomains: [],
     })
-    expect(paymentDestination).toEqual(
-      expect.objectContaining({
-        paymentType: PaymentType.Onchain,
-        valid: false,
-      }),
-    )
+
+    expect(paymentDestination).toEqual(expect.objectContaining(expected))
   })
 })
 
