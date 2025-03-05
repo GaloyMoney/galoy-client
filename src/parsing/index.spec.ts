@@ -688,45 +688,53 @@ describe("parsePaymentDestination IntraLedger handles", () => {
 })
 
 describe("parsePaymentDestination - Phone Number as IntraLedger Payment", () => {
-  test.each([
-    {
-      description: "validates a phone number as an intraledger payment",
-      destination: "+1234567890",
-      expected: {
-        paymentType: PaymentType.Intraledger,
-        handle: "+1234567890",
-        valid: true,
+  const networks: Network[] = ["mainnet", "signet", "regtest"]
+
+  test.each(
+    networks.flatMap((network) => [
+      {
+        description: `validates a phone number as an intraledger payment on ${network}`,
+        destination: "+1234567890",
+        network,
+        expected: {
+          paymentType: PaymentType.Intraledger,
+          handle: "+1234567890",
+          valid: true,
+        },
       },
-    },
-    {
-      description: "validates a phone number with max length as an intraledger payment",
-      destination: "+12345678901234",
-      expected: {
-        paymentType: PaymentType.Intraledger,
-        handle: "+12345678901234",
-        valid: true,
+      {
+        description: `validates a phone number with max length as an intraledger payment on ${network}`,
+        destination: "+12345678901234",
+        network,
+        expected: {
+          paymentType: PaymentType.Intraledger,
+          handle: "+12345678901234",
+          valid: true,
+        },
       },
-    },
-    {
-      description: "invalidates a phone number that is too short",
-      destination: "+12345",
-      expected: {
-        paymentType: PaymentType.Unknown,
-        valid: false,
+      {
+        description: `invalidates a phone number that is too short on ${network}`,
+        destination: "+12345",
+        network,
+        expected: {
+          paymentType: PaymentType.Unknown,
+          valid: false,
+        },
       },
-    },
-    {
-      description: "invalidates a phone number that is too long",
-      destination: "+12345678901234567",
-      expected: {
-        paymentType: PaymentType.Unknown,
-        valid: false,
+      {
+        description: `invalidates a phone number that is too long on ${network}`,
+        destination: "+12345678901234567",
+        network,
+        expected: {
+          paymentType: PaymentType.Unknown,
+          valid: false,
+        },
       },
-    },
-  ])("$description", ({ destination, expected }) => {
+    ])
+  )("$description", ({ destination, network, expected }) => {
     const paymentDestination = parsePaymentDestination({
       destination,
-      network: "mainnet",
+      network,
       lnAddressDomains: [],
     })
 
