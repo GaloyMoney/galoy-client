@@ -222,6 +222,8 @@ export const decodeInvoiceString = (
 
 const reUsername = /(?!^(1|3|bc1|lnbc1))^[0-9a-z_]{3,50}$/iu
 
+const rePhoneNumber = /^\+\d{7,14}$/
+
 // from https://github.com/bitcoin/bips/blob/master/bip-0020.mediawiki#Transfer%20amount/size
 const reAmount = /^(([\d.]+)(X(\d+))?|x([\da-f]*)(\.([\da-f]*))?(X([\da-f]+))?)$/iu
 const parseAmount = (txt: string): number => {
@@ -324,7 +326,7 @@ const getPaymentType = ({
       ]
     : destinationWithoutProtocol
 
-  if (handle?.match(reUsername)) {
+  if (handle?.match(reUsername) || handle?.match(rePhoneNumber)) {
     return PaymentType.Intraledger
   }
 
@@ -377,7 +379,7 @@ const getIntraLedgerPayResponse = ({
     }
   }
 
-  if (handle?.match(reUsername)) {
+  if (handle?.match(reUsername) || handle?.match(rePhoneNumber)) {
     return {
       valid: true,
       paymentType: PaymentType.Intraledger,
