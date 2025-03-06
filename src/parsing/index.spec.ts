@@ -730,7 +730,7 @@ describe("parsePaymentDestination - Phone Number as IntraLedger Payment", () => 
           valid: false,
         },
       },
-    ])
+    ]),
   )("$description", ({ destination, network, expected }) => {
     const paymentDestination = parsePaymentDestination({
       destination,
