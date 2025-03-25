@@ -1,20 +1,20 @@
 {
-  "name": "@galoymoney/client",
+  "name": "@blinkbitcoin/client",
   "main": "dist/index.js",
   "version": "0.2.13",
   "license": "MIT",
-  "repository": "https://github.com/galoymoney/galoy-client",
+  "repository": "https://github.com/blinkbitcoin/blink-client",
   "scripts": {
-    "build": "yarn install && rm -rf dist && tsc --sourceMap false --skipLibCheck true",
-    "code:check": "yarn tsc:check && yarn eslint:check && yarn prettier:check",
+    "build": "pnpm install && tsup",
+    "code:check": "pnpm tsc:check && pnpm eslint:check && pnpm prettier:check",
     "eslint:check": "eslint .",
     "eslint:fix": "eslint . --fix",
+    "test": "TZ=UTC jest",
     "prettier:check": "prettier --check .",
     "prettier:fix": "prettier --write .",
     "test:verify": "jest --coverage",
-    "test": "TZ=UTC jest",
-    "yalc:push": "yarn build && yalc push",
-    "tsc:check": "tsc --pretty --noEmit --skipLibCheck"
+    "tsc:check": "tsc --pretty --noEmit --skipLibCheck",
+    "cli": "ts-node src/cli.ts"
   },
   "peerDependencies": {
     "@bitcoinerlab/secp256k1": "^1.1.1",
@@ -40,10 +40,12 @@
     "lnurl-pay": "^4.0.0",
     "prettier": "^3.3.3",
     "ts-jest": "^29.2.5",
+    "ts-node": "^10.9.1",
     "typescript": "^5.6.3"
   },
   "dependencies": {},
-  "resolutions": {
-    "**/**/json5": ">=2.2.2"
-  }
+  "overrides": {
+    "json5": ">=2.2.2"
+  },
+  "packageManager": "pnpm@10.6.5"
 }

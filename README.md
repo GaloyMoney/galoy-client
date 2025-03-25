@@ -15,7 +15,7 @@ yarn add @galoymoney/client
 ### parsePaymentDestination
 
 ```js
-import { parsePaymentDestination } from "@galoymoney/client"
+import { parsePaymentDestination } from "@blinkbitcoin/client"
 
 const { valid, paymentType, amount } = parsePaymentDestination({
   destination: "username or invoice or bitcoin address",
@@ -28,7 +28,7 @@ const { valid, paymentType, amount } = parsePaymentDestination({
 Test with Jest framework:
 
 ```bash
-yarn test
+pnpm test
 ```
 
 ## Build
@@ -36,12 +36,40 @@ yarn test
 Build production (distribution) files in **dist** folder:
 
 ```bash
-yarn build
+pnpm build
 ```
 
 ## Local development
 
-### using yarn
+
+<details>
+<summary>using pnpm</summary>
+
+Run:
+
+```bash
+pnpm link --global
+```
+
+and in your test project run:
+
+```bash
+pnpm link --global @blinkbitcoin/client
+```
+
+If you want to remove the link, run:
+
+```bash
+# in your test project
+pnpm unlink @blinkbitcoin/client
+
+# in blinkbitcoin/client folder
+pnpm unlink --global
+```
+</details>
+
+<details>
+<summary>using yarn</summary>
 
 Run:
 
@@ -64,8 +92,10 @@ yarn unlink @galoymoney/client
 # in galoymoney/client folder
 yarn unlink
 ```
+</details>
 
-### using yalc
+<details>
+<summary>using yalc</summary>
 
 Run:
 
@@ -93,3 +123,4 @@ to update changes, you have to run <code>yalc publish</code> before run:
 # in your test project
 yalc update
 ```
+</details>
