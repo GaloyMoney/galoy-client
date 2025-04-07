@@ -1,13 +1,13 @@
 # Galoy Client
 
-JavaScript client library for the Galoy stack. This is used in front-end applications like the web and mobile wallets.
+JavaScript client library for the Blink stack. This is used in front-end applications like the web and mobile wallets.
 
 ## Installation
 
 Install the package with:
 
 ```bash
-yarn add @galoymoney/client
+yarn add @blinkbitcoin/blink-client
 ```
 
 ## Usage
@@ -15,7 +15,7 @@ yarn add @galoymoney/client
 ### parsePaymentDestination
 
 ```js
-import { parsePaymentDestination } from "@galoymoney/client"
+import { parsePaymentDestination } from "@blinkbitcoin/blink-client"
 
 const { valid, paymentType, amount } = parsePaymentDestination({
   destination: "username or invoice or bitcoin address",
@@ -28,7 +28,7 @@ const { valid, paymentType, amount } = parsePaymentDestination({
 Test with Jest framework:
 
 ```bash
-yarn test
+pnpm test
 ```
 
 ## Build
@@ -36,12 +36,40 @@ yarn test
 Build production (distribution) files in **dist** folder:
 
 ```bash
-yarn build
+pnpm build
 ```
 
 ## Local development
 
-### using yarn
+<details>
+<summary>using pnpm</summary>
+
+Run:
+
+```bash
+pnpm link --global
+```
+
+and in your test project run:
+
+```bash
+pnpm link --global @blinkbitcoin/blink-client
+```
+
+If you want to remove the link, run:
+
+```bash
+# in your test project
+pnpm unlink @blinkbitcoin/blink-client
+
+# in blinkbitcoin/client folder
+pnpm unlink --global
+```
+
+</details>
+
+<details>
+<summary>using yarn</summary>
 
 Run:
 
@@ -65,7 +93,10 @@ yarn unlink @galoymoney/client
 yarn unlink
 ```
 
-### using yalc
+</details>
+
+<details>
+<summary>using yalc</summary>
 
 Run:
 
@@ -93,3 +124,5 @@ to update changes, you have to run <code>yalc publish</code> before run:
 # in your test project
 yalc update
 ```
+
+</details>

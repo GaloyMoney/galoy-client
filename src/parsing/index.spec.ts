@@ -353,7 +353,7 @@ describe("parsePaymentDestination OnChain", () => {
 describe("parsePaymentDestination Lightning", () => {
   it("invalidates a mainnet invoice on signet", () => {
     const paymentDestination = parsePaymentDestination({
-      // lnInovice is a mainnet invoice
+      // lnInvoice is a mainnet invoice
       destination: lnInvoice,
       network: "signet",
       lnAddressDomains: [],
@@ -370,7 +370,7 @@ describe("parsePaymentDestination Lightning", () => {
 
   it("invalidates a regtest invoice on signet", () => {
     const paymentDestination = parsePaymentDestination({
-      // lnInovice is a regtest invoice
+      // lnInvoice is a regtest invoice
       destination: lnbcrtInvoice,
       network: "signet",
       lnAddressDomains: [],
@@ -386,7 +386,7 @@ describe("parsePaymentDestination Lightning", () => {
   })
 
   it("invalidates a signet invoice on mainnet", () => {
-    // lntbInovice is a signet invoice
+    // lntbInvoice is a signet invoice
     const paymentDestination = parsePaymentDestination({
       destination: lntbInvoice,
       network: "mainnet",
@@ -403,7 +403,7 @@ describe("parsePaymentDestination Lightning", () => {
   })
 
   it("invalidates a regtest invoice on mainnet", () => {
-    // lntbInovice is a regtest invoice
+    // lntbInvoice is a regtest invoice
     const paymentDestination = parsePaymentDestination({
       destination: lnbcrtInvoice,
       network: "mainnet",
@@ -420,7 +420,7 @@ describe("parsePaymentDestination Lightning", () => {
   })
 
   it("invalidates a signet invoice on regtest", () => {
-    // lntbInovice is a signet invoice
+    // lntbInvoice is a signet invoice
     const paymentDestination = parsePaymentDestination({
       destination: lntbInvoice,
       network: "regtest",
@@ -437,7 +437,7 @@ describe("parsePaymentDestination Lightning", () => {
   })
 
   it("invalidates a mainnet invoice on regtest", () => {
-    // lntbInovice is a mainnet invoice
+    // lntbInvoice is a mainnet invoice
     const paymentDestination = parsePaymentDestination({
       destination: lnInvoice,
       network: "regtest",

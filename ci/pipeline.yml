@@ -4,10 +4,9 @@
 #@   "nodejs_check_code",
 #@   "nodejs_audit",
 #@   "build_edge_image",
-#@   "release",
 #@   "repo_resource",
 #@   "nodejs_deps_resource",
-#@   "install_yarn_deps",
+#@   "install_nodejs_deps",
 #@   "open_charts_pr",
 #@   "deps_version_resource",
 #@   "bundled_deps_resource",
@@ -25,47 +24,57 @@
 #@   "gcr_resource_type",
 #@   "slack_resource_type")
 
+
+
+#! This is copied from galoy-client and it's a hot candidate to move into 
+#@ def test():
+name: test
+serial: true
+plan:
+- in_parallel:
+  - { get: repo, trigger: true }
+  - { get: bundled-deps, trigger: true }
+  - { get: pipeline-tasks }
+- task: test
+  config:
+    platform: linux
+    image_resource: #@ nodejs_task_image_config()
+    inputs:
+    - name: bundled-deps
+    - name: pipeline-tasks
+    - name: repo
+    run:
+      path: pipeline-tasks/ci/tasks/test.sh
+#@ end
+
+#@ def build():
+name: build
+serial: true
+plan:
+- in_parallel:
+  - { get: repo, trigger: true }
+  - { get: bundled-deps, trigger: true }
+  - { get: pipeline-tasks }
+- task: build
+  config:
+    platform: linux
+    image_resource: #@ nodejs_task_image_config()
+    inputs:
+    - name: bundled-deps
+    - name: pipeline-tasks
+    - name: repo
+    outputs:
+    - name: repo
+    run:
+      path: pipeline-tasks/ci/tasks/build.sh
+#@ end
+
 jobs:
 - #@ nodejs_check_code()
-- #@ install_yarn_deps()
 - #@ nodejs_audit()
-
-- name: test
-  serial: true
-  plan:
-  - in_parallel:
-    - { get: repo, trigger: true }
-    - { get: bundled-deps, trigger: true }
-    - { get: pipeline-tasks }
-  - task: test
-    config:
-      platform: linux
-      image_resource: #@ nodejs_task_image_config()
-      inputs:
-      - name: bundled-deps
-      - name: pipeline-tasks
-      - name: repo
-      run:
-        path: pipeline-tasks/ci/tasks/test.sh
-- name: build
-  serial: true
-  plan:
-  - in_parallel:
-    - { get: repo, trigger: true }
-    - { get: bundled-deps, trigger: true }
-    - { get: pipeline-tasks }
-  - task: build
-    config:
-      platform: linux
-      image_resource: #@ nodejs_task_image_config()
-      inputs:
-      - name: bundled-deps
-      - name: pipeline-tasks
-      - name: repo
-      outputs:
-      - name: repo
-      run:
-        path: pipeline-tasks/ci/tasks/build.sh
+- #@ install_nodejs_deps(pckgMgr="pnpm")
+- #@ test()
+- #@ build()
 
 - name: release
   serial: true
@@ -139,28 +148,24 @@ jobs:
 
 resources:
 - #@ repo_resource()
+- #@ nodejs_deps_resource(pckgMgr="pnpm")
+- #@ pipeline_tasks_resource()
+- #@ deps_version_resource()
+- #@ bundled_deps_resource()
+- #@ version_resource()
+- #@ gh_release_resource()
+- #@ slack_resource()
 - name: repo-out
   type: git
   source:
     uri: #@ data.values.git_uri
     branch: #@ data.values.git_branch
     private_key: #@ data.values.github_private_key
-
-- #@ pipeline_tasks_resource()
-- #@ nodejs_deps_resource()
-- #@ deps_version_resource()
-- #@ bundled_deps_resource()
-
-- #@ version_resource()
-- #@ gh_release_resource()
-
-- #@ slack_resource()
-
 - name: npm-release
   type: npm
   source:
-    package: client
-    scope: galoymoney
+    package: blink-client
+    scope: blinkbitcoin
     registry:
       uri: https://registry.npmjs.org/
       token: #@ data.values.npm_token

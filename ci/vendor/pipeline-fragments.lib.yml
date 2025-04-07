@@ -1,7 +1,11 @@
 #@ load("@ytt:data", "data")
-
+#@ load("@ytt:assert", "assert")
 #@ def public_docker_registry():
 #@  return "us.gcr.io/galoy-org"
+#@ end
+
+#@ def private_docker_registry():
+#@  return "gcr.io/galoy-org"
 #@ end
 
 #@ def nodejs_concourse_image():
@@ -40,6 +44,12 @@ source:
   repository: #@ release_concourse_image()
 #@ end
 
+#@ def nix_task_image_config():
+type: registry-image
+source:
+  repository: nixpkgs/nix-flakes
+#@ end
+
 #@ def slack_failure_notification():
 #@ fail_url = "<$ATC_EXTERNAL_URL/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME| :face_with_symbols_on_mouth: $BUILD_JOB_NAME> failed!"
 put: slack
@@ -48,6 +58,25 @@ params:
   username: concourse
   icon_url: https://cl.ly/2F421Y300u07/concourse-logo-blue-transparent.png
   text:    #@ fail_url
+#@ end
+
+#@ def check_code():
+name: check-code
+serial: true
+plan:
+- in_parallel:
+  - { get: repo, trigger: true }
+  - { get: pipeline-tasks }
+- task: check-code
+  config:
+    platform: linux
+    image_resource: #@ nix_task_image_config()
+    inputs:
+    - name: pipeline-tasks
+    - name: repo
+    run:
+      path: pipeline-tasks/ci/vendor/tasks/check-code.sh
+on_failure: #@ slack_failure_notification()
 #@ end
 
 #@ def nodejs_check_code():
@@ -67,7 +96,7 @@ plan:
     - name: pipeline-tasks
     - name: repo
     run:
-      path: pipeline-tasks/ci/vendor/tasks/check-code.sh
+      path: pipeline-tasks/ci/vendor/tasks/nodejs-check-code.sh
 on_failure: #@ slack_failure_notification()
 #@ end
 
@@ -89,11 +118,11 @@ plan:
     - path: cargo-home
     - path: cargo-target-dir
     run:
-      path: pipeline-tasks/ci/vendor/tasks/check-code.sh
+      path: pipeline-tasks/ci/vendor/tasks/rust-check-code.sh
 on_failure: #@ slack_failure_notification()
 #@ end
 
-#@ def install_yarn_deps():
+#@ def install_nodejs_deps(pckgMgr = "yarn"):
 name: install-deps
 plan:
 - in_parallel:
@@ -111,10 +140,56 @@ plan:
     outputs:
     - name: bundled-deps
     run:
-      path: pipeline-tasks/ci/vendor/tasks/cache-yarn-deps.sh
+#@ if pckgMgr == "yarn":
+      path: pipeline-tasks/ci/vendor/tasks/nodejs-cache-yarn-deps.sh
+#@ elif pckgMgr == "pnpm":
+      path: pipeline-tasks/ci/vendor/tasks/nodejs-cache-pnpm-deps.sh
+#@ else:
+#@     assert.fail("unsupported package manager: " + pckgMgr)
+#@ end
 - put: bundled-deps
   params:
     file: bundled-deps/bundled-deps-*.tgz
+on_failure: #@ slack_failure_notification()
+#@ end
+
+#@ def test_on_docker_host(container, additional_params={}):
+#@ params = dict(additional_params)
+#@ params["REPO_PATH"] = data.values.gh_repository + "-" + container
+#@ params["GOOGLE_CREDENTIALS"] = "((staging-gcp-creds.creds_json))"
+#@ params["SSH_PRIVATE_KEY"] = "((staging-ssh.ssh_private_key))"
+#@ params["SSH_PUB_KEY"] = "((staging-ssh.ssh_public_key))"
+#@ params["TEST_CONTAINER"] = container
+#@ params["JEST_TIMEOUT"] = 90000
+name: #@ container
+serial: true
+plan:
+- { put: docker-host, params: { acquire: true } }
+- in_parallel:
+  - { get: repo, trigger: true }
+  - { get: pipeline-tasks }
+- task: #@ container
+  attempts: 2
+  timeout: 12m
+  tags: ["galoy-staging"]
+  config:
+    platform: linux
+    image_resource: #@ rust_task_image_config()
+    inputs:
+    - name: pipeline-tasks
+    - name: docker-host
+    - name: repo
+      path: #@ data.values.gh_repository + "-" + container
+    caches:
+    - path: cargo-home
+    - path: cargo-target-dir
+    params: #@ params
+    run:
+      path: pipeline-tasks/ci/vendor/tasks/test-on-docker-host.sh
+  ensure:
+    put: docker-host
+    params:
+      release: docker-host
 on_failure: #@ slack_failure_notification()
 #@ end
 
@@ -145,7 +220,7 @@ plan:
       SSH_PUB_KEY: ((staging-ssh.ssh_public_key))
       JEST_TIMEOUT: 90000
     run:
-      path: pipeline-tasks/ci/vendor/tasks/test-integration.sh
+      path: pipeline-tasks/ci/vendor/tasks/chart-test-integration.sh
 on_failure: #@ slack_failure_notification()
 #@ end
 
@@ -176,7 +251,7 @@ plan:
       SSH_PRIVATE_KEY: ((staging-ssh.ssh_private_key))
       SSH_PUB_KEY: ((staging-ssh.ssh_public_key))
     run:
-      path: pipeline-tasks/ci/vendor/tasks/test-integration.sh
+      path: pipeline-tasks/ci/vendor/tasks/chart-test-integration.sh
 on_failure: #@ slack_failure_notification()
 #@ end
 
@@ -219,23 +294,29 @@ plan:
     outputs:
     - name: repo
     run:
-      path: pipeline-tasks/ci/vendor/tasks/prep-docker-build-env.sh
+      path: pipeline-tasks/ci/vendor/tasks/docker-prep-docker-build-env.sh
 - task: build
-  privileged: true
   config:
     platform: linux
     image_resource:
       type: registry-image
       source:
-        repository: vito/oci-build-task
+        repository: gcr.io/kaniko-project/executor
+        tag: debug
     inputs:
     - name: repo
     outputs:
     - name: image
-    params:
-      CONTEXT: repo
     run:
-      path: build
+      path: /kaniko/executor
+      args:
+        - --dockerfile=Dockerfile
+        - --context=repo
+        - --use-new-run
+        - --single-snapshot
+        - --cache=false
+        - --no-push
+        - --tar-path=image/image.tar
 - put: edge-image
   params:
     image: image/image.tar
@@ -316,7 +397,7 @@ plan:
         BRANCH: #@ data.values.git_charts_branch
         CHARTS_SUBDIR: #@ data.values.gh_repository
       run:
-        path: pipeline-tasks/ci/vendor/tasks/bump-image-digest.sh
+        path: pipeline-tasks/ci/vendor/tasks/docker-bump-image-digest.sh
   - put: charts-repo-bot-branch
     params:
       repository: charts-repo
@@ -326,6 +407,7 @@ plan:
       platform: linux
       image_resource: #@ nodejs_task_image_config()
       inputs:
+        - name: repo
         - name: pipeline-tasks
         - name: edge-image
         - name: charts-repo
@@ -335,10 +417,10 @@ plan:
         BOT_BRANCH: #@ data.values.git_charts_bot_branch
         CHARTS_SUBDIR: #@ data.values.gh_repository
       run:
-        path: pipeline-tasks/ci/vendor/tasks/open-charts-pr.sh
+        path: pipeline-tasks/ci/vendor/tasks/chart-open-charts-pr.sh
 #@ end
 
-#@ def repo_resource():
+#@ def repo_resource(webhook = False):
 name: repo
 type: git
 source:
@@ -347,6 +429,9 @@ source:
   uri: #@ data.values.git_uri
   branch: #@ data.values.git_branch
   private_key: #@ data.values.github_private_key
+#@ if webhook:
+webhook_token: ((webhook.secret))
+#@ end
 #@ end
 
 #@ def pipeline_tasks_resource():
@@ -359,24 +444,33 @@ source:
   private_key: #@ data.values.github_private_key
 #@ end
 
-#@ def edge_image_resource():
+#@ def edge_image_resource(publicRepo = True):
 name: edge-image
 type: registry-image
 source:
   tag: edge
   username: #@ data.values.docker_registry_user
   password: #@ data.values.docker_registry_password
-  repository: #@ public_docker_registry() + "/" + data.values.gh_repository
+  repository: #@ public_docker_registry() + "/" + data.values.gh_repository if publicRepo else private_docker_registry() + "/" + data.values.gh_repository
 #@ end
 
-#@ def nodejs_deps_resource():
+#@ def nodejs_deps_resource(webhook = False, pckgMgr = "yarn"):
 name: deps
 type: git
 source:
+#@ if pckgMgr == "yarn":
   paths: [yarn.lock]
+#@ elif pckgMgr == "pnpm":
+  paths: [pnpm-lock.yaml]
+#@ else:
+#@     assert.fail("unsupported package manager: " + pckgMgr)
+#@ end
   uri: #@ data.values.git_uri
   branch: #@ data.values.git_branch
   private_key: #@ data.values.github_private_key
+#@ if webhook:
+webhook_token: ((webhook.secret))
+#@ end
 #@ end
 
 #@ def deps_version_resource():
@@ -427,13 +521,13 @@ source:
   private_key: #@ data.values.github_private_key
 #@ end
 
-#@ def versioned_image_resource():
+#@ def versioned_image_resource(publicRepo = True):
 name: versioned-image
 type: registry-image
 source:
   username: #@ data.values.docker_registry_user
   password: #@ data.values.docker_registry_password
-  repository: #@ public_docker_registry() + "/" + data.values.gh_repository
+  repository: #@ public_docker_registry() + "/" + data.values.gh_repository if publicRepo else private_docker_registry() + "/" + data.values.gh_repository
 #@ end
 
 #@ def gh_release_resource():
@@ -451,6 +545,16 @@ type: git
 source:
   uri: #@ data.values.git_charts_uri
   branch: #@ "bot-bump-" + data.values.gh_repository + "-image"
+  private_key: #@ data.values.github_private_key
+#@ end
+
+#@ def docker_host_pool():
+name: docker-host
+type: pool
+source:
+  uri: git@github.com:blinkbitcoin/concourse-locks.git
+  branch: main
+  pool: docker-hosts
   private_key: #@ data.values.github_private_key
 #@ end
 

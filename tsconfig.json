@@ -17,5 +17,5 @@
     "declaration": true,
     "noErrorTruncation": true
   },
-  "include": ["src", "eslint.config.mjs"]
+  "include": ["src", "eslint.config.mjs", "tsup.config.ts"]
 }

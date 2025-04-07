@@ -1,14 +1,15 @@
-name: "Tests"
+#! Auto synced from Shared CI Resources repository
+#! Don't change this file, instead change it in github.com/blinkbitcoin/concourse-shared
 
+name: "Check code"
 on:
   pull_request:
     branches: [main]
-
+    
 jobs:
-  integration:
-    name: Tests
+  check-code:
+    name: Check Code
     runs-on: ubuntu-latest
-    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v2
 
@@ -21,5 +22,5 @@ jobs:
       - name: Install dependencies inside nix develop
         run: nix develop -c pnpm install
 
-      - name: Run all tests
-        run: nix develop -c pnpm test
+      - name: Run check code
+        run: nix develop -c pnpm code:check

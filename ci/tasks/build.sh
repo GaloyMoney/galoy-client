@@ -2,10 +2,10 @@
 
 set -eu
 
-. pipeline-tasks/ci/vendor/tasks/helpers.sh
+. pipeline-tasks/ci/vendor/tasks/nodejs-helpers.sh
 
 unpack_deps
 
 pushd repo
 
-yarn build
+pnpm tsup
