@@ -2,14 +2,14 @@ apiVersion: vendir.k14s.io/v1alpha1
 directories:
 - contents:
   - git:
-      commitTitle: 'fix: broken pnpm-store'
-      sha: 2e087663ce27cca79e3a9ffeb0840e73156889fd
+      commitTitle: 'fix: bumping for forked repos (and typo) (#6)...'
+      sha: dafb65ba11f0b0594eafacad66828b3e76f0deb9
     path: .
   path: ../.github/workflows/vendor
 - contents:
   - git:
-      commitTitle: 'fix: broken pnpm-store'
-      sha: 2e087663ce27cca79e3a9ffeb0840e73156889fd
+      commitTitle: 'fix: bumping for forked repos (and typo) (#6)...'
+      sha: dafb65ba11f0b0594eafacad66828b3e76f0deb9
     path: .
   path: vendor
 kind: LockConfig

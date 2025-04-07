@@ -8,7 +8,7 @@ directories:
   - path: . # Copy this folder out to ..
     git:
       url: https://github.com/blinkbitcoin/concourse-shared.git
-      ref: kn/mavapay_working
+      ref: dafb65ba11f0b0594eafacad66828b3e76f0deb9
     includePaths:
     - shared/actions/*
     excludePaths:
@@ -22,7 +22,7 @@ directories:
   - path: .
     git:
       url: https://github.com/blinkbitcoin/concourse-shared.git
-      ref: kn/mavapay_working
+      ref: dafb65ba11f0b0594eafacad66828b3e76f0deb9
     includePaths:
     - shared/ci/**/*
     excludePaths:
