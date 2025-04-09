@@ -434,7 +434,7 @@ webhook_token: ((webhook.secret))
 #@ end
 #@ end
 
-#@ def pipeline_tasks_resource():
+#@ def pipeline_tasks_resource(webhook = False):
 name: pipeline-tasks
 type: git
 source:
@@ -442,6 +442,9 @@ source:
   uri: #@ data.values.git_uri
   branch: #@ data.values.git_branch
   private_key: #@ data.values.github_private_key
+#@ if webhook:
+webhook_token: ((webhook.secret))
+#@ end
 #@ end
 
 #@ def edge_image_resource(publicRepo = True):
@@ -576,5 +579,5 @@ source:
 name: npm
 type: docker-image
 source:
-  repository: timotto/concourse-npm-resource
+  repository: k9ert/concourse-npm-resource
 #@ end
