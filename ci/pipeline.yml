@@ -22,8 +22,8 @@
 #@   "nodejs_task_image_config",
 #@   "slack_resource",
 #@   "gcr_resource_type",
-#@   "slack_resource_type")
-
+#@   "slack_resource_type",
+#@   "npm_resource_type")
 
 
 #! This is copied from galoy-client and it's a hot candidate to move into 
@@ -147,9 +147,9 @@ jobs:
 
 
 resources:
-- #@ repo_resource()
+- #@ repo_resource(webhook=True)
 - #@ nodejs_deps_resource(pckgMgr="pnpm")
-- #@ pipeline_tasks_resource()
+- #@ pipeline_tasks_resource(webhook=True)
 - #@ deps_version_resource()
 - #@ bundled_deps_resource()
 - #@ version_resource()
@@ -173,7 +173,4 @@ resources:
 resource_types:
 - #@ gcr_resource_type()
 - #@ slack_resource_type()
-- name: npm
-  type: docker-image
-  source:
-    repository: timotto/concourse-npm-resource
+- #@ npm_resource_type()
