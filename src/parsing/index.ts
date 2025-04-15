@@ -1,6 +1,7 @@
 /* eslint-disable max-lines */
 import bolt11 from "bolt11"
 import { utils } from "lnurl-pay"
+import { parsePhoneNumberFromString } from "libphonenumber-js"
 import * as bitcoinjs from "bitcoinjs-lib"
 import * as ecc from "@bitcoinerlab/secp256k1"
 
@@ -220,9 +221,7 @@ export const decodeInvoiceString = (
   return bolt11.decode(invoice, parseBolt11Network(network))
 }
 
-const reUsername = /(?!^(1|3|bc1|lnbc1))^[0-9a-z_]{3,50}$/iu
-
-const rePhoneNumber = /^\+\d{7,14}$/
+const reUsername = /^(?!\d+$)(?!^(1|3|bc1|lnbc1))[0-9a-z_]{3,50}$/iu
 
 // from https://github.com/bitcoin/bips/blob/master/bip-0020.mediawiki#Transfer%20amount/size
 const reAmount = /^(([\d.]+)(X(\d+))?|x([\da-f]*)(\.([\da-f]*))?(X([\da-f]+))?)$/iu
@@ -238,6 +237,16 @@ const parseAmount = (txt: string): number => {
           (match[9] ? Math.pow(16, parseInt(match[9], 16)) : 0x10000)
       : Number(match[2]) * (match[4] ? Math.pow(10, Number(match[4])) : 1e8),
   )
+}
+
+const isValidPhoneNumber = (input: string): boolean => {
+  const normalized = input.trim().startsWith("+") ? input.trim() : `+${input.trim()}`
+  const phone = parsePhoneNumberFromString(normalized)
+  if (!phone?.country) {
+    return false
+  }
+
+  return phone.isValid()
 }
 
 type ParsePaymentDestinationArgs = {
@@ -326,7 +335,7 @@ const getPaymentType = ({
       ]
     : destinationWithoutProtocol
 
-  if (handle?.match(reUsername) || handle?.match(rePhoneNumber)) {
+  if (handle?.match(reUsername) || isValidPhoneNumber(handle)) {
     return PaymentType.Intraledger
   }
 
@@ -379,7 +388,7 @@ const getIntraLedgerPayResponse = ({
     }
   }
 
-  if (handle?.match(reUsername) || handle?.match(rePhoneNumber)) {
+  if (handle?.match(reUsername) || isValidPhoneNumber(handle)) {
     return {
       valid: true,
       paymentType: PaymentType.Intraledger,

@@ -694,27 +694,46 @@ describe("parsePaymentDestination - Phone Number as IntraLedger Payment", () => 
     networks.flatMap((network) => [
       {
         description: `validates a phone number as an intraledger payment on ${network}`,
-        destination: "+1234567890",
+        destination: "+50370123456",
         network,
         expected: {
           paymentType: PaymentType.Intraledger,
-          handle: "+1234567890",
+          handle: "+50370123456",
+          valid: true,
+        },
+      },
+      {
+        description: `validates a phone number without plus symbol as an intraledger payment on ${network}`,
+        destination: "50370123456",
+        network,
+        expected: {
+          paymentType: PaymentType.Intraledger,
+          handle: "50370123456",
           valid: true,
         },
       },
       {
         description: `validates a phone number with max length as an intraledger payment on ${network}`,
-        destination: "+12345678901234",
+        destination: "+12025550123",
         network,
         expected: {
           paymentType: PaymentType.Intraledger,
-          handle: "+12345678901234",
+          handle: "+12025550123",
           valid: true,
         },
       },
       {
+        description: `invalidates a phone number without country code or plus symbol on ${network}`,
+        destination: "70123456",
+        network,
+        expected: {
+          paymentType: PaymentType.Unknown,
+          valid: false,
+        },
+      },
+      {
         description: `invalidates a phone number that is too short on ${network}`,
-        destination: "+12345",
+        destination: "+5037012",
         network,
         expected: {
           paymentType: PaymentType.Unknown,
@@ -723,7 +742,16 @@ describe("parsePaymentDestination - Phone Number as IntraLedger Payment", () => 
       },
       {
         description: `invalidates a phone number that is too long on ${network}`,
-        destination: "+12345678901234567",
+        destination: "+50370123456574898",
+        network,
+        expected: {
+          paymentType: PaymentType.Unknown,
+          valid: false,
+        },
+      },
+      {
+        description: `invalidates a phone number with an unassigned country code on ${network}`,
+        destination: "+99912345678",
         network,
         expected: {
           paymentType: PaymentType.Unknown,
