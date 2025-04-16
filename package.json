@@ -4,7 +4,7 @@
     "access": "public"
   },
   "main": "dist/index.js",
-  "version": "0.2.16",
+  "version": "0.2.18",
   "license": "MIT",
   "repository": "https://github.com/blinkbitcoin/blink-client",
   "scripts": {
