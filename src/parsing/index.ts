@@ -240,13 +240,16 @@ const parseAmount = (txt: string): number => {
 }
 
 const isValidPhoneNumber = (input: string): boolean => {
-  const normalized = input.trim().startsWith("+") ? input.trim() : `+${input.trim()}`
-  const phone = parsePhoneNumberFromString(normalized)
-  if (!phone?.country) {
+  if (!input) {
     return false
   }
 
-  return phone.isValid()
+  const normalizedPhone = input.trim().replace(/^(\+|00)?(.*)/g, "+$2")
+  const phoneNumber = parsePhoneNumberFromString(normalizedPhone)
+
+  return Boolean(
+    phoneNumber?.country && phoneNumber?.isPossible() && phoneNumber?.isValid(),
+  )
 }
 
 type ParsePaymentDestinationArgs = {

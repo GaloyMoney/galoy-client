@@ -713,12 +713,42 @@ describe("parsePaymentDestination - Phone Number as IntraLedger Payment", () => 
         },
       },
       {
+        description: `validates a phone number with 00 prefix as an intraledger payment on ${network}`,
+        destination: "0050370123456",
+        network,
+        expected: {
+          paymentType: PaymentType.Intraledger,
+          handle: "0050370123456",
+          valid: true,
+        },
+      },
+      {
+        description: `validates a phone number with spaces and 00 prefix as an intraledger payment on ${network}`,
+        destination: "00 503 7012 3456",
+        network,
+        expected: {
+          paymentType: PaymentType.Intraledger,
+          handle: "00 503 7012 3456",
+          valid: true,
+        },
+      },
+      {
         description: `validates a phone number with max length as an intraledger payment on ${network}`,
         destination: "+12025550123",
         network,
         expected: {
           paymentType: PaymentType.Intraledger,
           handle: "+12025550123",
+          valid: true,
+        },
+      },
+      {
+        description: `validates a phone number with max length and 00 prefix as an intraledger payment on ${network}`,
+        destination: "0012025550123",
+        network,
+        expected: {
+          paymentType: PaymentType.Intraledger,
+          handle: "0012025550123",
           valid: true,
         },
       },
